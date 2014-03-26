@@ -117,98 +117,80 @@ A;
 
 
 Begin["`Private`"]
-(*Returns the equations of motion given Vf(\[Lambda], \[Tau]), Vg(\[Lambda]) and \[Kappa](\[Lambda])*)
-(*NB: Although we allow for \[Omega], it is currently NOT USED, \[Omega] = \[Kappa] always!!!*)
-(*TODO: correct the equations and initial conditions for this*)
-VQCDEquationsOfMotion::noomegaimplemented = "warning: The current equations only support \[Omega] = \[Kappa]"
-VQCDEquationsOfMotion[{Vg_Symbol, Vf_Symbol, \[Kappa]_Symbol, \[Omega]_Symbol}, nt_] := (If[!\[Kappa] === \[Omega], Message[VQCDEquationsOfMotion::noomegaimplemented]];{Derivative[2][\[Tau]][A] == 
-  (-12*f[A]^3*\[Kappa][\[Lambda][A]]^2*(nt^2 + 4*E^(6*A)*Vf[\[Lambda][A], \[Tau][A]]^2*
-       \[Kappa][\[Lambda][A]]^2)*Derivative[1][\[Tau]][A]^5 - 2*f[A]*q[A]^2*Derivative[1][\[Tau]][A]*
-     (3*\[Kappa][\[Lambda][A]]*(nt^2 + E^(6*A)*Vf[\[Lambda][A], \[Tau][A]]^2*\[Kappa][\[Lambda][A]]^2)*
-       Derivative[1][f][A]*Derivative[1][\[Tau]][A]^2 + 
-      q[A]*Sqrt[Vf[\[Lambda][A], \[Tau][A]]^2 + nt^2/(E^(6*A)*\[Kappa][\[Lambda][A]]^2)]*\[Kappa][\[Lambda][A]]*
-       (nt^2 + E^(6*A)*Vf[\[Lambda][A], \[Tau][A]]^2*\[Kappa][\[Lambda][A]]^2)*
-       Derivative[1][\[Tau]][A]^2*Sqrt[q[A]^2 + f[A]*\[Kappa][\[Lambda][A]]*Derivative[1][\[Tau]][A]^
-           2] + 2*q[A]^2*(nt^2*(-9 + Vg[\[Lambda][A]]*\[Kappa][\[Lambda][A]]*
-           Derivative[1][\[Tau]][A]^2) + E^(6*A)*Vf[\[Lambda][A], \[Tau][A]]*\[Kappa][\[Lambda][A]]^2*
-         Derivative[1][\[Tau]][A]*(Vf[\[Lambda][A], \[Tau][A]]*Vg[\[Lambda][A]]*\[Kappa][\[Lambda][A]]*
-           Derivative[1][\[Tau]][A] - 6*Derivative[0, 1][Vf][\[Lambda][A], \[Tau][A]]))) + 
-    q[A]^6*(-4*Vg[\[Lambda][A]]*(nt^2 + E^(6*A)*Vf[\[Lambda][A], \[Tau][A]]^2*\[Kappa][\[Lambda][A]]^2)*
-       Derivative[1][\[Tau]][A] + 4*E^(6*A)*Vf[\[Lambda][A], \[Tau][A]]^3*
-       Sqrt[1 + nt^2/(E^(6*A)*Vf[\[Lambda][A], \[Tau][A]]^2*\[Kappa][\[Lambda][A]]^2)]*\[Kappa][\[Lambda][A]]^2*
-       Derivative[1][\[Tau]][A]*Sqrt[1 + (f[A]*\[Kappa][\[Lambda][A]]*Derivative[1][\[Tau]][A]^2)/
-          q[A]^2] + 4*Vf[\[Lambda][A], \[Tau][A]]*
-       (nt^2*Sqrt[1 + nt^2/(E^(6*A)*Vf[\[Lambda][A], \[Tau][A]]^2*\[Kappa][\[Lambda][A]]^2)]*
-         Derivative[1][\[Tau]][A]*Sqrt[1 + (f[A]*\[Kappa][\[Lambda][A]]*Derivative[1][\[Tau]][A]^2)/
-            q[A]^2] + 3*E^(6*A)*\[Kappa][\[Lambda][A]]*Derivative[0, 1][Vf][\[Lambda][A], \[Tau][A]])) + 
-    6*f[A]^2*\[Kappa][\[Lambda][A]]*Derivative[1][\[Tau]][A]^3*
-     (-(\[Kappa][\[Lambda][A]]*(nt^2 + E^(6*A)*Vf[\[Lambda][A], \[Tau][A]]^2*\[Kappa][\[Lambda][A]]^2)*
-        Derivative[1][f][A]*Derivative[1][\[Tau]][A]^2) + 
-      2*q[A]^2*(2*nt^2 - E^(6*A)*Vf[\[Lambda][A], \[Tau][A]]*\[Kappa][\[Lambda][A]]^2*
-         (4*Vf[\[Lambda][A], \[Tau][A]] - Derivative[1][\[Tau]][A]*Derivative[0, 1][Vf][\[Lambda][A], 
-            \[Tau][A]]))) + 6*Sqrt[3]*E^(6*A)*q[A]^4*Vf[\[Lambda][A], \[Tau][A]]*\[Kappa][\[Lambda][A]]*
-     \[Lambda][A]*Derivative[1][\[Tau]][A]*
-     Sqrt[(f[A]*(-(q[A]^4*Vg[\[Lambda][A]]) + 3*f[A]*\[Kappa][\[Lambda][A]]*
-          (4*f[A] + Derivative[1][f][A])*Derivative[1][\[Tau]][A]^2 + 
-         q[A]^4*Vf[\[Lambda][A], \[Tau][A]]*Sqrt[1 + nt^2/(E^(6*A)*Vf[\[Lambda][A], \[Tau][A]]^2*
-              \[Kappa][\[Lambda][A]]^2)]*Sqrt[1 + (f[A]*\[Kappa][\[Lambda][A]]*Derivative[1][\[Tau]][A]^2)/
-             q[A]^2] + q[A]^2*(3*Derivative[1][f][A] + 
-           f[A]*(12 - Vg[\[Lambda][A]]*\[Kappa][\[Lambda][A]]*Derivative[1][\[Tau]][A]^2))))/
-       (q[A]^2 + f[A]*\[Kappa][\[Lambda][A]]*Derivative[1][\[Tau]][A]^2)]*
-     (Vf[\[Lambda][A], \[Tau][A]]*Derivative[1][\[Kappa]][\[Lambda][A]] + 
-      \[Kappa][\[Lambda][A]]*Derivative[1, 0][Vf][\[Lambda][A], \[Tau][A]]) + 
-    3*f[A]^(5/2)*\[Kappa][\[Lambda][A]]*\[Lambda][A]*Derivative[1][\[Tau]][A]^5*
-     Sqrt[(36*f[A]*q[A]^2 + 9*q[A]^2*Derivative[1][f][A] + 36*f[A]^2*\[Kappa][\[Lambda][A]]*
-         Derivative[1][\[Tau]][A]^2 - 3*f[A]*\[Kappa][\[Lambda][A]]*(q[A]^2*Vg[\[Lambda][A]] - 
-          3*Derivative[1][f][A])*Derivative[1][\[Tau]][A]^2 + 
-        q[A]^4*(-3*Vg[\[Lambda][A]] + 3*Vf[\[Lambda][A], \[Tau][A]]*
-           Sqrt[1 + nt^2/(E^(6*A)*Vf[\[Lambda][A], \[Tau][A]]^2*\[Kappa][\[Lambda][A]]^2)]*
-           Sqrt[1 + (f[A]*\[Kappa][\[Lambda][A]]*Derivative[1][\[Tau]][A]^2)/q[A]^2]))/
-       (q[A]^2 + f[A]*\[Kappa][\[Lambda][A]]*Derivative[1][\[Tau]][A]^2)]*
-     (-(nt^2*Derivative[1][\[Kappa]][\[Lambda][A]]) + E^(6*A)*Vf[\[Lambda][A], \[Tau][A]]*
-       \[Kappa][\[Lambda][A]]^2*(Vf[\[Lambda][A], \[Tau][A]]*Derivative[1][\[Kappa]][\[Lambda][A]] + 
-        2*\[Kappa][\[Lambda][A]]*Derivative[1, 0][Vf][\[Lambda][A], \[Tau][A]])) + 
-    3*f[A]^(3/2)*q[A]^2*\[Lambda][A]*Derivative[1][\[Tau]][A]^3*
-     Sqrt[(36*f[A]*q[A]^2 + 9*q[A]^2*Derivative[1][f][A] + 36*f[A]^2*\[Kappa][\[Lambda][A]]*
-         Derivative[1][\[Tau]][A]^2 - 3*f[A]*\[Kappa][\[Lambda][A]]*(q[A]^2*Vg[\[Lambda][A]] - 
-          3*Derivative[1][f][A])*Derivative[1][\[Tau]][A]^2 + 
-        q[A]^4*(-3*Vg[\[Lambda][A]] + 3*Vf[\[Lambda][A], \[Tau][A]]*
-           Sqrt[1 + nt^2/(E^(6*A)*Vf[\[Lambda][A], \[Tau][A]]^2*\[Kappa][\[Lambda][A]]^2)]*
-           Sqrt[1 + (f[A]*\[Kappa][\[Lambda][A]]*Derivative[1][\[Tau]][A]^2)/q[A]^2]))/
-       (q[A]^2 + f[A]*\[Kappa][\[Lambda][A]]*Derivative[1][\[Tau]][A]^2)]*
-     (-(nt^2*Derivative[1][\[Kappa]][\[Lambda][A]]) + E^(6*A)*Vf[\[Lambda][A], \[Tau][A]]*
-       \[Kappa][\[Lambda][A]]^2*(3*Vf[\[Lambda][A], \[Tau][A]]*Derivative[1][\[Kappa]][\[Lambda][A]] + 
-        4*\[Kappa][\[Lambda][A]]*Derivative[1, 0][Vf][\[Lambda][A], \[Tau][A]])))/
-   (12*f[A]*q[A]^2*(nt^2 + E^(6*A)*Vf[\[Lambda][A], \[Tau][A]]^2*\[Kappa][\[Lambda][A]]^2)*
-    (q[A]^2 + f[A]*\[Kappa][\[Lambda][A]]*Derivative[1][\[Tau]][A]^2)), 
- Derivative[2][\[Lambda]][A] == 
- -(\[Lambda][A]*((3*q[A]^2*\[Lambda][A]*Derivative[1][Vg][\[Lambda][A]])/(8*f[A]) + 
-    ((4 + Derivative[1][f][A]/f[A] - Derivative[1][q][A]/q[A])*Derivative[1][\[Lambda]][A])/
-     \[Lambda][A] - Derivative[1][\[Lambda]][A]^2/\[Lambda][A]^2 - 
-    (3*q[A]^2*\[Lambda][A]*((f[A]*Vf[\[Lambda][A], \[Tau][A]]*Derivative[1][\[Kappa]][\[Lambda][A]]*
-         (-((nt^2*q[A]^2)/(E^(6*A)*f[A]*Vf[\[Lambda][A], \[Tau][A]]^2*\[Kappa][\[Lambda][A]]^3)) + 
-          Derivative[1][\[Tau]][A]^2/2))/(q[A]^2*
-         Sqrt[1 + (f[A]*\[Kappa][\[Lambda][A]]*Derivative[1][\[Tau]][A]^2)/q[A]^2]) + 
-       Sqrt[1 + (f[A]*\[Kappa][\[Lambda][A]]*Derivative[1][\[Tau]][A]^2)/q[A]^2]*
-        Derivative[1, 0][Vf][\[Lambda][A], \[Tau][A]]))/
-     (8*f[A]*Sqrt[1 + nt^2/(E^(6*A)*Vf[\[Lambda][A], \[Tau][A]]^2*\[Kappa][\[Lambda][A]]^2)]))), 
- Derivative[2][f][A] == 
-  (q[A]*Sqrt[Vf[\[Lambda][A], \[Tau][A]]^2 + nt^2/(E^(6*A)*\[Kappa][\[Lambda][A]]^2)]*
-     (-6*nt^2*q[A]^2 + \[Kappa][\[Lambda][A]]*(-6*nt^2*f[A] + 
-        (nt^2 + E^(6*A)*Vf[\[Lambda][A], \[Tau][A]]^2*\[Kappa][\[Lambda][A]]^2)*Derivative[1][f][A])*
-       Derivative[1][\[Tau]][A]^2))/(6*(nt^2 + E^(6*A)*Vf[\[Lambda][A], \[Tau][A]]^2*
-       \[Kappa][\[Lambda][A]]^2)*Sqrt[q[A]^2 + f[A]*\[Kappa][\[Lambda][A]]*Derivative[1][\[Tau]][A]^2]) + 
-   (Derivative[1][f][A]*(3*Derivative[1][f][A] + 
-      q[A]^2*(-Vg[\[Lambda][A]] + Vf[\[Lambda][A], \[Tau][A]]*
-         Sqrt[1 + nt^2/(E^(6*A)*Vf[\[Lambda][A], \[Tau][A]]^2*\[Kappa][\[Lambda][A]]^2)]*
-         Sqrt[1 + (f[A]*\[Kappa][\[Lambda][A]]*Derivative[1][\[Tau]][A]^2)/q[A]^2])))/(3*f[A]), 
- Derivative[1][q][A] == 
-  (q[A]*(24 - (q[A]*Sqrt[Vf[\[Lambda][A], \[Tau][A]]^2 + nt^2/(E^(6*A)*\[Kappa][\[Lambda][A]]^2)]*
-       \[Kappa][\[Lambda][A]]*Derivative[1][\[Tau]][A]^2)/
-      Sqrt[q[A]^2 + f[A]*\[Kappa][\[Lambda][A]]*Derivative[1][\[Tau]][A]^2] + 
-     (-2*q[A]^2*Vg[\[Lambda][A]] + 6*Derivative[1][f][A] - 
-       (2*q[A]^3*Sqrt[Vf[\[Lambda][A], \[Tau][A]]^2 + nt^2/(E^(6*A)*\[Kappa][\[Lambda][A]]^2)])/
-        Sqrt[q[A]^2 + f[A]*\[Kappa][\[Lambda][A]]*Derivative[1][\[Tau]][A]^2])/f[A]))/6});
+(*Returns the equations of motion given Vf(\[Lambda], \[Tau]), Vg(\[Lambda]), \[Kappa](\[Lambda]) and w(\[Lambda])*)
+VQCDEquationsOfMotion[{Vg_Symbol, Vf_Symbol, \[Kappa]_Symbol, w_Symbol}, nt_] := {Derivative[2][\[Tau]][A] == 
+  ((-3*q[A]^2*\[Lambda][A]^2*(3*E^(3*A)*w[\[Lambda][A]]*(nt^2 + E^(6*A)*Vf[\[Lambda][A], \[Tau][A]]^2*
+          w[\[Lambda][A]]^2)*\[Kappa][\[Lambda][A]]*Derivative[1][f][A]*Derivative[1][\[Tau]][A] + 
+       q[A]*(nt^2 + E^(6*A)*Vf[\[Lambda][A], \[Tau][A]]^2*w[\[Lambda][A]]^2)^(3/2)*\[Kappa][\[Lambda][A]]*
+        Derivative[1][\[Tau]][A]*Sqrt[q[A]^2 + f[A]*\[Kappa][\[Lambda][A]]*Derivative[1][\[Tau]][A]^
+            2] + E^(3*A)*q[A]^2*w[\[Lambda][A]]*(nt^2*Vg[\[Lambda][A]]*\[Kappa][\[Lambda][A]]*
+          Derivative[1][\[Tau]][A] + E^(6*A)*Vf[\[Lambda][A], \[Tau][A]]*w[\[Lambda][A]]^2*
+          (Vf[\[Lambda][A], \[Tau][A]]*Vg[\[Lambda][A]]*\[Kappa][\[Lambda][A]]*Derivative[1][\[Tau]][A] - 
+           6*Derivative[0, 1][Vf][\[Lambda][A], \[Tau][A]]))))/E^(3*A) - 
+    9*f[A]^2*\[Kappa][\[Lambda][A]]*\[Lambda][A]^2*Derivative[1][\[Tau]][A]^3*
+     (nt^2*(-2*\[Kappa][\[Lambda][A]]*Derivative[1][w][\[Lambda][A]]*Derivative[1][\[Lambda]][A] + 
+        w[\[Lambda][A]]*(2*\[Kappa][\[Lambda][A]] + Derivative[1][\[Kappa]][\[Lambda][A]]*Derivative[1][\[Lambda]][
+            A])) + E^(6*A)*Vf[\[Lambda][A], \[Tau][A]]*w[\[Lambda][A]]^3*
+       (Vf[\[Lambda][A], \[Tau][A]]*(8*\[Kappa][\[Lambda][A]] + Derivative[1][\[Kappa]][\[Lambda][A]]*
+           Derivative[1][\[Lambda]][A]) + 2*\[Kappa][\[Lambda][A]]*Derivative[1][\[Lambda]][A]*
+         Derivative[1, 0][Vf][\[Lambda][A], \[Tau][A]])) + f[A]*Derivative[1][\[Tau]][A]*
+     (-9*w[\[Lambda][A]]*(nt^2 + E^(6*A)*Vf[\[Lambda][A], \[Tau][A]]^2*w[\[Lambda][A]]^2)*\[Kappa][\[Lambda][A]]^2*
+       \[Lambda][A]^2*Derivative[1][f][A]*Derivative[1][\[Tau]][A]^2 + 
+      2*q[A]^2*(nt^2*(9*w[\[Lambda][A]]*\[Kappa][\[Lambda][A]]*\[Lambda][A]^2 + 
+          9*\[Lambda][A]^2*(\[Kappa][\[Lambda][A]]*Derivative[1][w][\[Lambda][A]] - 
+            w[\[Lambda][A]]*Derivative[1][\[Kappa]][\[Lambda][A]])*Derivative[1][\[Lambda]][A] + 
+          2*w[\[Lambda][A]]*\[Kappa][\[Lambda][A]]*Derivative[1][\[Lambda]][A]^2) - 
+        E^(6*A)*Vf[\[Lambda][A], \[Tau][A]]*w[\[Lambda][A]]^3*(Vf[\[Lambda][A], \[Tau][A]]*
+           (9*\[Lambda][A]^2*Derivative[1][\[Kappa]][\[Lambda][A]]*Derivative[1][\[Lambda]][A] + 
+            2*\[Kappa][\[Lambda][A]]*(9*\[Lambda][A]^2 - Derivative[1][\[Lambda]][A]^2)) + 
+          9*\[Kappa][\[Lambda][A]]*\[Lambda][A]^2*(-(Derivative[1][\[Tau]][A]*Derivative[0, 1][Vf][\[Lambda][
+                A], \[Tau][A]]) + Derivative[1][\[Lambda]][A]*Derivative[1, 0][Vf][\[Lambda][A], 
+              \[Tau][A]])))))/(18*f[A]*q[A]^2*w[\[Lambda][A]]*
+    (nt^2 + E^(6*A)*Vf[\[Lambda][A], \[Tau][A]]^2*w[\[Lambda][A]]^2)*\[Kappa][\[Lambda][A]]*\[Lambda][A]^2), 
+ Derivative[1][q][A] == (q[A]*(12 + (4*Derivative[1][\[Lambda]][A]^2)/(3*\[Lambda][A]^2) + 
+     (3*Derivative[1][f][A] + q[A]^2*(-Vg[\[Lambda][A]] + Vf[\[Lambda][A], \[Tau][A]]*
+          Sqrt[1 + nt^2/(E^(6*A)*Vf[\[Lambda][A], \[Tau][A]]^2*w[\[Lambda][A]]^2)]*
+          Sqrt[1 + (f[A]*\[Kappa][\[Lambda][A]]*Derivative[1][\[Tau]][A]^2)/q[A]^2]))/f[A]))/6, 
+ Derivative[2][\[Lambda]][A] == (-6*E^(3*A)*q[A]^4*w[\[Lambda][A]]^2*\[Lambda][A]^2*
+     (9*\[Lambda][A]^2*Derivative[1][Vg][\[Lambda][A]] + 4*Vg[\[Lambda][A]]*Derivative[1][\[Lambda]][A]) + 
+    8*E^(3*A)*f[A]*w[\[Lambda][A]]^2*\[Kappa][\[Lambda][A]]*Derivative[1][\[Lambda]][A]*
+     (-9*\[Lambda][A]^2*Derivative[1][f][A] - 2*f[A]*(3*\[Lambda][A] - 2*Derivative[1][\[Lambda]][A])*
+       (6*\[Lambda][A] + Derivative[1][\[Lambda]][A]))*Derivative[1][\[Tau]][A]^2 - 
+    2*E^(3*A)*q[A]^2*w[\[Lambda][A]]^2*(4*Derivative[1][\[Lambda]][A]*
+       (9*\[Lambda][A]^2*Derivative[1][f][A] + 2*f[A]*(3*\[Lambda][A] - 2*Derivative[1][\[Lambda]][A])*
+         (6*\[Lambda][A] + Derivative[1][\[Lambda]][A])) + 3*f[A]*\[Kappa][\[Lambda][A]]*\[Lambda][A]^2*
+       (9*\[Lambda][A]^2*Derivative[1][Vg][\[Lambda][A]] + 4*Vg[\[Lambda][A]]*Derivative[1][\[Lambda]][A])*
+       Derivative[1][\[Tau]][A]^2) + 6*q[A]^3*\[Lambda][A]^2*
+     (-4*w[\[Lambda][A]]*Sqrt[nt^2 + E^(6*A)*Vf[\[Lambda][A], \[Tau][A]]^2*w[\[Lambda][A]]^2]*
+       Derivative[1][\[Lambda]][A]*Sqrt[q[A]^2 + f[A]*\[Kappa][\[Lambda][A]]*Derivative[1][\[Tau]][A]^
+           2] + 9*nt^2*\[Lambda][A]^2*Derivative[1][w][\[Lambda][A]]*
+       Sqrt[(q[A]^2 + f[A]*\[Kappa][\[Lambda][A]]*Derivative[1][\[Tau]][A]^2)/
+         (nt^2 + E^(6*A)*Vf[\[Lambda][A], \[Tau][A]]^2*w[\[Lambda][A]]^2)] - 
+      9*E^(6*A)*Vf[\[Lambda][A], \[Tau][A]]*w[\[Lambda][A]]^3*\[Lambda][A]^2*
+       Sqrt[(q[A]^2 + f[A]*\[Kappa][\[Lambda][A]]*Derivative[1][\[Tau]][A]^2)/
+         (nt^2 + E^(6*A)*Vf[\[Lambda][A], \[Tau][A]]^2*w[\[Lambda][A]]^2)]*
+       Derivative[1, 0][Vf][\[Lambda][A], \[Tau][A]]) - 3*f[A]*q[A]*\[Lambda][A]^2*
+     Derivative[1][\[Tau]][A]^2*(-18*nt^2*\[Kappa][\[Lambda][A]]*\[Lambda][A]^2*Derivative[1][w][\[Lambda][A]]*
+       Sqrt[(q[A]^2 + f[A]*\[Kappa][\[Lambda][A]]*Derivative[1][\[Tau]][A]^2)/
+         (nt^2 + E^(6*A)*Vf[\[Lambda][A], \[Tau][A]]^2*w[\[Lambda][A]]^2)] + 
+      w[\[Lambda][A]]*(8*Sqrt[nt^2 + E^(6*A)*Vf[\[Lambda][A], \[Tau][A]]^2*w[\[Lambda][A]]^2]*\[Kappa][\[Lambda][A]]*
+         Derivative[1][\[Lambda]][A]*Sqrt[q[A]^2 + f[A]*\[Kappa][\[Lambda][A]]*Derivative[1][\[Tau]][A]^
+             2] + 9*nt^2*\[Lambda][A]^2*Derivative[1][\[Kappa]][\[Lambda][A]]*
+         Sqrt[(q[A]^2 + f[A]*\[Kappa][\[Lambda][A]]*Derivative[1][\[Tau]][A]^2)/
+           (nt^2 + E^(6*A)*Vf[\[Lambda][A], \[Tau][A]]^2*w[\[Lambda][A]]^2)]) + 
+      9*E^(6*A)*Vf[\[Lambda][A], \[Tau][A]]*w[\[Lambda][A]]^3*\[Lambda][A]^2*
+       Sqrt[(q[A]^2 + f[A]*\[Kappa][\[Lambda][A]]*Derivative[1][\[Tau]][A]^2)/
+         (nt^2 + E^(6*A)*Vf[\[Lambda][A], \[Tau][A]]^2*w[\[Lambda][A]]^2)]*
+       (Vf[\[Lambda][A], \[Tau][A]]*Derivative[1][\[Kappa]][\[Lambda][A]] + 2*\[Kappa][\[Lambda][A]]*
+         Derivative[1, 0][Vf][\[Lambda][A], \[Tau][A]])))/(144*E^(3*A)*f[A]*w[\[Lambda][A]]^2*
+    \[Lambda][A]^2*(q[A]^2 + f[A]*\[Kappa][\[Lambda][A]]*Derivative[1][\[Tau]][A]^2)), 
+ Derivative[2][f][A] == Derivative[1][f][A]^2/(2*f[A]) - 
+   (nt^2*q[A]*Sqrt[q[A]^2 + f[A]*\[Kappa][\[Lambda][A]]*Derivative[1][\[Tau]][A]^2])/
+    (E^(3*A)*w[\[Lambda][A]]*Sqrt[nt^2 + E^(6*A)*Vf[\[Lambda][A], \[Tau][A]]^2*w[\[Lambda][A]]^2]) + 
+   Derivative[1][f][A]*(-2 + (2*Derivative[1][\[Lambda]][A]^2)/(9*\[Lambda][A]^2) + 
+     (q[A]^2*(-Vg[\[Lambda][A]] + Vf[\[Lambda][A], \[Tau][A]]*
+         Sqrt[1 + nt^2/(E^(6*A)*Vf[\[Lambda][A], \[Tau][A]]^2*w[\[Lambda][A]]^2)]*
+         Sqrt[1 + (f[A]*\[Kappa][\[Lambda][A]]*Derivative[1][\[Tau]][A]^2)/q[A]^2]))/(6*f[A]))};
 
 
 (*Constructs the full set of initial conditions at distance \[Epsilon] from the horizon by requiring regularity of the solution at the horizon*)
@@ -216,14 +198,12 @@ Options[VQCDExtremalBHInitialConditions] = {EpsilonMeaning->"fd" (*Sets the mean
 											, EpsilonLimit -> Infinity
 											, nt1rootrange -> {0.5, 1.5} (*The area where to search for the critical points of the potential*)
 }
-VQCDExtremalBHInitialConditions[bdh_?NumericQ, C\[Lambda]_?NumericQ, {Vg_, Vf_, \[Kappa]_, \[Omega]_}, \[Epsilon]_?NumericQ, opts:OptionsPattern[]] := Module[
+VQCDExtremalBHInitialConditions[bdh_?NumericQ, C\[Lambda]_?NumericQ, {Vg_, Vf_, \[Kappa]_, w_}, \[Epsilon]_?NumericQ, opts:OptionsPattern[]] := Module[
  {\[Lambda]hcrit, nt1crit, nt1critfun, \[Lambda]h, \[Lambda]dh, \[Lambda]ddh, \[Lambda]3h, \[Lambda]3s1, \[Lambda]3s2, \[Lambda]3s3, bddh, bdds1, bdds2, f3s, \[Tau]h, \[Tau]dh, \[Tau]ddh, fddh, f4h, f4s1, f4s2, \[Lambda]dds1, \[Lambda]dds2, b3h, b3s1, b3s2, b3s3, \[Epsilon]eff, \[Alpha], \[Beta], f3h, a, bh, bz, bdz, \[Lambda]z, \[Lambda]dz, fz, fdz, qz, Veff, A\[Epsilon]},
  Block[{$vcontext = "VQCDExtremalBHInitialConditions"},
 
- If[!\[Kappa] === \[Omega], Message[VQCDEquationsOfMotion::noomegaimplemented]];
-
 (*First find the critical point that admits regular solutions with fph = 0*)
- nt1critfun[\[Lambda]h_] := \[Kappa][\[Lambda]h ]Sqrt[Vg[\[Lambda]h]^2 - Vf[\[Lambda]h, 0]^2];
+ nt1critfun[\[Lambda]h_] := w[\[Lambda]h ]Sqrt[Vg[\[Lambda]h]^2 - Vf[\[Lambda]h, 0]^2];
  {\[Lambda]hcrit, nt1crit} = {\[Lambda]h, nt1critfun[\[Lambda]h]} /. FindRoot[nt1critfun'[\[Lambda]h] == 0, Evaluate[Join[{\[Lambda]h}, OptionValue[nt1rootrange]]], Method -> "Brent"];
  PrintV[StringForm["Found an extremal point at \[Lambda]h = `1`, nt = `2`", \[Lambda]hcrit, nt1crit], "Checks"];
 
@@ -232,7 +212,7 @@ VQCDExtremalBHInitialConditions[bdh_?NumericQ, C\[Lambda]_?NumericQ, {Vg_, Vf_, 
  \[Tau]h = 0;
 
  {a, fddh, f3s, f4s2, f3h, f4s1, f4h, \[Lambda]dds2, \[Lambda]3s3, \[Lambda]dh, \[Lambda]dds1, \[Lambda]3s2, \[Lambda]ddh, \[Lambda]3s1, \[Lambda]3h, bh, bdds2, b3s3, bdds1, b3s2, bddh, b3s1, b3h, \[Tau]dh, \[Tau]ddh}
- = ExtremalInitialConditions[\[Lambda]h, Vg, Vf, \[Kappa], \[Omega], C\[Lambda], bdh];
+ = ExtremalInitialConditions[\[Lambda]h, Vg, Vf, \[Kappa], w, C\[Lambda], bdh];
 
  (*Veff[\[Lambda]h_] := Vg[\[Lambda]h] - Vf[\[Lambda]h, \[Tau]h]*Sqrt[1 + nt1crit^2/(Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2)];*)
 
@@ -319,12 +299,10 @@ Quiet[1/3 Min[\[Epsilon] Abs[fpph]/Abs[f3h], (6 \[Epsilon] Abs[fpph]/((3 + a)(2 
 Options[VQCDBHInitialConditions] = {EpsilonMeaning->"fd" (*Sets the meaning of epsilon. fd means that it is the relative change in f', absolute means it is the actual offset from horizon in z*)
 											,EpsilonLimit -> Infinity
 }
-VQCDBHInitialConditions[\[Tau]h_?NumericQ, \[Lambda]h_?NumericQ, nt_?NumericQ, fph_?NumericQ, {Vg_, Vf_, \[Kappa]_, \[Omega]_}, \[Epsilon]_?NumericQ, opts:OptionsPattern[]] := 
+VQCDBHInitialConditions[\[Tau]h_?NumericQ, \[Lambda]h_?NumericQ, nt_?NumericQ, fph_?NumericQ, {Vg_, Vf_, \[Kappa]_, w_}, \[Epsilon]_?NumericQ, opts:OptionsPattern[]] := 
  Module[{qh, \[Tau]ph, \[Tau]pph, fpph, qph, \[Lambda]ph, \[Epsilon]eff, qpph, \[Lambda]pph, fppph},
 
- If[!\[Kappa] === \[Omega], Message[VQCDEquationsOfMotion::noomegaimplemented]];
-
- {qh, \[Tau]ph, \[Tau]pph, fpph, qph, \[Lambda]ph, qpph, \[Lambda]pph, fppph} = FiniteTInitialConditions[\[Lambda]h, nt, fph, \[Tau]h, Vg, Vf, \[Kappa], \[Omega]];
+ {qh, \[Tau]ph, \[Tau]pph, fpph, qph, \[Lambda]ph, qpph, \[Lambda]pph, fppph} = FiniteTInitialConditions[\[Lambda]h, nt, fph, \[Tau]h, Vg, Vf, \[Kappa], w];
 
  
 If[OptionValue[EpsilonMeaning] == "Absolute",
@@ -348,158 +326,7 @@ If[OptionValue[EpsilonMeaning] == "Absolute",
  (*since fpph may become zero, we use the third derivative to estimate it's change also. Without this the automatic algorithm
   would increase \[Epsilon]eff to very large values near the point where fpph changes sign*)
 
-  \[Lambda]pph = (3*fph^3*\[Lambda]h^3*\[Tau]ph^4*Vf[\[Lambda]h, \[Tau]h]^5*(-2*qh^2*Vf[\[Lambda]h, \[Tau]h] + 
-    (9*fph + 2*qh^2*Vg[\[Lambda]h])*Sqrt[1 + nt^2/(Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2)])*
-   \[Kappa][\[Lambda]h]^8 + 72*fph^2*nt^4*qh^4*\[Lambda]h^3*\[Lambda]ph^2*Vf[\[Lambda]h, \[Tau]h]*
-   Sqrt[1 + nt^2/(Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2)]*Derivative[1][\[Kappa]][\[Lambda]h]^2 - 
-  2*nt^2*qh^2*\[Kappa][\[Lambda]h]^2*
-   (nt^2*(9*fpph^2*qh^2*\[Lambda]h^3 - 36*fph*fpph*qh*qph*\[Lambda]h^3 + 
-      8*fph^2*(9*qph^2*\[Lambda]h^3 - 4*qh^2*\[Lambda]ph^3))*Vg[\[Lambda]h] + 
-    nt^2*(-9*fpph^2*qh^2*\[Lambda]h^3 + 18*fph*fpph*qh*(-3*qh + 2*qph)*\[Lambda]h^3 + 
-      fph^2*(216*qh*qph*\[Lambda]h^3 - 72*qph^2*\[Lambda]h^3 + qh^2*(-162*\[Lambda]h^3 + 32*\[Lambda]ph^3)))*
-     Vf[\[Lambda]h, \[Tau]h]*Sqrt[1 + nt^2/(Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2)] - 
-    6*fph^2*nt^2*qh^2*\[Lambda]h^3*\[Lambda]ph*\[Tau]ph^2*Vf[\[Lambda]h, \[Tau]h]^2*
-     Derivative[1][\[Kappa]][\[Lambda]h] - 54*fph^2*qh^2*\[Lambda]h^3*\[Lambda]ph^2*Vf[\[Lambda]h, \[Tau]h]^3*
-     Sqrt[1 + nt^2/(Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2)]*Derivative[1][\[Kappa]][\[Lambda]h]^2 + 
-    3*fph*nt^2*(9*fpph^2*\[Lambda]h^3 - 32*fph^2*\[Lambda]ph^3 + 
-      fph^2*nt^2*\[Lambda]h^3*\[Tau]ph^4 - 6*qh*(fpph*qh - 4*fph*qph)*\[Lambda]h^3*\[Lambda]ph*
-       Derivative[1][Vg][\[Lambda]h] + 6*fph*qh^2*\[Lambda]h^3*\[Lambda]ph^2*Derivative[2][Vg][\[Lambda]h])) - 
-  12*fph*nt^4*qh^3*\[Lambda]h^3*\[Kappa][\[Lambda]h]*
-   (fph*nt^2*qh*\[Tau]ph*(3*\[Tau]ph - 2*\[Tau]pph) + 3*\[Lambda]ph*Vf[\[Lambda]h, \[Tau]h]*
-     Sqrt[1 + nt^2/(Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2)]*
-     (-((6*fph*qh + fpph*qh - 4*fph*qph)*Derivative[1][\[Kappa]][\[Lambda]h]) + 
-      fph*qh*\[Lambda]ph*Derivative[2][\[Kappa]][\[Lambda]h])) + 12*fph^2*qh^2*\[Lambda]h^3*\[Tau]ph*
-   Vf[\[Lambda]h, \[Tau]h]^4*(qh^2*Vf[\[Lambda]h, \[Tau]h] - (3*fph + qh^2*Vg[\[Lambda]h])*
-     Sqrt[1 + nt^2/(Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2)])*\[Kappa][\[Lambda]h]^7*
-   (2*\[Tau]pph*Vf[\[Lambda]h, \[Tau]h] + \[Tau]ph*(\[Tau]ph*Derivative[0, 1][Vf][\[Lambda]h, \[Tau]h] + 
-      \[Lambda]ph*Derivative[1, 0][Vf][\[Lambda]h, \[Tau]h])) - 12*fph^2*nt^2*qh^2*\[Lambda]h^3*\[Tau]ph*
-   Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^5*(3*qh^2*(\[Tau]ph - 2*\[Tau]pph)*Vf[\[Lambda]h, \[Tau]h]^2 + 
-    \[Tau]ph*(3*fph + qh^2*Vg[\[Lambda]h])*Sqrt[1 + nt^2/(Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2)]*
-     (\[Tau]ph*Derivative[0, 1][Vf][\[Lambda]h, \[Tau]h] + \[Lambda]ph*Derivative[1, 0][Vf][\[Lambda]h, 
-        \[Tau]h]) - Vf[\[Lambda]h, \[Tau]h]*
-     (9*fph*\[Tau]ph*Sqrt[1 + nt^2/(Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2)] - 
-      12*fph*\[Tau]pph*Sqrt[1 + nt^2/(Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2)] + 
-      qh^2*(3*\[Tau]ph - 4*\[Tau]pph)*Vg[\[Lambda]h]*
-       Sqrt[1 + nt^2/(Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2)] + 
-      2*qh^2*\[Tau]ph^2*Derivative[0, 1][Vf][\[Lambda]h, \[Tau]h] + 2*qh^2*\[Lambda]ph*\[Tau]ph*
-       Derivative[1, 0][Vf][\[Lambda]h, \[Tau]h])) + 12*fph*nt^2*qh^2*\[Lambda]h^3*
-   Vf[\[Lambda]h, \[Tau]h]*\[Kappa][\[Lambda]h]^3*(-3*qh*\[Lambda]ph*Vf[\[Lambda]h, \[Tau]h]^2*
-     Sqrt[1 + nt^2/(Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2)]*
-     (-((12*fph*qh + fpph*qh - 4*fph*qph)*Derivative[1][\[Kappa]][\[Lambda]h]) + 
-      fph*qh*\[Lambda]ph*Derivative[2][\[Kappa]][\[Lambda]h]) + fph*nt^2*\[Tau]ph*
-     (9*fph*\[Tau]ph*Sqrt[1 + nt^2/(Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2)] - 
-      6*fph*\[Tau]pph*Sqrt[1 + nt^2/(Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2)] + 
-      qh^2*(3*\[Tau]ph - 2*\[Tau]pph)*Vg[\[Lambda]h]*
-       Sqrt[1 + nt^2/(Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2)] + 
-      qh^2*\[Tau]ph^2*Derivative[0, 1][Vf][\[Lambda]h, \[Tau]h] + qh^2*\[Lambda]ph*\[Tau]ph*
-       Derivative[1, 0][Vf][\[Lambda]h, \[Tau]h]) + 6*fph*qh^2*Vf[\[Lambda]h, \[Tau]h]*
-     (nt^2*\[Tau]ph*(-\[Tau]ph + \[Tau]pph) + 
-      \[Lambda]ph*Sqrt[1 + nt^2/(Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2)]*
-       Derivative[1][\[Kappa]][\[Lambda]h]*(\[Tau]ph*Derivative[0, 1][Vf][\[Lambda]h, \[Tau]h] + 
-        \[Lambda]ph*Derivative[1, 0][Vf][\[Lambda]h, \[Tau]h]))) + 2*Vf[\[Lambda]h, \[Tau]h]^3*\[Kappa][\[Lambda]h]^6*
-   (3*fph^3*nt^2*\[Lambda]h^3*\[Tau]ph^4*(9*fph + 2*qh^2*Vg[\[Lambda]h])*
-     Sqrt[1 + nt^2/(Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2)] + 
-    6*fph^2*qh^4*\[Lambda]h^3*\[Lambda]ph*\[Tau]ph^2*Vf[\[Lambda]h, \[Tau]h]^3*Derivative[1][\[Kappa]][\[Lambda]h] + 
-    qh^2*Vf[\[Lambda]h, \[Tau]h]^2*Sqrt[1 + nt^2/(Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2)]*
-     (9*fpph^2*qh^2*\[Lambda]h^3 - 36*fph*fpph*qh*qph*\[Lambda]h^3 + 
-      8*fph^2*(9*qph^2*\[Lambda]h^3 - 4*qh^2*\[Lambda]ph^3) - 6*fph^2*\[Lambda]h^3*\[Lambda]ph*\[Tau]ph^2*
-       (3*fph + qh^2*Vg[\[Lambda]h])*Derivative[1][\[Kappa]][\[Lambda]h]) + 
-    qh^2*Vf[\[Lambda]h, \[Tau]h]*((-9*fpph^2*qh^2*\[Lambda]h^3 + 36*fph*fpph*qh*qph*\[Lambda]h^3 + 
-        8*fph^2*(-9*qph^2*\[Lambda]h^3 + 4*qh^2*\[Lambda]ph^3))*Vg[\[Lambda]h] - 
-      3*fph*(9*fpph^2*\[Lambda]h^3 - 32*fph^2*\[Lambda]ph^3 + 3*fph^2*nt^2*\[Lambda]h^3*\[Tau]ph^4 - 
-        6*qh*(fpph*qh - 4*fph*qph)*\[Lambda]h^3*\[Lambda]ph*Derivative[1][Vg][\[Lambda]h] + 
-        6*fph*qh^2*\[Lambda]h^3*\[Lambda]ph^2*Derivative[2][Vg][\[Lambda]h] + 6*fpph*qh^2*\[Lambda]h^3*\[Tau]ph*
-         Sqrt[1 + nt^2/(Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2)]*Derivative[0, 1][Vf][
-          \[Lambda]h, \[Tau]h] - 24*fph*qh*qph*\[Lambda]h^3*\[Tau]ph*
-         Sqrt[1 + nt^2/(Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2)]*Derivative[0, 1][Vf][
-          \[Lambda]h, \[Tau]h] - 6*fph*qh^2*\[Lambda]h^3*\[Tau]pph*
-         Sqrt[1 + nt^2/(Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2)]*Derivative[0, 1][Vf][
-          \[Lambda]h, \[Tau]h] - 6*fph*qh^2*\[Lambda]h^3*\[Tau]ph^2*
-         Sqrt[1 + nt^2/(Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2)]*Derivative[0, 2][Vf][
-          \[Lambda]h, \[Tau]h] + 6*fpph*qh^2*\[Lambda]h^3*\[Lambda]ph*
-         Sqrt[1 + nt^2/(Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2)]*Derivative[1, 0][Vf][
-          \[Lambda]h, \[Tau]h] - 24*fph*qh*qph*\[Lambda]h^3*\[Lambda]ph*
-         Sqrt[1 + nt^2/(Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2)]*Derivative[1, 0][Vf][
-          \[Lambda]h, \[Tau]h] - 12*fph*qh^2*\[Lambda]h^3*\[Lambda]ph*\[Tau]ph*
-         Sqrt[1 + nt^2/(Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2)]*Derivative[1, 1][Vf][
-          \[Lambda]h, \[Tau]h] - 6*fph*qh^2*\[Lambda]h^3*\[Lambda]ph^2*
-         Sqrt[1 + nt^2/(Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2)]*Derivative[2, 0][Vf][
-          \[Lambda]h, \[Tau]h]))) + nt^2*Vf[\[Lambda]h, \[Tau]h]*\[Kappa][\[Lambda]h]^4*
-   (24*fph^2*qh^4*\[Lambda]h^3*\[Lambda]ph*\[Tau]ph^2*Vf[\[Lambda]h, \[Tau]h]^3*Derivative[1][\[Kappa]][\[Lambda]h] - 
-    4*qh^2*Vf[\[Lambda]h, \[Tau]h]^2*Sqrt[1 + nt^2/(Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2)]*
-     (-9*fpph^2*qh^2*\[Lambda]h^3 - 9*fph*fpph*qh*(3*qh - 4*qph)*\[Lambda]h^3 - 
-      2*fph^2*(-54*qh*qph*\[Lambda]h^3 + 36*qph^2*\[Lambda]h^3 + qh^2*(81*\[Lambda]h^3 - 16*\[Lambda]ph^3)) + 
-      3*fph^2*\[Lambda]h^3*\[Lambda]ph*\[Tau]ph^2*(3*fph + qh^2*Vg[\[Lambda]h])*Derivative[1][\[Kappa]][\[Lambda]h]) + 
-    3*fph^2*\[Lambda]h^3*Sqrt[1 + nt^2/(Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2)]*
-     (2*fph*nt^2*qh^2*\[Tau]ph^4*Vg[\[Lambda]h] + 3*(3*fph^2*nt^2*\[Tau]ph^4 + 
-        4*qh^4*\[Tau]ph^2*Derivative[0, 1][Vf][\[Lambda]h, \[Tau]h]^2 + 8*qh^4*\[Lambda]ph*\[Tau]ph*
-         Derivative[0, 1][Vf][\[Lambda]h, \[Tau]h]*Derivative[1, 0][Vf][\[Lambda]h, \[Tau]h] + 
-        4*qh^4*\[Lambda]ph^2*Derivative[1, 0][Vf][\[Lambda]h, \[Tau]h]^2)) - 
-    2*qh^2*Vf[\[Lambda]h, \[Tau]h]*(2*(9*fpph^2*qh^2*\[Lambda]h^3 - 36*fph*fpph*qh*qph*\[Lambda]h^3 + 
-        8*fph^2*(9*qph^2*\[Lambda]h^3 - 4*qh^2*\[Lambda]ph^3))*Vg[\[Lambda]h] + 
-      3*fph*(18*fpph^2*\[Lambda]h^3 - 64*fph^2*\[Lambda]ph^3 + 3*fph^2*nt^2*\[Lambda]h^3*\[Tau]ph^4 - 
-        12*qh*(fpph*qh - 4*fph*qph)*\[Lambda]h^3*\[Lambda]ph*Derivative[1][Vg][\[Lambda]h] + 
-        12*fph*qh^2*\[Lambda]h^3*\[Lambda]ph^2*Derivative[2][Vg][\[Lambda]h] - 36*fph*qh^2*\[Lambda]h^3*\[Tau]ph*
-         Sqrt[1 + nt^2/(Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2)]*Derivative[0, 1][Vf][
-          \[Lambda]h, \[Tau]h] + 6*fpph*qh^2*\[Lambda]h^3*\[Tau]ph*
-         Sqrt[1 + nt^2/(Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2)]*Derivative[0, 1][Vf][
-          \[Lambda]h, \[Tau]h] - 24*fph*qh*qph*\[Lambda]h^3*\[Tau]ph*
-         Sqrt[1 + nt^2/(Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2)]*Derivative[0, 1][Vf][
-          \[Lambda]h, \[Tau]h] - 6*fph*qh^2*\[Lambda]h^3*\[Tau]pph*
-         Sqrt[1 + nt^2/(Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2)]*Derivative[0, 1][Vf][
-          \[Lambda]h, \[Tau]h] - 6*fph*qh^2*\[Lambda]h^3*\[Tau]ph^2*
-         Sqrt[1 + nt^2/(Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2)]*Derivative[0, 2][Vf][
-          \[Lambda]h, \[Tau]h] - 36*fph*qh^2*\[Lambda]h^3*\[Lambda]ph*
-         Sqrt[1 + nt^2/(Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2)]*Derivative[1, 0][Vf][
-          \[Lambda]h, \[Tau]h] + 6*fpph*qh^2*\[Lambda]h^3*\[Lambda]ph*
-         Sqrt[1 + nt^2/(Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2)]*Derivative[1, 0][Vf][
-          \[Lambda]h, \[Tau]h] - 24*fph*qh*qph*\[Lambda]h^3*\[Lambda]ph*
-         Sqrt[1 + nt^2/(Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2)]*Derivative[1, 0][Vf][
-          \[Lambda]h, \[Tau]h] - 12*fph*qh^2*\[Lambda]h^3*\[Lambda]ph*\[Tau]ph*
-         Sqrt[1 + nt^2/(Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2)]*Derivative[1, 1][Vf][
-          \[Lambda]h, \[Tau]h] - 6*fph*qh^2*\[Lambda]h^3*\[Lambda]ph^2*
-         Sqrt[1 + nt^2/(Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2)]*Derivative[2, 0][Vf][
-          \[Lambda]h, \[Tau]h]))))/(4*fph^2*qh^2*\[Lambda]h*Vf[\[Lambda]h, \[Tau]h]*
-  Sqrt[1 + nt^2/(Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2)]*\[Kappa][\[Lambda]h]*
-  (nt^2 + Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2)*(-16*nt^2*qh^2*\[Lambda]ph*\[Kappa][\[Lambda]h] + 
-   9*nt^2*qh^2*\[Lambda]h^2*Derivative[1][\[Kappa]][\[Lambda]h] + 
-   Vf[\[Lambda]h, \[Tau]h]*\[Kappa][\[Lambda]h]^3*(-16*qh^2*\[Lambda]ph*Vf[\[Lambda]h, \[Tau]h] + 
-     18*fph*\[Lambda]h^2*Sqrt[1 + nt^2/(Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2)] + 
-     48*fph*\[Lambda]ph*Sqrt[1 + nt^2/(Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2)] + 
-     16*qh^2*\[Lambda]ph*Vg[\[Lambda]h]*Sqrt[1 + nt^2/(Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2)] + 
-     9*qh^2*\[Lambda]h^2*Sqrt[1 + nt^2/(Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2)]*
-      Derivative[1][Vg][\[Lambda]h] - 9*qh^2*\[Lambda]h^2*Derivative[1, 0][Vf][\[Lambda]h, \[Tau]h]))); 
-
-  qpph = -(Sqrt[qh^2]*(-3*qh^2*\[Lambda]h^3*\[Kappa][\[Lambda]h]*(fph*nt^2*\[Tau]ph^4 - 
-      12*qph^2*Vf[\[Lambda]h, \[Tau]h]*Sqrt[1 + nt^2/(Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2)] + 
-      fph*\[Tau]ph^4*Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2) + 
-    qh^4*(-32*\[Lambda]ph^3*Vf[\[Lambda]h, \[Tau]h]*
-       Sqrt[1 + nt^2/(Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2)]*\[Kappa][\[Lambda]h] + 
-      32*\[Lambda]h*\[Lambda]ph*\[Lambda]pph*Vf[\[Lambda]h, \[Tau]h]*
-       Sqrt[1 + nt^2/(Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2)]*\[Kappa][\[Lambda]h] + 
-      6*\[Lambda]h^3*\[Tau]ph*(-3*nt^2*\[Tau]ph + 2*nt^2*\[Tau]pph + 
-        2*\[Tau]pph*Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2 + \[Lambda]ph*\[Tau]ph*Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]*
-         Derivative[1][\[Kappa]][\[Lambda]h] + \[Tau]ph^2*Vf[\[Lambda]h, \[Tau]h]*\[Kappa][\[Lambda]h]^2*
-         Derivative[0, 1][Vf][\[Lambda]h, \[Tau]h] + \[Lambda]ph*\[Tau]ph*Vf[\[Lambda]h, \[Tau]h]*\[Kappa][\[Lambda]h]^2*
-         Derivative[1, 0][Vf][\[Lambda]h, \[Tau]h]))))/(36*qh^4*\[Lambda]h^3*Vf[\[Lambda]h, \[Tau]h]*
-  Sqrt[1 + nt^2/(Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2)]*\[Kappa][\[Lambda]h]);
-
-  fppph = (4*nt^2*qh^3*qph*\[Kappa][\[Lambda]h]*(nt^2 + Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2) - 
-  2*fph*qph^2*Vf[\[Lambda]h, \[Tau]h]*Sqrt[1 + nt^2/(Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2)]*
-   \[Kappa][\[Lambda]h]^3*(nt^2 + Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2) + 
-  2*qh*(fpph*qph + fph*qpph)*Vf[\[Lambda]h, \[Tau]h]*
-   Sqrt[1 + nt^2/(Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2)]*\[Kappa][\[Lambda]h]^3*
-   (nt^2 + Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2) + 
-  qh^2*\[Kappa][\[Lambda]h]^2*(fph*nt^2*\[Tau]ph^2 - 8*fpph*Vf[\[Lambda]h, \[Tau]h]*
-     Sqrt[1 + nt^2/(Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2)]*\[Kappa][\[Lambda]h])*
-   (nt^2 + Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2) - 
-  2*nt^2*qh^4*(3*nt^2*\[Kappa][\[Lambda]h] + nt^2*\[Lambda]ph*
-     Derivative[1][\[Kappa]][\[Lambda]h] + 2*\[Lambda]ph*Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2*
-     Derivative[1][\[Kappa]][\[Lambda]h] + Vf[\[Lambda]h, \[Tau]h]*\[Kappa][\[Lambda]h]^3*
-     (6*Vf[\[Lambda]h, \[Tau]h] + \[Tau]ph*Derivative[0, 1][Vf][\[Lambda]h, \[Tau]h] + 
-      \[Lambda]ph*Derivative[1, 0][Vf][\[Lambda]h, \[Tau]h])))/(2*qh^2*Vf[\[Lambda]h, \[Tau]h]*
-  Sqrt[1 + nt^2/(Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2)]*\[Kappa][\[Lambda]h]^3*
-  (nt^2 + Vf[\[Lambda]h, \[Tau]h]^2*\[Kappa][\[Lambda]h]^2));
+ 
 
 
  (*The mess is related to making Min cope with the case \[Tau]ph/\[Tau]pph = 0/0*)
