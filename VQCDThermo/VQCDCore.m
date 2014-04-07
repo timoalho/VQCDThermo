@@ -892,6 +892,19 @@ MqErrorLimit :> If[mqv != 0, 10^(-2), 2*10^(-5)] (*An error is generated if the 
 }, Options[SolveAndScaleVQCDBH], Options[QuarkMass], Options[bCoefsFromPotential], Options[GammaFromKappa]]
 \[Tau]hFromQuarkMass[mq_?NumericQ,\[Lambda]h_?NumericQ, nt_?NumericQ, pots_List,  opts: OptionsPattern[]] := Module[{expression, \[Tau]hinitial, mqat\[Tau]hinitial, \[Tau]hmin, \[Tau]hmax, \[Tau]hv, bcoefs, ell, \[Gamma], \[Tau]hsol, mqact},
 Block[{$vcontext = "\[Tau]hFromQuarkMass"},
+
+(*First check that there is any chance: is the effective potential real at \[Tau]h -> Infty*)
+(*This is necessary in Mathematica 9, which will attempt to evaluate bignums when \[Tau]h is ridiculously large, and choke on it.*)
+Veff[\[Tau]h_] = VEffective[pots][\[Lambda]h, nt, \[Tau]h];
+If[!(Limit[Veff[\[Tau]h], \[Tau]h -> Infinity] > 0),
+ (
+	PrintV[StringForm["Veff < 0 at \[Lambda]h = `1`, nt = `2`", \[Lambda]h, nt], "Debug"];
+	Return[OptionValue[NotFound]];
+ ),
+ PrintV["Veff > 0", "Debug"];,
+ PrintV["Sign[Veff] Undetermined", "Debug"];
+];
+
 (*b0, kappa and \[Gamma] are needed repeatedly, so solve them now*)
 {bcoefs, ell} = bCoefsFromPotential[pots, Evaluate[FilterRules[{opts}, Options[bCoefsFromPotential]]]];
 \[Gamma] = GammaFromKappa[pots, First[bcoefs], ell(*, Evaluate[FilterRules[{opts}, Options[GammaFromKappa]]]*)];
