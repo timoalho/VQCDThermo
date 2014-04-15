@@ -83,12 +83,58 @@ InterpolatingFunctionToList[fun_InterpolatingFunction[_Symbol]] :=  Transpose[{F
 
 SetAttributes[NIntegralFunction, HoldAll]
 SyntaxInformation[NIntegralFunction]  = {"LocalVariables" -> {"Plot", {2, 2}}}
-Options[NIntegralFunction] = Options[NDSolve];
-NIntegralFunction[expr_, intv_, opts : OptionsPattern[]] := Module[{sols, expr2, x0, x1, var = ReleaseHold[Hold[intv] /. {x_, y__} :> HoldPattern[x]], locvar, y},
+Options[NIntegralFunction] = Join[Options[NDSolve], Options[Integrate],
+	{IntegrationGrid -> None,(*This option sets Switches to a different method of integration, where an 
+							InterpolatingFunction is formed from the expression, which is then integrated by built-in methods.
+							The grid is given by this option either directly as a list of points, or indirectly as an InterpolatingFunction
+							which's grid is extracted.
+							*)
+	Densification -> 8 (*Controls whether the grid in the previous option is made denser by adding points*)}];
+NIntegralFunction[expr_, intv_, opts : OptionsPattern[]] := Module[{expr2, x0, x1, var = ReleaseHold[Hold[intv] /. {x_, y__} :> HoldPattern[x]], locvar, y},
 expr2 = ReleaseHold[Hold[expr] /. var :> locvar];
 {x0, x1} = Rest[intv];
-sols = NDSolve[{y'[x] == expr2 /. locvar -> x, y[x0] == 0}, {y},{x, x0, x1}, Evaluate[FilterRules[{opts}, Options[NDSolve]]]];
-First[y/.sols]
+If[OptionValue[IntegrationGrid] === None,
+   (*The default choice, use NDSolve*)
+	Module[{sols},
+		sols = NDSolve[{y'[x] == expr2 /. locvar -> x, y[x0] == 0}, {y},{x, x0, x1}, Evaluate[FilterRules[{opts}, Options[NDSolve]]]];
+		First[y/.sols]
+	],
+	(*In this case, we're given a list of points to evaluate at*)
+	If[Head[OptionValue[IntegrationGrid]] === List,
+		Module[{gridpoints = Densify[OptionValue[IntegrationGrid],OptionValue[Densification]], ifun},
+			PrintV[StringForm["Integrating `2` on grid `1`", gridpoints, expr2], "Debug"];
+			ifun[t_] = N[Integrate[Interpolation[{#, (expr2 /. locvar -> #)}& /@ gridpoints][t], t, Sequence @@ Evaluate[FilterRules[{opts}, Options[Integrate]]]],
+						OptionValue[WorkingPrecision]];
+			Function[x, ifun[x] - ifun[x0]]
+		],
+		(*In this case, the grid is an interpolatingfunction. The complication is though, that there's no
+		guarantee that the argument is our integration variable. Do some pattern matching to attempt to divine that*)
+		Module[{integrate},
+			(*Option1: the grid is just an InterpolatingFunction. In this case, let's just hope that the argument is indeed our integration variable.*)
+			integrate[gridfun_InterpolatingFunction] := Module[{grid = Flatten[InterpolatingFunctionGrid[gridfun]]},
+														If[Head[grid] === List,
+															NIntegralFunction[expr2 /. locvar -> x, {x, x0, x1}, IntegrationGrid -> grid, opts],
+															Undefined (*Return undefined if we couldn't extract the grid*)
+														]];
+			(*Option 2: the grid is an InterpolatingFunction which has a more complicated argument than just the integration variable.*)
+			integrate[gridfun : InterpolatingFunction[__][inexpr_]] := Module[{fun, invfun, xpoints, ifun},
+				fun = ReleaseHold[Hold[inexpr] /. var :> locvar];
+				PrintV[StringForm["Function is `1`\.1d", fun], "Debug"];
+				xpoints = Flatten[InterpolatingFunctionGrid[Head[gridfun]]];
+				(*In order to support non-monotonic functions, we take the Union of the real intervals produced by all branches of the solution.*)
+				invfun[x1_] = locvar /. Solve[fun == x1, locvar];
+
+				PrintV[StringForm["Inverse function is `1`", invfun[y]], "Debug"];
+
+				ifun = NIntegralFunction[D[First[invfun[x]], x] (expr2 /. locvar -> First[invfun[x]]), {x, fun /. locvar -> x0, fun /. locvar -> x1}, IntegrationGrid -> xpoints, opts];
+				(*Function[x, ifun[x]]*)
+				Function[x, Evaluate[ifun[fun /. locvar -> x]]]
+			];
+			integrate[OptionValue[IntegrationGrid]]
+		]
+	]
+]
+
 ]
 
 
