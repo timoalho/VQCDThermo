@@ -89,6 +89,9 @@ Options[NIntegralFunction] = Join[Options[NDSolve], Options[Integrate],
 							The grid is given by this option either directly as a list of points, or indirectly as an InterpolatingFunction
 							which's grid is extracted.
 							*)
+	EnforceEndpointOrder -> True, (*If this is true, an affine map is used to make sure that Integrate does the numerical sum in
+									the interpolating function in the order determined by the endpoints. This may be significant if there are
+									several orders of magnitude changes in the function along the interval*)
 	Densification -> 8 (*Controls whether the grid in the previous option is made denser by adding points*)}];
 NIntegralFunction[expr_, intv_, opts : OptionsPattern[]] := Module[{expr2, x0, x1, var = ReleaseHold[Hold[intv] /. {x_, y__} :> HoldPattern[x]], locvar, y},
 expr2 = ReleaseHold[Hold[expr] /. var :> locvar];
@@ -101,11 +104,16 @@ If[OptionValue[IntegrationGrid] === None,
 	],
 	(*In this case, we're given a list of points to evaluate at*)
 	If[Head[OptionValue[IntegrationGrid]] === List,
-		Module[{gridpoints = Densify[OptionValue[IntegrationGrid],OptionValue[Densification]], ifun},
+		Module[{gridpoints = Densify[OptionValue[IntegrationGrid],OptionValue[Densification]], ifun, affine, invaffine},
+			If[OptionValue[EnforceEndpointOrder] && x0 > x1,
+				affine[x_] := x0 - x,
+				affine[x_] := x,
+				affine[x_] := x (*Just in case*)
+			];
 			PrintV[StringForm["Integrating `2` on grid `1`", gridpoints, expr2], "Debug"];
-			ifun[t_] = N[Integrate[Interpolation[{#, (expr2 /. locvar -> #)}& /@ gridpoints][t], t, Sequence @@ Evaluate[FilterRules[{opts}, Options[Integrate]]]],
+			ifun[t_] = N[Integrate[Interpolation[{affine[#], affine'[#](expr2 /. locvar -> #)}& /@ gridpoints][t], t, Sequence @@ Evaluate[FilterRules[{opts}, Options[Integrate]]]],
 						OptionValue[WorkingPrecision]];
-			Function[x, ifun[x] - ifun[x0]]
+			Function[x, ifun[affine[x]] - ifun[affine[x0]]] (*affine is self-inverse*)
 		],
 		(*In this case, the grid is an interpolatingfunction. The complication is though, that there's no
 		guarantee that the argument is our integration variable. Do some pattern matching to attempt to divine that*)
