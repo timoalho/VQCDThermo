@@ -314,7 +314,7 @@ If[NumericQ[interval[[3]]], interval[[1]], interval[[2]]]
 ]
 
 
-FindZeroCrossings[data_List, valueFun_ : (#[[2]]&)] := (First /@ #)&/@ Select[Partition[data, 2, 1], (Sign[valueFun[#[[1]]]] != Sign[valueFun[#[[2]]]]) && (valueFun[#[[2]]] \[Element] Reals) && (valueFun[#[[1]] \[Element] Reals])&]
+FindZeroCrossings[data_List, valueFun_ : (#[[2]]&)] := (First /@ #)&/@ Select[Partition[data, 2, 1], (Sign[valueFun[#[[1]]]] != Sign[valueFun[#[[2]]]]) && (valueFun[#[[2]]] \[Element] Reals) && (valueFun[#[[1]]] \[Element] Reals)&]
 
 
 SetAttributes[FindFunctionRoots, HoldAll]
