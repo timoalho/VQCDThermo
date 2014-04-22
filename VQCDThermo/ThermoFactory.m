@@ -178,9 +178,9 @@ PrintV[StringForm["Computing thermopoint at \[Lambda]h = `1`, nt = `2`, \[Tau]h 
 sol = SolveAndScaleVQCDBH[\[Lambda]hval, \[Tau]hval, ntval, pots, tachyonopts];
 fscale = fScaleFromSols[sol];
 \[CapitalLambda] = \[CapitalLambda]ScaleFromSols[sol];
-qh = qhFromBoundaryData[fscale, \[Lambda]hval, \[Tau]hval, ntval, pots];
-mu = AAndMuFromSols[sol, ntval, pots, AccuracyGoal -> OptionValue[AIntegralAccuracy]][[2]];
-PrintV[StringForm["Thermo done, indicatorfun = `1`", OptionValue[IndicatorFunction][fscale, \[CapitalLambda], qh, \[Lambda]hval, nt1val, \[Tau]hval]], "All"];
+qh = qhFromThermoData[fscale, \[Lambda]hval, \[Tau]hval, ntval, pots];
+mu = AAndMuFromSols[sol, ntval, pots, AccuracyGoal -> OptionValue[AIntegralAccuracy], IntegrationGrid -> Head[\[Lambda]FromSols[sol][A]]][[2]];
+PrintV[StringForm["Thermo done, indicatorfun = `1`", OptionValue[IndicatorFunction][fscale, \[CapitalLambda], qh, \[Lambda]hval, mu, \[Lambda]hval, ntval, \[Tau]hval]], "All"];
 If[NumericQ[fscale], (Sow[outValues[u, fscale, \[CapitalLambda], mu, \[Lambda]hval, ntval, \[Tau]hval]];OptionValue[IndicatorFunction][fscale, \[CapitalLambda], qh, mu, \[Lambda]hval, ntval, \[Tau]hval]),
    (If[unummax>u, unummax = u]; If[unummin < u, unummin = u];0)]
 ], {u, umin, umax}, Evaluate[Sequence @@ OptionValue[InterpolationOptions]]];
@@ -220,16 +220,17 @@ Options[ComputeThermoCurve] :=
  )
  ];
 
- existfun[u_?NumericQ] = \[CapitalLambda]ScaleFromSols[SolveAndScaleVQCDBH[\[Lambda]hfun[u], \[Tau]hFun[\[Lambda]hfun[u], ntfun[u], True], ntfun[u], pots, OptionValue[SolveAndScaleOptions]]];
+ existfun[u_?NumericQ] = \[CapitalLambda]ScaleFromSols[SolveAndScaleVQCDBH[\[Lambda]hfun[u], \[Tau]hFun[\[Lambda]hfun[u], ntfun[u], True], ntfun[u], pots, Evaluate[OptionValue[SolveAndScaleOptions]]]];
 
  time = First[AbsoluteTiming[
 
  If[!(existfun[umid]), (Message[ComputentConstThermo::nosolution, umid]; Return[Undefined])];
 
- If[Quiet[!(NumericQ[existfun[umin]] === True)], uminlim = FindNumLimit[Quiet[existfun[u]], {u, umin, umid}, OptionValue[NumLimitOptions]], uminlim = umin];
+ If[Quiet[!(NumericQ[existfun[umin]] === True)], uminlim = FindNumLimit[Quiet[existfun[u]], {u, umin, umid}, Evaluate[OptionValue[NumLimitOptions]]
+], uminlim = umin];
  PrintV[StringForm["Found u lower limit `1`", uminlim], "Progress"];
 
- If[Quiet[!(NumericQ[existfun[umax]] === True)], umaxlim = FindNumLimit[Quiet[existfun[u]], {u, umid, umax}, OptionValue[NumLimitOptions]], umaxlim = umax];
+ If[Quiet[!(NumericQ[existfun[umax]] === True)], umaxlim = FindNumLimit[Quiet[existfun[u]], {u, umid, umax}, Evaluate[OptionValue[NumLimitOptions]]], umaxlim = umax];
  PrintV[StringForm["Found u upper limit `1`", umaxlim], "Progress"];
 
  ]];
