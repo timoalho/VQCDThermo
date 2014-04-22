@@ -438,7 +438,7 @@ If[!OptionValue[NonTachyonicOnly],
 nt\[Tau]hClist = ParamListToComputationList["ntconstant\[Tau]h", MakentconstLists["Tachyonic", pots, OptionValue[nt\[Tau]hcurves], \[Lambda]hrange-> OptionValue[\[Lambda]h\[Tau]hrange]], pots, OptionValue[\[Lambda]h\[Tau]hOptions]];
 (*There's no clear way to get the lower limit where to start the \[Lambda]h const curves from. Heuristically, we just find the num limit for nt = 0, and use that*)
 PrintV["Computing \[Lambda]end(nt = 0).", "Progress"];
-\[Lambda]endnt0 = FindNumLimit[\[Tau]hFromQuarkMass[0, \[Lambda]h, 0, pots, AccuracyGoal -> 60, NodeCountSubdivision-> 0, ARange -> 120, MassAUV -> 110, MaxRecursion -> 80]&, {\[Lambda]h, 0.01, 100.}, MaxRecursion -> 120];
+\[Lambda]endnt0 = FindNumLimit[\[Tau]hFromQuarkMass[0, \[Lambda]h, 0, pots, AccuracyGoal -> 60, NodeCountSubdivision-> 0, ARange -> 120, MassAUV -> 110, MaxRecursion -> 80], {\[Lambda]h, 0.01, 100.}, MaxRecursion -> 120];
 PrintV[StringForm["\[Lambda]end(nt = 0) = `1`", \[Lambda]endnt0], "Progress"];
 \[Lambda]h\[Tau]hClist = ParamListToComputationList["\[Lambda]hconstant\[Tau]h", Make\[Lambda]hconstLists["Tachyonic", pots, OptionValue[\[Lambda]h\[Tau]hcurves], \[Lambda]hrange-> ({Min[#], Max[#]}&@IntervalIntersection[Interval[OptionValue[\[Lambda]h\[Tau]hrange]], Interval[{(1+ OptionValue[\[Lambda]h\[Tau]hmargin])\[Lambda]endnt0, Infinity}]])], pots, OptionValue[nt\[Tau]hOptions]];
 list = Join[list, nt\[Tau]hClist, \[Lambda]h\[Tau]hClist];
