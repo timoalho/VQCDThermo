@@ -26,6 +26,16 @@ ComputeParametricRawThermo::usage = "Computes the raw variables, which can then 
 fScalePointsFromData::usage = "Returns the data points for fscale from the saved data"
 \[CapitalLambda]PointsFromData::usage = "Returns the \[CapitalLambda] datapoints"
 \[Mu]PointsFromData::usage = "Returns the \[Mu] datapoints"
+\[Tau]hPointsFromData::usage = "Returns the \[Tau]h datapoints"
+\[Lambda]hPointsFromData::usage = "Returns the \[Lambda]h datapoints"
+ntPointsFromData::usage = "Returns the nt datapoints"
+paramGridFromData::usage = "Returns the parameter values along which the data is defined"
+\[CapitalLambda]funFromData::usage = "Returns \[CapitalLambda] as a function"
+fScalefunFromData::usage = "Returns fScale as a function"
+\[Mu]funFromData::usage = "Returns \[Mu] as a function"
+\[Tau]hfunFromData::usage = "Returns \[Tau]h as a function"
+\[Lambda]hfunFromData::usage = "Returns \[Lambda]h as a function"
+ntfunFromData::usage = "Returns nt as a function"
 PlotPointsAndInterpolation::usage = "Given data, prints diagnostic plots with both the data points and interpolations"
 PlotPointsAndInterpolationDirectory::usage = "Prints diagnostic plots for for all data in a given directory"
 
@@ -37,6 +47,7 @@ ComputeStandardThermo::usage = "The most straightforward way to compute the ther
 
 LoadThermo::usage = ""
 LoadThermoDirectory::usage = ""
+DataFromThermo::usage = "Returns the raw data, given thermo loaded from file"
 
 (*Export symbol names that are to be saved to file. Without these, the saved variables would be prepended with ThermoFactory`Private`, making
 loading dependent on internal details of this package.
@@ -482,7 +493,10 @@ Module[{nums},
 ]
 
 
-LoadThermoDirectory[directory_String] := (Print[StringForm["Loading file `1`", #]];LoadThermo[#])& /@ FileNames["*.m", {directory}];
+LoadThermoDirectory[directory_String] := (PrintV[StringForm["Loading file `1`", #], "Progress"];LoadThermo[#])& /@ FileNames["*.m", {directory}];
+
+
+DataFromThermo[{ct_, param_, pots_, data_, \[Lambda]hfun_, ntfun_, \[Tau]hfun_}] := data;
 
 
 PlotPointsAndInterpolation[in : {data_, {fscaleidx_?NumberQ, \[CapitalLambda]idx_?NumberQ, \[Mu]idx_?NumberQ, \[Lambda]hidx_, ntidx_, \[Tau]hidx_}}] := 
@@ -528,6 +542,56 @@ fScalePointsFromData[{data_, {fscaleidx_?NumberQ, ___}}] := {#[[1]], #[[fscaleid
 
 
 \[Tau]hPointsFromData[{data_, {_, _, _, _, _, \[Tau]hidx_?NumberQ}}] := {#[[1]], #[[\[Tau]hidx]]}& /@ data;
+
+
+\[Lambda]hPointsFromData[{data_, {_, _, _, \[Lambda]hidx_?NumberQ, ___}}] := {#[[1]], #[[\[Lambda]hidx]]}& /@ data;
+
+
+ntPointsFromData[{data_, {_, _, _, _, ntidx_?NumberQ, _}}] := {#[[1]], #[[ntidx]]}& /@ data;
+
+
+(*Convenience wrappers for the above*)
+\[CapitalLambda]PointsFromData[{ct_String, param_?NumericQ, pots_List, points : {data_, {fscaleidx_?NumberQ, \[CapitalLambda]idx_?NumberQ, \[Mu]idx_?NumberQ, \[Lambda]hidx_, ntidx_, \[Tau]hidx_}}, \[Lambda]hFunction_, ntFunction_, \[Tau]hFunction_}] :=
+	\[CapitalLambda]PointsFromData[points];
+fScalePointsFromData[{ct_String, param_?NumericQ, pots_List, points : {data_, {fscaleidx_?NumberQ, \[CapitalLambda]idx_?NumberQ, \[Mu]idx_?NumberQ, \[Lambda]hidx_, ntidx_, \[Tau]hidx_}}, \[Lambda]hFunction_, ntFunction_, \[Tau]hFunction_}] :=
+	fScalePointsFromData[points];
+\[Mu]PointsFromData[{ct_String, param_?NumericQ, pots_List, points : {data_, {fscaleidx_?NumberQ, \[CapitalLambda]idx_?NumberQ, \[Mu]idx_?NumberQ, \[Lambda]hidx_, ntidx_, \[Tau]hidx_}}, \[Lambda]hFunction_, ntFunction_, \[Tau]hFunction_}] :=
+	\[Mu]PointsFromData[points];
+\[Tau]hPointsFromData[{ct_String, param_?NumericQ, pots_List, points : {data_, {fscaleidx_?NumberQ, \[CapitalLambda]idx_?NumberQ, \[Mu]idx_?NumberQ, \[Lambda]hidx_, ntidx_, \[Tau]hidx_?NumberQ}}, \[Lambda]hFunction_, ntFunction_, \[Tau]hFunction_}] :=
+		\[Tau]hPointsFromData[points]
+\[Lambda]hPointsFromData[{ct_String, param_?NumericQ, pots_List, points : {data_, {fscaleidx_?NumberQ, \[CapitalLambda]idx_?NumberQ, \[Mu]idx_?NumberQ, \[Lambda]hidx_?NumberQ, ntidx_, \[Tau]hidx_}}, \[Lambda]hFunction_, ntFunction_, \[Tau]hFunction_}] :=
+		\[Tau]hPointsFromData[points]
+ntPointsFromData[{ct_String, param_?NumericQ, pots_List, points : {data_, {fscaleidx_?NumberQ, \[CapitalLambda]idx_?NumberQ, \[Mu]idx_?NumberQ, \[Lambda]hidx_, ntidx_?NumberQ, \[Tau]hidx_}}, \[Lambda]hFunction_, ntFunction_, \[Tau]hFunction_}] :=
+		\[Tau]hPointsFromData[points]
+
+
+(*Convenience wrapper for extracting the basic functions*)
+\[CapitalLambda]funFromData[{ct_String, param_?NumericQ, pots_List, points : {data_, {fscaleidx_?NumberQ, \[CapitalLambda]idx_?NumberQ, \[Mu]idx_?NumberQ, \[Lambda]hidx_, ntidx_, \[Tau]hidx_}}, \[Lambda]hFunction_, ntFunction_, \[Tau]hFunction_}] := 
+ Interpolation[\[CapitalLambda]PointsFromData[points]];
+fScalefunFromData[{ct_String, param_?NumericQ, pots_List, points : {data_, {fscaleidx_?NumberQ, \[CapitalLambda]idx_?NumberQ, \[Mu]idx_?NumberQ, \[Lambda]hidx_, ntidx_, \[Tau]hidx_}}, \[Lambda]hFunction_, ntFunction_, \[Tau]hFunction_}] := 
+ Interpolation[fScalePointsFromData[points]];
+\[Mu]funFromData[{ct_String, param_?NumericQ, pots_List, points : {data_, {fscaleidx_?NumberQ, \[CapitalLambda]idx_?NumberQ, \[Mu]idx_?NumberQ, \[Lambda]hidx_, ntidx_, \[Tau]hidx_}}, \[Lambda]hFunction_, ntFunction_, \[Tau]hFunction_}] := 
+ Interpolation[\[Mu]PointsFromData[points]];
+\[Tau]hfunFromData[{ct_String, param_?NumericQ, pots_List, points : {data_, {fscaleidx_?NumberQ, \[CapitalLambda]idx_?NumberQ, \[Mu]idx_?NumberQ, \[Lambda]hidx_, ntidx_, \[Tau]hidx_}}, \[Lambda]hFunction_, ntFunction_, \[Tau]hFunction_}] := 
+	If[\[Tau]hidx === Undefined,
+		If[NumericQ @ \[Tau]hFunction[data[[1, 1]]], \[Tau]hFunction, 0&],
+		Interpolation[\[Tau]hPointsFromData[points]]
+	];
+\[Lambda]hfunFromData[{ct_String, param_?NumericQ, pots_List, points : {data_, {fscaleidx_?NumberQ, \[CapitalLambda]idx_?NumberQ, \[Mu]idx_?NumberQ, \[Lambda]hidx_, ntidx_, \[Tau]hidx_}}, \[Lambda]hFunction_, ntFunction_, \[Tau]hFunction_}] := 
+	If[\[Lambda]hidx === Undefined,
+		\[Lambda]hFunction,
+		Interpolation[\[Lambda]hPointsFromData[points]]
+	];
+ntfunFromData[{ct_String, param_?NumericQ, pots_List, points : {data_, {fscaleidx_?NumberQ, \[CapitalLambda]idx_?NumberQ, \[Mu]idx_?NumberQ, \[Lambda]hidx_, ntidx_, \[Tau]hidx_}}, \[Lambda]hFunction_, ntFunction_, \[Tau]hFunction_}] := 
+	If[ntidx === Undefined,
+		ntFunction,
+		Interpolation[ntPointsFromData[points]]
+	];
+
+
+paramGridFromData[{data_, __}] := First[#]& /@ data;
+paramGridFromData[{ct_String, param_?NumericQ, pots_List, points : {data_, {fscaleidx_?NumberQ, \[CapitalLambda]idx_?NumberQ, \[Mu]idx_?NumberQ, \[Lambda]hidx_, ntidx_, \[Tau]hidx_}}, \[Lambda]hFunction_, ntFunction_, \[Tau]hFunction_}] :=
+	paramGridFromData[points];
 
 
 End[ ]
