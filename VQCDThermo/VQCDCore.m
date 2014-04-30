@@ -1211,7 +1211,7 @@ q[Amin]
 ,
 Undefined];
 
-qhFromThermoData[fscale_, \[Lambda]h_, \[Tau]h_, nt_, {Vg_, Vf_, \[Kappa]_, \[Omega]_}] := -Sqrt[3] fscale/(Sqrt[Vg[\[Lambda]h] - Vf[\[Lambda]h, \[Tau]h]Sqrt[1+ nt^2/(\[Kappa][\[Lambda]h]^2 Vf[\[Lambda]h, \[Tau]h]^2)]]);
+qhFromThermoData[fscale_, \[Lambda]h_, \[Tau]h_, nt_, {Vg_, Vf_, \[Kappa]_, \[Omega]_}] := -Sqrt[3] fscale/(Sqrt[Vg[\[Lambda]h] - Vf[\[Lambda]h, \[Tau]h]Sqrt[1+ nt^2/(\[Omega][\[Lambda]h]^2 Vf[\[Lambda]h, \[Tau]h]^2)]]);
 
 TemperatureFromThermoData[fscale_, \[CapitalLambda]_, \[Lambda]h_, \[Tau]h_, nt_, pots_] := -1/(4 Pi) fscale^2 / \[CapitalLambda] / qhFromThermoData[fscale, \[Lambda]h, \[Tau]h, nt, pots];
 
