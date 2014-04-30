@@ -546,7 +546,7 @@ SolverCore[{initconds, initvalid}, nt, \[Epsilon], {Vg, Vf, \[Kappa], \[Omega]},
 ]
 ]
 
-(*SolveAndScaleFiniteTTachyons: A convenience wrapper for solving the equations and scaling them*)
+(*SolveAndScaleVQCDBH: A convenience wrapper for solving the equations and scaling them*)
 Options[SolveAndScaleVQCDBH] = Join[Options[SolveVQCDBH], Options[ScaleSolution], Options[bCoefsFromPotential]];
 SolveAndScaleVQCDBH[\[Lambda]h_?NumericQ, \[Tau]h_?NumericQ, nt_?NumericQ, pots_List, opts : OptionsPattern[]] := Module[{scaledsol, bcoefs},
 Block[{$vcontext = "SolveAndScaleFiniteTTachyons"},
