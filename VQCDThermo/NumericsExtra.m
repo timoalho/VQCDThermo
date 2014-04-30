@@ -314,22 +314,45 @@ If[NumericQ[interval[[3]]], interval[[1]], interval[[2]]]
 ]
 
 
-FindZeroCrossings[data_List, valueFun_ : (#[[2]]&)] := (First /@ #)&/@ Select[Partition[data, 2, 1], (Sign[valueFun[#[[1]]]] != Sign[valueFun[#[[2]]]]) && (valueFun[#[[2]]] \[Element] Reals) && (valueFun[#[[1]]] \[Element] Reals)&]
+FindZeroCrossings[data_List, valueFun_ : (#[[2]]&)] := Select[Partition[data, 2, 1], (Sign[valueFun[#[[1]]]] != Sign[valueFun[#[[2]]]]) && (valueFun[#[[2]]] \[Element] Reals) && (valueFun[#[[1]]] \[Element] Reals)&]
 
 
 SetAttributes[FindFunctionRoots, HoldAll]
 Options[FindFunctionRoots] = Join[{NumPoints -> 300}, Options[FindRoot]]
 SyntaxInformation[FindFunctionRoots]  = {"LocalVariables" -> {"Plot", {2, 2}}}
 FindFunctionRoots[expr_, intv_, opts: OptionsPattern[]] := Module[{x0, x1, table, crossings, x,  var = ReleaseHold[Hold[intv] /. {x_, y__} :> HoldPattern[x]],  locvar, expr2},
-
+Block[{$vcontext = "FindFunctionRoots"},
 expr2 = ReleaseHold[Hold[expr] /. var :> locvar];
 {x0, x1} = Rest[intv];
 
-table = Table[{i, expr2 /. locvar -> i}, {i, x0, x1, (x1 - x0)/OptionValue[NumPoints]}];
+PrintV[StringForm["Looking for roots of `1` in the interval `2` to `3` wrt. `4`, at `5` points", expr2, x0, x1, var, OptionValue[NumPoints]], "Debug"];
+
+If[Head[expr2] === InterpolatingFunction,
+	(*In this case, we should be able to extract the necessary points directly from the function*)
+	(
+		PrintV[StringForm["Looking for roots of an interpolating function in expression `1`", expr2], "Debug"];
+		table = {#, expr2 /. locvar -> #}& /@ Select[Flatten[InterpolatingFunctionGrid[Head[expr2]]], x0 <= # <= x1&];
+	)
+	,
+	If[Head[OptionValue[NumPoints]] === List,
+		(
+		PrintV["Rootsearch points given as a list", "Debug"];
+		table = {#, expr2 /. locvar -> #}& /@ OptionValue[NumPoints];
+		),
+		(*If there are no other tips, just take consecutive points. We do not use Mathematica's Table[i, {i, x0, x1, \[Delta]x}] syntax,
+			since it turns out that that may overflow the bounds by about one MachineEpsilon, which may cause spurious zeros.*)
+		table = Table[{#, expr2 /. locvar -> #}&[x0 + i (x1 - x0)/OptionValue[NumPoints]], {i, 0, OptionValue[NumPoints]}];
+	]
+]
+
+PrintV[StringForm["The table is `1`", table], "Debug"];
 
 crossings = FindZeroCrossings[table];
 
-(If[(#[[1]] != 0) && (#[[2]] != 0), x/. FindRoot[N[expr2 /. locvar -> x], {x, #[[1]], #[[2]]}, Method ->  "Brent", Evaluate[Sequence @@ FilterRules[{opts}, Options[FindRoot]]]], First[Sort[#]]]&) /@ crossings
+PrintV[StringForm["Zeroccrossings at `1`", crossings], "Debug"];
+
+(If[(#[[1, 2]] != 0) && (#[[2, 2]] != 0), x/. FindRoot[N[expr2 /. locvar -> x], {x, #[[1, 1]], #[[2, 1]]}, Method ->  "Brent", Evaluate[Sequence @@ FilterRules[{opts}, Options[FindRoot]]]], First[Sort[#, #1[[2]] < #2[[2]]&]]]&) /@ crossings
+]
 ]
 
 
