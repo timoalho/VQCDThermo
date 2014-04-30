@@ -560,9 +560,9 @@ fScalePointsFromData[{ct_String, param_?NumericQ, pots_List, points : {data_, {f
 \[Tau]hPointsFromData[{ct_String, param_?NumericQ, pots_List, points : {data_, {fscaleidx_?NumberQ, \[CapitalLambda]idx_?NumberQ, \[Mu]idx_?NumberQ, \[Lambda]hidx_, ntidx_, \[Tau]hidx_?NumberQ}}, \[Lambda]hFunction_, ntFunction_, \[Tau]hFunction_}] :=
 		\[Tau]hPointsFromData[points]
 \[Lambda]hPointsFromData[{ct_String, param_?NumericQ, pots_List, points : {data_, {fscaleidx_?NumberQ, \[CapitalLambda]idx_?NumberQ, \[Mu]idx_?NumberQ, \[Lambda]hidx_?NumberQ, ntidx_, \[Tau]hidx_}}, \[Lambda]hFunction_, ntFunction_, \[Tau]hFunction_}] :=
-		\[Tau]hPointsFromData[points]
+		\[Lambda]hPointsFromData[points]
 ntPointsFromData[{ct_String, param_?NumericQ, pots_List, points : {data_, {fscaleidx_?NumberQ, \[CapitalLambda]idx_?NumberQ, \[Mu]idx_?NumberQ, \[Lambda]hidx_, ntidx_?NumberQ, \[Tau]hidx_}}, \[Lambda]hFunction_, ntFunction_, \[Tau]hFunction_}] :=
-		\[Tau]hPointsFromData[points]
+		ntPointsFromData[points]
 
 
 (*Convenience wrapper for extracting the basic functions*)
