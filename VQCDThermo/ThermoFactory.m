@@ -193,7 +193,7 @@ qh = qhFromThermoData[fscale, \[Lambda]hval, \[Tau]hval, ntval, pots];
 mu = AAndMuFromSols[sol, ntval, pots, AccuracyGoal -> OptionValue[AIntegralAccuracy], IntegrationGrid -> Head[\[Lambda]FromSols[sol][A]]][[2]];
 PrintV[StringForm["Thermo done, indicatorfun = `1`", OptionValue[IndicatorFunction][fscale, \[CapitalLambda], qh, \[Lambda]hval, mu, \[Lambda]hval, ntval, \[Tau]hval]], "All"];
 If[NumericQ[fscale], (Sow[outValues[u, fscale, \[CapitalLambda], mu, \[Lambda]hval, ntval, \[Tau]hval]];OptionValue[IndicatorFunction][fscale, \[CapitalLambda], qh, mu, \[Lambda]hval, ntval, \[Tau]hval]),
-   (If[unummax>u, unummax = u]; If[unummin < u, unummin = u];0)]
+   (If[unummax>u, unummax = u]; If[unummin < u, unummin = u];PrintV[StringForm["Non-numeric value `1` at \[Lambda]h = `2`, nt = `3`, \[Tau]h = `4`", fscale, \[Lambda]hval, ntval, \[Tau]hval], "Progress"]; 0)]
 ], {u, umin, umax}, Evaluate[Sequence @@ OptionValue[InterpolationOptions]]];
 
 ][[2]][[1]]; (*These index the list of sowed values*)
