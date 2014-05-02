@@ -776,7 +776,7 @@ Vf[\[Lambda]v_, \[Tau]v_] = pots[[2]] /. {\[Lambda] -> \[Lambda]v, \[Tau] -> \[T
 ]
 
 
-Options[DefineAIJKOptPot] = {W0 -> 3/11&(*(12/#(1 - 1/(1 + 7 # /4)^(2/3))&)*),
+Options[DefineAIJKOptPot] = {W0 -> (3/11&)(*(12/#(1 - 1/(1 + 7 # /4)^(2/3))&)*),
 V0 -> (12&),
 b0 -> (1/3 (11-2 #)&),
 b1 ->  (1/6 (34-13 #)&),
