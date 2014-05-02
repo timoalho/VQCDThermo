@@ -66,6 +66,7 @@ DefineJKPotII::usage = "DefineJKPotII[xf] gives potential II"
 DefineJKPotIIMod::usage = "DefineJKPotIIMod[xf] gives potential II"
 DefineJKPotIII::usage = "DefineJKPotIII[xf] gives potential III"
 DefineJKPotIKappaMod::usage = "DefineJKPotIKappaMod[xf] gives potential I with modified Kappa"
+DefineAIJKOptPot::usage = "DefineAIJKOptPot[xf] defines the potential given as optimal in 1309.2286, around eq. (4.26)"
 
 
 VEffective::usage = "Returns the effective potential, given the full potentials as input."
@@ -624,7 +625,7 @@ Vf0[\[Lambda]_] := Wuv[0]+Wuv[1]\[Lambda]+Wuv[2]\[Lambda]^2/. \[Lambda]0 -> \[La
 \[Kappa]0[\[Lambda]_] := 1/(1+\[Gamma]fix \[Lambda])^(4/3);
 V0 = 12;
 W0 = 12/11;
-pots = (PotFromAnsatzAndBeta[Vg0, Vf0, \[Kappa]0, V0, W0, xfd, b0[xfd], b1[xfd], \[Lambda]s]) /. xfd -> xf;
+pots = (PotFromAnsatzAndBeta[Vg0, Vf0, \[Kappa]0, \[Kappa]0, 1&, V0, W0, xfd, b0[xfd], b1[xfd], \[Lambda]s]) /. xfd -> xf;
  Vg[\[Lambda]v_] = pots[[1]] /. \[Lambda] -> \[Lambda]v;
  Vf[\[Lambda]v_, \[Tau]v_] = pots[[2]] /. {\[Lambda] -> \[Lambda]v, \[Tau] -> \[Tau]v};
  \[Kappa][\[Lambda]v_] = pots[[3]] /. \[Lambda] -> \[Lambda]v;
@@ -647,7 +648,7 @@ Vf0[\[Lambda]_] := Wuv[0]+Wuv[1]\[Lambda]+Wuv[2] (\[Lambda])^2/(1+\[Lambda]/\[La
 \[Kappa]0[\[Lambda]_] := 1/(1+\[Gamma]fix \[Lambda])^(4/3);
 V0f = OptionValue[V0][xfd];
 W0f = OptionValue[W0][xfd];
-pots = (PotFromAnsatzAndBeta[Vg0, Vf0, \[Kappa]0, 1&, V0f, W0f, xfd, OptionValue[b0][xfd], OptionValue[b1][xfd], OptionValue[\[Lambda]s]]) /. xfd -> xf;
+pots = (PotFromAnsatzAndBeta[Vg0, Vf0, \[Kappa]0, \[Kappa]0, 1&, V0f, W0f, xfd, OptionValue[b0][xfd], OptionValue[b1][xfd], OptionValue[\[Lambda]s]]) /. xfd -> xf;
  Vg[\[Lambda]v_] = pots[[1]] /. \[Lambda] -> \[Lambda]v;
  Vf[\[Lambda]v_, \[Tau]v_] = pots[[2]] /. {\[Lambda] -> \[Lambda]v, \[Tau] -> \[Tau]v};
  \[Kappa][\[Lambda]v_] = pots[[3]] /. \[Lambda] -> \[Lambda]v;
@@ -670,7 +671,7 @@ Vf0[\[Lambda]_] := Wuv[0]+Wuv[1]\[Lambda]+Wuv[2]\[Lambda]^2/. \[Lambda]0 -> Opti
 \[Kappa]0[\[Lambda]_] := 1/(1+\[Gamma]fix \[Lambda])^(4/3);
 V0f = OptionValue[V0][xfd];
 W0f = OptionValue[W0][xfd];
-pots = (PotFromAnsatzAndBeta[Vg0, Vf0, \[Kappa]0, 1&, V0f, W0f, xfd, OptionValue[b0][xfd], OptionValue[b1][xfd], OptionValue[\[Lambda]s]]) /. xfd -> xf;
+pots = (PotFromAnsatzAndBeta[Vg0, Vf0, \[Kappa]0, \[Kappa]0, 1&, V0f, W0f, xfd, OptionValue[b0][xfd], OptionValue[b1][xfd], OptionValue[\[Lambda]s]]) /. xfd -> xf;
 Vg[\[Lambda]v_] = pots[[1]] /. \[Lambda] -> \[Lambda]v;
 Vf[\[Lambda]v_, \[Tau]v_] = pots[[2]] /. {\[Lambda] -> \[Lambda]v, \[Tau] -> \[Tau]v};
 \[Kappa][\[Lambda]v_] = pots[[3]] /. \[Lambda] -> \[Lambda]v;
@@ -697,7 +698,7 @@ Vf0[\[Lambda]_] := Wuv[0]+Wuv[1]\[Lambda]+Wuv[2](\[Lambda])^2/(1+\[Lambda]/\[Lam
 V0f = OptionValue[V0][xfd];
 W0f = OptionValue[W0][xfd];
 a0[\[Lambda]_] := (1-\[Gamma]fix \[Lambda] + \[Lambda]^2/\[Lambda]0^2)/(1+ \[Lambda]/\[Lambda]0)^(4/3) /. \[Lambda]0 -> OptionValue[\[Lambda]0v];
-pots = (PotFromAnsatzAndBeta[Vg0, Vf0, \[Kappa]0, a0, V0f, W0f, xfd, OptionValue[b0][xfd], OptionValue[b1][xfd], OptionValue[\[Lambda]s]]) /. xfd -> xf;
+pots = (PotFromAnsatzAndBeta[Vg0, Vf0, \[Kappa]0, \[Kappa]0, a0, V0f, W0f, xfd, OptionValue[b0][xfd], OptionValue[b1][xfd], OptionValue[\[Lambda]s]]) /. xfd -> xf;
  Vg[\[Lambda]v_] = pots[[1]] /. \[Lambda] -> \[Lambda]v;
  Vf[\[Lambda]v_, \[Tau]v_] = pots[[2]] /. {\[Lambda] -> \[Lambda]v, \[Tau] -> \[Tau]v};
  \[Kappa][\[Lambda]v_] = pots[[3]] /. \[Lambda] -> \[Lambda]v;
@@ -724,7 +725,7 @@ Vf0[\[Lambda]_] := Wuv[0]+Wuv[1]\[Lambda]+Wuv[2]\[Lambda]^2/. \[Lambda]0 -> Opti
 V0f = OptionValue[V0][xfd];
 W0f = OptionValue[W0][xfd];
 a0[\[Lambda]_] := (1-\[Gamma]fix \[Lambda] + \[Lambda]^2/\[Lambda]0^2)/(1+ \[Lambda]/\[Lambda]0)^(4/3) /. \[Lambda]0 -> OptionValue[\[Lambda]0v];
-pots = (PotFromAnsatzAndBeta[Vg0, Vf0, \[Kappa]0, a0, V0f, W0f, xfd, OptionValue[b0][xfd], OptionValue[b1][xfd], OptionValue[\[Lambda]s]]) /. xfd -> xf;
+pots = (PotFromAnsatzAndBeta[Vg0, Vf0, \[Kappa]0, \[Kappa]0, a0, V0f, W0f, xfd, OptionValue[b0][xfd], OptionValue[b1][xfd], OptionValue[\[Lambda]s]]) /. xfd -> xf;
 Vg[\[Lambda]v_] = pots[[1]] /. \[Lambda] -> \[Lambda]v;
 Vf[\[Lambda]v_, \[Tau]v_] = pots[[2]] /. {\[Lambda] -> \[Lambda]v, \[Tau] -> \[Tau]v};
 \[Kappa][\[Lambda]v_] = pots[[3]] /. \[Lambda] -> \[Lambda]v;
@@ -743,7 +744,7 @@ Vf0[\[Lambda]_] := Wuv[0]+Wuv[1]\[Lambda]+Wuv[2] (\[Lambda])^2/(1+\[Lambda]/\[La
 \[Kappa]0[\[Lambda]_] := 1/(1+\[Gamma]fix \[Lambda])^(4/3);
 V0 = 12;
 W0 = 12/xfd(1 - 1/(1 + 7 xfd /4)^(2/3));
-pots = (PotFromAnsatzAndBeta[Vg0, Vf0, \[Kappa]0, 1&, V0, W0, xfd, b0[xfd], b1[xfd], \[Lambda]s]) /. xfd -> xf;
+pots = (PotFromAnsatzAndBeta[Vg0, Vf0, \[Kappa]0, \[Kappa]0, 1&, V0, W0, xfd, b0[xfd], b1[xfd], \[Lambda]s]) /. xfd -> xf;
  Vg[\[Lambda]v_] = pots[[1]] /. \[Lambda] -> \[Lambda]v;
  Vf[\[Lambda]v_, \[Tau]v_] = pots[[2]] /. {\[Lambda] -> \[Lambda]v, \[Tau] -> \[Tau]v};
  \[Kappa][\[Lambda]v_] = pots[[3]] /. \[Lambda] -> \[Lambda]v;
@@ -767,7 +768,7 @@ Vf0[\[Lambda]_] := Wuv[0]+Wuv[1]\[Lambda]+Wuv[2]\[Lambda]^2/. \[Lambda]0 -> Opti
 \[Kappa]0[\[Lambda]_] := (1+ Log[1 + \[Lambda]])^OptionValue[\[Mu]]/(1+\[Gamma]fix \[Lambda])^(4/3);
 V0f = OptionValue[V0][xfd];
 W0f = OptionValue[W0][xfd];
-pots = (PotFromAnsatzAndBeta[Vg0, Vf0, \[Kappa]0, 1&, V0f, W0f, xfd, OptionValue[b0][xfd], OptionValue[b1][xfd], OptionValue[\[Lambda]s]]) /. xfd -> xf;
+pots = (PotFromAnsatzAndBeta[Vg0, Vf0, \[Kappa]0, \[Kappa]0, 1&, V0f, W0f, xfd, OptionValue[b0][xfd], OptionValue[b1][xfd], OptionValue[\[Lambda]s]]) /. xfd -> xf;
 Vg[\[Lambda]v_] = pots[[1]] /. \[Lambda] -> \[Lambda]v;
 Vf[\[Lambda]v_, \[Tau]v_] = pots[[2]] /. {\[Lambda] -> \[Lambda]v, \[Tau] -> \[Tau]v};
 \[Kappa][\[Lambda]v_] = pots[[3]] /. \[Lambda] -> \[Lambda]v;
@@ -775,7 +776,35 @@ Vf[\[Lambda]v_, \[Tau]v_] = pots[[2]] /. {\[Lambda] -> \[Lambda]v, \[Tau] -> \[T
 ]
 
 
-PotFromAnsatzAndBeta[Vg0_, Vf0_, \[Kappa]0_, a0_, V0_, W0_, xf_, b0_, b1_, \[Lambda]s_] := Module[{ Vf, Vg, \[Kappa],\[Kappa]p0v, coefs, a, \[Gamma]0,\[Gamma]1,h1sol, h1, \[Gamma]fixv},
+Options[DefineAIJKOptPot] = {W0 -> (12/#(1 - 1/(1 + 7 # /4)^(2/3))&),
+V0 -> (12&),
+b0 -> (1/3 (11-2 #)&),
+b1 ->  (1/6 (34-13 #)&),
+\[Lambda]0v -> 1, (*Choice of units, 1 is consistent with the beta given here*)
+\[Lambda]s -> 1,
+\[Mu] -> 1/2,
+\[Mu]\[Omega] -> 1,
+D0 -> 200};
+DefineAIJKOptPot[xf_(*, \[Lambda]0v_ : 1(*(8 Pi^2)*),
+\[Lambda]s_ :  1(*8 Pi^2*) (*Choice of units*),
+(*beta coefs*)
+b0_ : Function[xf, 1/3 (11-2 xf)], b1_ : Function[xf, 1/6 (34-13 xf)]*), opts : OptionsPattern[]] := Module[{Vg, Vf, \[Kappa], \[Omega], pots, Vf0, Vg0, V0f, W0f,\[Kappa]0, \[Omega]0, xfd},
+Vg0[\[Lambda]_] := Vuv[0]+Vuv[1]\[Lambda] +Vuv[2] (\[Lambda])^2/(1+\[Lambda]/\[Lambda]0)^(2/3) Sqrt[1+Log[\[Lambda]/\[Lambda]0+1]]/. \[Lambda]0 -> OptionValue[\[Lambda]0v];
+Vf0[\[Lambda]_] := Wuv[0]+Wuv[1]\[Lambda]+Wuv[2]\[Lambda]^2/. \[Lambda]0 -> OptionValue[\[Lambda]0v];
+\[Kappa]0[\[Lambda]_] := (1+ 1/OptionValue[D0]Log[1 + (\[Lambda]/\[Lambda]0)^2])^OptionValue[\[Mu]]/(1+\[Gamma]fix \[Lambda])^(4/3) /. \[Lambda]0 -> OptionValue[\[Lambda]0v];
+\[Omega]0[\[Lambda]_] := (1+ 1/OptionValue[D0]Log[1 + (\[Lambda]/\[Lambda]0)^2])^OptionValue[\[Mu]\[Omega]]/(1+\[Gamma]fix \[Lambda])^(4/3) /. \[Lambda]0 -> OptionValue[\[Lambda]0v];
+V0f = OptionValue[V0][xfd];
+W0f = OptionValue[W0][xfd];
+pots = (PotFromAnsatzAndBeta[Vg0, Vf0, \[Kappa]0, \[Omega]0, 1&, V0f, W0f, xfd, OptionValue[b0][xfd], OptionValue[b1][xfd], OptionValue[\[Lambda]s]]) /. xfd -> xf;
+Vg[\[Lambda]v_] = pots[[1]] /. \[Lambda] -> \[Lambda]v;
+Vf[\[Lambda]v_, \[Tau]v_] = pots[[2]] /. {\[Lambda] -> \[Lambda]v, \[Tau] -> \[Tau]v};
+\[Kappa][\[Lambda]v_] = pots[[3]] /. \[Lambda] -> \[Lambda]v;
+\[Omega][\[Lambda]v_] = pots[[4]] /. \[Lambda] -> \[Lambda]v;
+ {Vg, Vf, \[Kappa], \[Omega]}
+]
+
+
+PotFromAnsatzAndBeta[Vg0_, Vf0_, \[Kappa]0_, \[Omega]0_, a0_, V0_, W0_, xf_, b0_, b1_, \[Lambda]s_] := Module[{ Vf, Vg, \[Kappa], \[Omega], \[Kappa]p0v, coefs, a, \[Gamma]0,\[Gamma]1,h1sol, h1, \[Gamma]fixv},
 
 (*a = 3/2 (V0 - xf W0)/12 a0[\[Lambda]];*)
 \[Gamma]0 = 3/2 / \[Lambda]s;
@@ -791,10 +820,10 @@ h1sol = Solve[3 ( 8/9 + h1/ (b0/\[Lambda]s))/2 == -\[Gamma]0/(b0/\[Lambda]s), \[
 \[Gamma]fixv = \[Gamma]fix/. First[h1sol];
 PrintV[StringForm["gamma fixing factor is `1`", \[Gamma]fixv], "Debug"];
 
-{\[Kappa][\[Lambda]_], a[\[Lambda]_]} = Evaluate[{\[Kappa]0[\[Lambda]], a0[\[Lambda]] 3/2 (V0 - xf W0)/12 } /. \[Gamma]fix -> \[Gamma]fixv];
+{\[Kappa][\[Lambda]_], a[\[Lambda]_], \[Omega][\[Lambda]_]} = Evaluate[{\[Kappa]0[\[Lambda]], a0[\[Lambda]] 3/2 (V0 - xf W0)/12, \[Omega]0[\[Lambda]]} /. \[Gamma]fix -> \[Gamma]fixv];
 Vg[\[Lambda]_] = Evaluate[Vg0[\[Lambda]]/.coefs];
 Vf[\[Lambda]_, \[Tau]_] = Exp[- a[\[Lambda]] \[Tau]^2] Simplify[Evaluate[xf Vf0[\[Lambda]] /. coefs]];
-{Vg[\[Lambda]], Vf[\[Lambda], \[Tau]], \[Kappa][\[Lambda]]}
+{Vg[\[Lambda]], Vf[\[Lambda], \[Tau]], \[Kappa][\[Lambda]], \[Omega][\[Lambda]]}
 ]
 
 
