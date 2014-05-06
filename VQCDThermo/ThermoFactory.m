@@ -64,7 +64,7 @@ Begin["`Private`"]
 
 
 Options[ParamListToComputationList] = Options[ComputeTunedThermo]
-ParamListToComputationList[curveType_String, list_List, pots_List, opts : OptionsPattern[]] := {curveType, pots, #[[1]], #[[2]], #[[3]], #[[4]], opts}&/@ list;
+ParamListToComputationList[curveType_String, list_List, pots_List, opts : OptionsPattern[]] := {curveType, pots, #[[1]], #[[2]], #[[3]], #[[4]], opts}&/@ Sort[list, #1[[1]] < #2[[1]]&];
 
 
 Options[FindThermoComputationBoxes] = Join[{\[Lambda]hrange -> {0.01, 100}}, Options[FindFunctionRoots]]
