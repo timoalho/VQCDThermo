@@ -274,7 +274,26 @@ Options[ComputeThermoCurve] :=
 			   Evaluate[FilterRules[{opts},
 	Options[ComputeParametricRawThermo]]]];
  ]];
- PrintV[StringForm["Done in `1` seconds", time], "Progress"];
+
+ PrintV[StringForm["Done `6`curve from {nt, \[Lambda]h} = {`2`, `3`} to {`4`, `5`} in `1` seconds",
+		time,
+		If[OptionValue[Interpolatent],
+			ntPointsFromData[numres][[1, 2]],
+			ntfun[umin]
+		],
+		If[OptionValue[Interpolate\[Lambda]h],
+			\[Lambda]hPointsFromData[numres][[1, 2]],
+			\[Lambda]hfun[umin]
+		],
+		If[OptionValue[Interpolatent],
+			ntPointsFromData[numres][[-1, 2]],
+			ntfun[umax]
+		],
+		If[OptionValue[Interpolate\[Lambda]h],
+			\[Lambda]hPointsFromData[numres][[-1, 2]],
+			\[Lambda]hfun[umax]
+		],
+		If[tachyonic, "tachyonic ", ""]], "Progress"];
  
  numres
 ]
