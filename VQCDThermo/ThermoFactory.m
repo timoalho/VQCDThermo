@@ -238,7 +238,12 @@ Options[ComputeThermoCurve] :=
  )
  ];
 
- existfun[u_?NumericQ] = \[CapitalLambda]ScaleFromSols[SolveAndScaleVQCDBH[\[Lambda]hfun[u], \[Tau]hFun[\[Lambda]hfun[u], ntfun[u], True], ntfun[u], pots, Evaluate[OptionValue[SolveAndScaleOptions]]]];
+ existfun[u_?NumericQ] := Module[{\[Tau]h = \[Tau]hFun[\[Lambda]hfun[u], ntfun[u], True]},
+	If[NumericQ[\[Tau]h],
+		\[CapitalLambda]ScaleFromSols[SolveAndScaleVQCDBH[\[Lambda]hfun[u], \[Tau]h, ntfun[u], pots, Evaluate[OptionValue[SolveAndScaleOptions]]]],
+		Undefined (*Return undefined if even \[Tau]h is not defined*)
+	]
+	];
 
  time = First[AbsoluteTiming[
 
