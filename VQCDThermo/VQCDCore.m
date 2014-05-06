@@ -969,7 +969,7 @@ PrintV[StringForm["Not true that #[[3]] > mq, #[[3]] = `1`, mq = `2`, doubling t
 (#[[1]] =!= #[[2]]) || (#[[1]] === Undefined)& (*End recursion when the interval has shrunk to a point*),
 1, OptionValue[MaxRecursion]
 ]),
-\[Tau]hmin = {\[Tau]hinitial, \[Tau]hinitial}];
+\[Tau]hmin = {\[Tau]hinitial, \[Tau]hinitial, mqat\[Tau]hinitial}];
 
 (*Return if the area where mq(\[Tau]h) < mq was not found*)
 If[(\[Tau]hmin[[1]] =!= \[Tau]hmin[[2]]) || (\[Tau]hmin[[1]] === Undefined) || \[Tau]hmin[[3]] > mq,
