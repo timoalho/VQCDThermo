@@ -309,11 +309,12 @@ VQCDBHInitialConditions[\[Tau]h_?NumericQ, \[Lambda]h_?NumericQ, nt_?NumericQ, f
 If[OptionValue[EpsilonMeaning] == "Absolute",
 {{
  (*epsilon is directly the derivative itself*)
- {\[Lambda][\[Epsilon]] == \[Lambda]h + \[Epsilon] \[Lambda]ph,
- q[\[Epsilon]] == qh + \[Epsilon] qph,
- f[\[Epsilon]] ==  \[Epsilon] fph,
- f'[\[Epsilon]] ==  fph + \[Epsilon] fpph,
- \[Tau][\[Epsilon]] == \[Tau]h + \[Epsilon] \[Tau]ph,
+ {\[Lambda][\[Epsilon]] == \[Lambda]h + \[Epsilon] \[Lambda]ph + 1/2 \[Epsilon]^2 \[Lambda]pph,
+ q[\[Epsilon]] == qh + \[Epsilon] qph + 1/2 \[Epsilon]^2qpph,
+ \[Lambda]'[\[Epsilon]] == \[Lambda]ph + \[Lambda]pph \[Epsilon], 
+ f[\[Epsilon]] ==  \[Epsilon] fph + 1/2 \[Epsilon]^2 fpph + 1/6 \[Epsilon]^3 fppph,
+ f'[\[Epsilon]] ==  fph + \[Epsilon] fpph + 1/2 \[Epsilon]^2 fppph,
+ \[Tau][\[Epsilon]] == \[Tau]h + \[Epsilon] \[Tau]ph + 1/2 \[Epsilon]^2 \[Tau]pph,
  \[Tau]'[\[Epsilon]] == \[Tau]ph + \[Epsilon] \[Tau]pph
  },
  (\[Lambda]ph < 0) && (fph > 0) && (qh + \[Epsilon]eff qph < 0) (*Return whether the initial conditions are viable*)
@@ -540,7 +541,7 @@ Return[invalidsol];)
 ];
 
 (*Solve*)
-{{initconds, initvalid}, \[Epsilon]} = VQCDBHInitialConditions[\[Tau]h, \[Lambda]h, nt, OptionValue[fpInitialValue], {Vg, Vf, \[Kappa], \[Omega]}, OptionValue[HorizonEpsilon], Evaluate[FilterRules[{opts}, Options[TachyonInitialConditionsAtHorizon]]]];
+{{initconds, initvalid}, \[Epsilon]} = VQCDBHInitialConditions[\[Tau]h, \[Lambda]h, nt, OptionValue[fpInitialValue], {Vg, Vf, \[Kappa], \[Omega]}, OptionValue[HorizonEpsilon], Evaluate[FilterRules[{opts}, Options[VQCDBHInitialConditions]]]];
 
 SolverCore[{initconds, initvalid}, nt, \[Epsilon], {Vg, Vf, \[Kappa], \[Omega]}, Evaluate[FilterRules[{opts}, Options[SolverCore]]]]
 
@@ -578,7 +579,7 @@ SolveVQCDExtremalBH[C\[Lambda]_?NumericQ, pots_List, opts : OptionsPattern[]] :=
 Block[{$cvontext = "SolveExtremalTachyons"},
  
 (*Solve*)
-{{initconds, initvalid}, nt1crit, Ah} = VQCDExtremalBHInitialConditions[OptionValue[qHorizon], C\[Lambda], pots, OptionValue[HorizonEpsilon], Evaluate[FilterRules[{opts}, Options[ExtremalInitialConditionsAtHorizon]]]];
+{{initconds, initvalid}, nt1crit, Ah} = VQCDExtremalBHInitialConditions[OptionValue[qHorizon], C\[Lambda], pots, OptionValue[HorizonEpsilon], Evaluate[FilterRules[{opts}, Options[VQCDExtremalBHInitialConditions]]]];
 
  SolverCore[{initconds, initvalid}, nt1crit, Ah, pots, Evaluate[FilterRules[{opts}, Options[SolverCore]]]]
 ]
