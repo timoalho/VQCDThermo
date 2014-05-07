@@ -234,8 +234,8 @@ Options[ComputeThermoCurve] :=
  \[Tau]hExistenceOptions -> {}, (*Additional/alternative options to pass to computing \[Tau]h when only testing it's existence*)
  NumLimitOptions -> {} (*Additional/alternative option to pass to FindNumLimit*)
  }, Options[ComputeParametricRawThermo]]
- ComputeThermoCurve[ntfun_, \[Lambda]hfun_, tachyonic_?((# == True) || (# == False)&), umin_?NumericQ, umid_?NumericQ, umax_?NumericQ, pots_List, opts : OptionsPattern[]] := Module[
-  {numres, uminlim, umaxlim, \[Tau]hFun, time, existfun},
+ ComputeThermoCurve[ntfun_, \[Lambda]hfun_, tachyonic_?((# == True) || (# == False)&), umin_?NumericQ, umid0_?NumericQ, umax_?NumericQ, pots_List, opts : OptionsPattern[]] := Module[
+  {numres, uminlim, umaxlim, \[Tau]hFun, time, existfun, umid},
  If[!tachyonic,
  (\[Tau]hFun[\[Lambda]h_, nt_, existenceOnly_ : False] = 0;)
  ,
@@ -253,7 +253,23 @@ Options[ComputeThermoCurve] :=
 
  time = First[AbsoluteTiming[
 
- If[!(existfun[umid]), (Message[ComputentConstThermo::nosolution, umid]; Return[Undefined])];
+ umid = If[!(NumericQ[existfun[umid0]] === True),
+ (*(Message[ComputentConstThermo::nosolution, umid]; Return[Undefined])*)
+ (*The solution does not exist at the midpoint. However, try to see if it exists at either the upper or lower limit, and use that as the new midpoint:*)
+  Module[{existmax, existmin},
+	existmax = NumericQ[existfun[umax]] === True;
+	
+	If[existmax,
+		umax,
+		(existmin = NumericQ[existfun[umin]] === True;
+		 If[existmin,
+			umin,
+			(Message[ComputentConstThermo::nosolution, umid]; Return[Undefined])
+		])	
+	  ]
+	],
+	umid0
+ ];
 
  If[Quiet[!(NumericQ[existfun[umin]] === True)], uminlim = FindNumLimit[Quiet[existfun[u]], {u, umin, umid}, Evaluate[OptionValue[NumLimitOptions]]
 ], uminlim = umin];
