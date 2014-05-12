@@ -548,7 +548,7 @@ DistributeDefinitions[pots];
 DistributeDefinitions[Options[ComputeStandardThermo]];(*This needs to be done if any of the options to this function are to be used in the parallel kernels.*)
 ),
 (
-func = ComputeTunedThermo;
+func = (SetDirectory[destinationDirectory];OptionValue[ExtraSetup]; ComputeAndSaveThermo[Sequence @@ #]; ResetDirectory[])&;
 )
 ];
 
@@ -557,7 +557,9 @@ func = ComputeTunedThermo;
 (*Start the computation*)
 comps = Map[func, list];
 (*Wait for them to finish*)
-WaitAll[comps];
+If[OptionValue[Parallel],
+	WaitAll[comps];
+]
 
 PrintV["Done!", "Progress"];
 ]
