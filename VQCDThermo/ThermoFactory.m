@@ -510,7 +510,8 @@ Options[ComputeStandardThermo] = {ntcurves -> 30,
 								ntOptions -> {},
 								\[Lambda]h\[Tau]hOptions -> {},
 								nt\[Tau]hOptions -> {},
-								\[Lambda]h\[Tau]hmargin -> 10^-3
+								\[Lambda]h\[Tau]hmargin -> 10^-3,
+								\[Lambda]h\[Tau]hlowerlimit -> Automatic
 								}
 
 ComputeStandardThermo[pots_List, destinationDirectory_String, opts: OptionsPattern[]] := Module[{\[Lambda]hClist, ntClist, \[Lambda]h\[Tau]hClist, nt\[Tau]hClist, func, comps, \[Lambda]endnt0, list},
@@ -529,8 +530,14 @@ If[!OptionValue[NonTachyonicOnly],
 nt\[Tau]hClist = ParamListToComputationList["ntconstant\[Tau]h", MakentconstLists["Tachyonic", pots, OptionValue[nt\[Tau]hcurves], \[Lambda]hrange-> OptionValue[\[Lambda]h\[Tau]hrange], ntrange -> OptionValue[nt\[Tau]hrange], ntlist -> OptionValue[nt\[Tau]hlist]], pots, OptionValue[\[Lambda]h\[Tau]hOptions]];
 PrintV[StringForm["Broken nt -values to compute: `1`", nt\[Tau]hClist[[All, 3]]], "Progress"];
 (*There's no clear way to get the lower limit where to start the \[Lambda]h const curves from. Heuristically, we just find the num limit for nt = 0, and use that*)
-PrintV["Computing \[Lambda]end(nt = 0).", "Progress"];
-\[Lambda]endnt0 = FindNumLimit[\[Tau]hFromQuarkMass[0, \[Lambda]h, 0, pots, AccuracyGoal -> 60, NodeCountSubdivision-> 0, ARange -> 120, MassAUV -> 110, MaxRecursion -> 80], {\[Lambda]h, 0.01, 100.}, MaxRecursion -> 120];
+If[(OptionValue[\[Lambda]h\[Tau]hlowerlimit] === Automatic) && !(OptionValue[\[Lambda]h\[Tau]hlist] === {}),
+(
+	PrintV["Computing \[Lambda]end(nt = 0).", "Progress"];
+	\[Lambda]endnt0 = FindNumLimit[\[Tau]hFromQuarkMass[0, \[Lambda]h, 0, pots, AccuracyGoal -> 60, NodeCountSubdivision-> 0, ARange -> 120, MassAUV -> 110, MaxRecursion -> 80], {\[Lambda]h, 0.01, 100.}, MaxRecursion -> 120];
+),
+	\[Lambda]endnt0 = OptionValue[\[Lambda]h\[Tau]hlowerlimit];
+]
+	
 PrintV[StringForm["\[Lambda]end(nt = 0) = `1`", \[Lambda]endnt0], "Progress"];
 \[Lambda]h\[Tau]hClist = ParamListToComputationList["\[Lambda]hconstant\[Tau]h", Make\[Lambda]hconstLists["Tachyonic", pots, OptionValue[\[Lambda]h\[Tau]hcurves], \[Lambda]hrange-> ({Min[#], Max[#]}&@IntervalIntersection[Interval[OptionValue[\[Lambda]h\[Tau]hrange]], Interval[{(1+ OptionValue[\[Lambda]h\[Tau]hmargin])\[Lambda]endnt0, Infinity}]]), ntrange -> OptionValue[nt\[Tau]hrange], \[Lambda]hlist -> OptionValue[\[Lambda]h\[Tau]hlist]], pots, OptionValue[nt\[Tau]hOptions]];
 PrintV[StringForm["Broken \[Lambda]h -values to compute: `1`", \[Lambda]h\[Tau]hClist[[All, 3]]], "Progress"];
