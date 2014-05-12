@@ -98,7 +98,7 @@ FindThermoTachyonicComputationBoxes[pots_List, opts : OptionsPattern[]] := Modul
 
 
 Options[Make\[Lambda]hRangesFromnt] = Options[FindThermoComputationBoxes]
-Options[MakentconstLists] = Join[Options[Make\[Lambda]hRangesFromnt], {SpreadFunction -> Identity, MinCompBoxHeight -> 0.05, ntrange -> {0, Infinity}}]
+Options[MakentconstLists] = Join[Options[Make\[Lambda]hRangesFromnt], {SpreadFunction -> Identity, MinCompBoxHeight -> 0.05, ntrange -> {0, Infinity}, ntlist -> Automatic}]
 
 Make\[Lambda]hRangesFromnt[n_?NumericQ, compboxes_List?(ListQ[#[[1]]]&), opts : OptionsPattern[]] := {n, #[[3]], #[[4]], #[[5]]}& /@ Select[compboxes, #[[1]] <= n < #[[2]]&];
 
@@ -108,8 +108,14 @@ Make\[Lambda]hRangesFromnt[n_?NumericQ, pots_List, opts : OptionsPattern[]] := M
 
 MakentconstLists[compboxes_List?(ListQ[#[[1]]]&), nCurves_Integer, opts : OptionsPattern[]] := Module[{nmax, nvals},
 nmax = Min[Max[#[[2]]&/@compboxes], Last[OptionValue[ntrange]]];
-nvals = Table[OptionValue[SpreadFunction] @ n, {n, InverseFunction[OptionValue[SpreadFunction]] @ First[OptionValue[ntrange]], 
- InverseFunction[OptionValue[SpreadFunction]] @ nmax, ((#[[2]] - #[[1]])/(nCurves + 1))& @  InverseFunction[OptionValue[SpreadFunction]] [{0, nmax}]}]; (*+1 since the limit case never gets included*)
+nvals = If[OptionValue[ntlist] === Automatic,
+	(*No explicit list of values given, so generate a table with the requested number of curves*)
+	Table[OptionValue[SpreadFunction] @ n, {n, InverseFunction[OptionValue[SpreadFunction]] @ First[OptionValue[ntrange]], 
+InverseFunction[OptionValue[SpreadFunction]] @ nmax, ((#[[2]] - #[[1]])/(nCurves + 1))& @  InverseFunction[OptionValue[SpreadFunction]] [{0, nmax}]}] (*+1 since the limit case never gets included*)
+	,
+	(*An explicit list was given, so use that. Note that both nCurves and ntrange lower limit are ignored!*)
+	Select[OptionValue[ntlist], # <=  nmax&]
+	];
 Flatten[Make\[Lambda]hRangesFromnt[#, compboxes,  Evaluate[FilterRules[{opts},
 	Options[Make\[Lambda]hRangesFromnt]]]]&/@nvals,1]
 ]
@@ -124,6 +130,7 @@ MakentconstLists[Select[compboxes, (#[[5]] - #[[3]] >=  OptionValue[MinCompBoxHe
 
 
 Options[Make\[Lambda]hconstLists] = {\[Lambda]hrange -> {0.01, 10^5},
+	\[Lambda]hlist -> Automatic,
 	ntrange -> {0, 100},
 	\[Lambda]hmargin -> 10^-3, (*Points _very _ close to the limit usually behave badly numerically.*)
 	SpreadFunction -> (Exp) (*The function with which to spread the points. Identity gives a linear spread*)}
@@ -132,7 +139,13 @@ Make\[Lambda]hconstLists["Tachyonic", pots_List, nCurves_Integer, opts : Options
 ntfun[\[Lambda]h_] = Limit[ntCritical[pots, \[Tau]h][\[Lambda]h], \[Tau]h -> Infinity];
 
 \[Lambda]hr = OptionValue[\[Lambda]hrange];
-\[Lambda]hvals = Table[OptionValue[SpreadFunction] @ i, Evaluate[{i,Sequence @@ InverseFunction[OptionValue[SpreadFunction]] @ \[Lambda]hr, ((#[[2]] - #[[1]])/nCurves)& @  InverseFunction[OptionValue[SpreadFunction]] [\[Lambda]hr]}]];
+\[Lambda]hvals = If[OptionValue[\[Lambda]hlist] === Automatic,
+	(*No explicit list of points given, generate it*)
+	Table[OptionValue[SpreadFunction] @ i, Evaluate[{i,Sequence @@ InverseFunction[OptionValue[SpreadFunction]] @ \[Lambda]hr, ((#[[2]] - #[[1]])/nCurves)& @  InverseFunction[OptionValue[SpreadFunction]] [\[Lambda]hr]}]]
+	,
+	(*Use the explicit list, but limit it to the specified range*)
+	Select[OptionValue[\[Lambda]hlist], First[\[Lambda]hr] <=  # <= Last[\[Lambda]hr]&]
+];
 
 {#, First[OptionValue[ntrange]], First[OptionValue[ntrange]], Min[ntfun[#], Last[OptionValue[ntrange]]]}& /@ \[Lambda]hvals
 ]
@@ -145,7 +158,13 @@ ntfun[\[Lambda]h_] = (nt /. Last[Quiet[Solve[Veff[\[Lambda]h, nt, 0] == 0, nt]]]
 \[Lambda]hnummax = (\[Lambda]h(1 - OptionValue[\[Lambda]hmargin]))/. FindRoot[Derivative[1, 0, 0][Veff][\[Lambda]h, 0, 0] /. {Vf -> pots[[2]], Vg -> pots[[1]], \[Kappa]-> pots[[3]], \[Omega] -> pots[[4]]}, {\[Lambda]h, Sequence@@OptionValue[\[Lambda]hrange]}];
 
 \[Lambda]hr = {First[OptionValue[\[Lambda]hrange]], \[Lambda]hnummax};
-\[Lambda]hvals = Table[OptionValue[SpreadFunction] @ i, Evaluate[{i,Sequence @@ InverseFunction[OptionValue[SpreadFunction]] @ \[Lambda]hr, ((#[[2]] - #[[1]])/nCurves)& @  InverseFunction[OptionValue[SpreadFunction]] [\[Lambda]hr]}]];
+
+\[Lambda]hvals = If[OptionValue[\[Lambda]hlist] === Automatic,
+	(*No explicit list given, generate the table*)
+	Table[OptionValue[SpreadFunction] @ i, Evaluate[{i,Sequence @@ InverseFunction[OptionValue[SpreadFunction]] @ \[Lambda]hr, ((#[[2]] - #[[1]])/nCurves)& @  InverseFunction[OptionValue[SpreadFunction]] [\[Lambda]hr]}]]
+	,
+	Select[OptionValue[\[Lambda]hlist], First[\[Lambda]hr] <= # <= Last[\[Lambda]hr]&]
+	];
 
 {#, 0, 0, Sqrt[ntfun[#]]}& /@ \[Lambda]hvals
 ]
@@ -476,11 +495,15 @@ Module[{nums, hash, filename},
 
 Options[ComputeStandardThermo] = {ntcurves -> 30,
 							       \[Lambda]hcurves -> 30,
+								\[Lambda]hlist -> Automatic,
+								ntlist -> Automatic,
 								NonTachyonicOnly -> False,
 							       nt\[Tau]hcurves -> 20,
 							      \[Lambda]h\[Tau]hcurves -> 20,
 								\[Lambda]h\[Tau]hrange -> {0.01, 10^5},
 								nt\[Tau]hrange -> {0, Infinity},
+								\[Lambda]h\[Tau]hlist -> Automatic,
+								nt\[Tau]hlist -> Automatic,
 								ExtraSetup :>  Null, 
 								Parallel -> True,
 								\[Lambda]hOptions -> {},
@@ -494,19 +517,23 @@ ComputeStandardThermo[pots_List, destinationDirectory_String, opts: OptionsPatte
 Block[{$vcontext = "ComputeStandardThermo"}, 
 
 (*Symmetric phase*)
-ntClist = ParamListToComputationList["ntconstant", MakentconstLists["NonTachyonic", pots, OptionValue[ntcurves]], pots, OptionValue[\[Lambda]hOptions]];
-\[Lambda]hClist  = ParamListToComputationList["\[Lambda]hconstant", Make\[Lambda]hconstLists["NonTachyonic", pots, OptionValue[\[Lambda]hcurves]], pots, OptionValue[ntOptions]];
+ntClist = ParamListToComputationList["ntconstant", MakentconstLists["NonTachyonic", pots, OptionValue[ntcurves], ntlist -> OptionValue[ntlist]], pots, OptionValue[\[Lambda]hOptions]];
+PrintV[StringForm["Symmetric nt -values to compute: `1`", ntClist[[All, 3]]], "Progress"];
+\[Lambda]hClist  = ParamListToComputationList["\[Lambda]hconstant", Make\[Lambda]hconstLists["NonTachyonic", pots, OptionValue[\[Lambda]hcurves], \[Lambda]hlist -> OptionValue[\[Lambda]hlist]], pots, OptionValue[ntOptions]];
+PrintV[StringForm["Symmetric \[Lambda]h -values to compute: `1`", \[Lambda]hClist[[All, 3]]], "Progress"];
 
 list = Join[ntClist, \[Lambda]hClist];
 
 If[!OptionValue[NonTachyonicOnly],
 (*Tachyonic phase*)
-nt\[Tau]hClist = ParamListToComputationList["ntconstant\[Tau]h", MakentconstLists["Tachyonic", pots, OptionValue[nt\[Tau]hcurves], \[Lambda]hrange-> OptionValue[\[Lambda]h\[Tau]hrange], ntrange -> OptionValue[nt\[Tau]hrange]], pots, OptionValue[\[Lambda]h\[Tau]hOptions]];
+nt\[Tau]hClist = ParamListToComputationList["ntconstant\[Tau]h", MakentconstLists["Tachyonic", pots, OptionValue[nt\[Tau]hcurves], \[Lambda]hrange-> OptionValue[\[Lambda]h\[Tau]hrange], ntrange -> OptionValue[nt\[Tau]hrange], ntlist -> OptionValue[nt\[Tau]hlist]], pots, OptionValue[\[Lambda]h\[Tau]hOptions]];
+PrintV[StringForm["Broken nt -values to compute: `1`", nt\[Tau]hClist[[All, 3]]], "Progress"];
 (*There's no clear way to get the lower limit where to start the \[Lambda]h const curves from. Heuristically, we just find the num limit for nt = 0, and use that*)
 PrintV["Computing \[Lambda]end(nt = 0).", "Progress"];
 \[Lambda]endnt0 = FindNumLimit[\[Tau]hFromQuarkMass[0, \[Lambda]h, 0, pots, AccuracyGoal -> 60, NodeCountSubdivision-> 0, ARange -> 120, MassAUV -> 110, MaxRecursion -> 80], {\[Lambda]h, 0.01, 100.}, MaxRecursion -> 120];
 PrintV[StringForm["\[Lambda]end(nt = 0) = `1`", \[Lambda]endnt0], "Progress"];
-\[Lambda]h\[Tau]hClist = ParamListToComputationList["\[Lambda]hconstant\[Tau]h", Make\[Lambda]hconstLists["Tachyonic", pots, OptionValue[\[Lambda]h\[Tau]hcurves], \[Lambda]hrange-> ({Min[#], Max[#]}&@IntervalIntersection[Interval[OptionValue[\[Lambda]h\[Tau]hrange]], Interval[{(1+ OptionValue[\[Lambda]h\[Tau]hmargin])\[Lambda]endnt0, Infinity}]]), ntrange -> OptionValue[nt\[Tau]hrange]], pots, OptionValue[nt\[Tau]hOptions]];
+\[Lambda]h\[Tau]hClist = ParamListToComputationList["\[Lambda]hconstant\[Tau]h", Make\[Lambda]hconstLists["Tachyonic", pots, OptionValue[\[Lambda]h\[Tau]hcurves], \[Lambda]hrange-> ({Min[#], Max[#]}&@IntervalIntersection[Interval[OptionValue[\[Lambda]h\[Tau]hrange]], Interval[{(1+ OptionValue[\[Lambda]h\[Tau]hmargin])\[Lambda]endnt0, Infinity}]]), ntrange -> OptionValue[nt\[Tau]hrange], \[Lambda]hlist -> OptionValue[\[Lambda]h\[Tau]hlist]], pots, OptionValue[nt\[Tau]hOptions]];
+PrintV[StringForm["Broken \[Lambda]h -values to compute: `1`", \[Lambda]h\[Tau]hClist[[All, 3]]], "Progress"];
 list = Join[list, nt\[Tau]hClist, \[Lambda]h\[Tau]hClist];
 ];
 
