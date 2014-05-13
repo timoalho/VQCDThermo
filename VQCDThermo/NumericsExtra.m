@@ -364,10 +364,10 @@ midy = If[maxs === {}, Return[{xmin, Infinity, miny, miny, maxy}], First[maxs][[
 (*Get the minimum with the smallest x*)
 pos=Ordering[Select[extrema, (#[[3]] == False) &][[All,1]]];
 If[pos === {}, Return[{xmin, maxs[[1, 1]], miny,midy, maxy}]];
-     firstmin = extrema[[First[pos]]];
+     firstmin = Select[extrema, (#[[3]] == False)&][[First[pos]]];
 
 (*Divide the further boxes at the local minimum.*)
-{FindConsecutiveRegions[firstmin[[1]], firstmin[[2]], maxy, Select[extrema, (#[[2]] > firstmin[[2]])&]], FindConsecutiveRegions[firstmin[[1]], miny, firstmin[[2]], Select[extrema, (#[[2]] < firstmin[[2]])&]], {xmin, firstmin[[1]], miny, midy, maxy}}
+Select[{FindConsecutiveRegions[firstmin[[1]], firstmin[[2]], maxy, Select[extrema, (#[[2]] > firstmin[[2]])&]], FindConsecutiveRegions[firstmin[[1]], miny, firstmin[[2]], Select[extrema, (#[[2]] < firstmin[[2]])&]], {xmin, firstmin[[1]], miny, midy, maxy}}, (#[[3]] != #[[5]])&]
 ]
 
 
