@@ -98,7 +98,7 @@ FindThermoTachyonicComputationBoxes[pots_List, opts : OptionsPattern[]] := Modul
 
 
 Options[Make\[Lambda]hRangesFromnt] = Options[FindThermoComputationBoxes]
-Options[MakentconstLists] = Join[Options[Make\[Lambda]hRangesFromnt], {SpreadFunction -> Identity, MinCompBoxHeight -> 0.05, ntrange -> {0, Infinity}, ntlist -> Automatic}]
+Options[MakentconstLists] = Join[Options[Make\[Lambda]hRangesFromnt], {SpreadFunction -> (ConditionalExpression[#^2, # >= 0]&), MinCompBoxHeight -> 0.05, ntrange -> {0, Infinity}, ntlist -> Automatic}]
 
 Make\[Lambda]hRangesFromnt[n_?NumericQ, compboxes_List?(ListQ[#[[1]]]&), opts : OptionsPattern[]] := {n, #[[3]], #[[4]], #[[5]]}& /@ Select[compboxes, #[[1]] <= n < #[[2]]&];
 
@@ -106,18 +106,26 @@ Make\[Lambda]hRangesFromnt[n_?NumericQ, pots_List, opts : OptionsPattern[]] := M
 	Options[FindThermoComputationBoxes]]]];
 	Make\[Lambda]hRangesFromnt[n, compboxes]];
 
-MakentconstLists[compboxes_List?(ListQ[#[[1]]]&), nCurves_Integer, opts : OptionsPattern[]] := Module[{nmax, nvals},
+MakentconstLists[compboxes_List?(ListQ[#[[1]]]&), nCurves_Integer, opts : OptionsPattern[]] := Module[{nmax, nvals, ifun},
+Block[{$vcontext = "MakentconstLists"},
 nmax = Min[Max[#[[2]]&/@compboxes], Last[OptionValue[ntrange]]];
+
+PrintV[StringForm["compboxes `1`, maximum `2`", compboxes, nmax], "Debug"];
+
+(*Build the inverse function, simplifying with the knowledge nt > 0*)
+ifun[nt_] = Simplify[InverseFunction[OptionValue[SpreadFunction]][nt], nt > 0];
+
 nvals = If[OptionValue[ntlist] === Automatic,
 	(*No explicit list of values given, so generate a table with the requested number of curves*)
-	Table[OptionValue[SpreadFunction] @ n, {n, InverseFunction[OptionValue[SpreadFunction]] @ First[OptionValue[ntrange]], 
-InverseFunction[OptionValue[SpreadFunction]] @ nmax, ((#[[2]] - #[[1]])/(nCurves + 1))& @  InverseFunction[OptionValue[SpreadFunction]] [{0, nmax}]}] (*+1 since the limit case never gets included*)
+	Table[OptionValue[SpreadFunction] @ n, {n, ifun @ First[OptionValue[ntrange]], 
+ifun @ nmax, ((#[[2]] - #[[1]])/(nCurves + 1))& @ Thread @ ifun[{0, nmax}]}] (*+1 since the limit case never gets included*)
 	,
 	(*An explicit list was given, so use that. Note that both nCurves and ntrange lower limit are ignored!*)
 	Select[OptionValue[ntlist], # <=  nmax&]
 	];
 Flatten[Make\[Lambda]hRangesFromnt[#, compboxes,  Evaluate[FilterRules[{opts},
 	Options[Make\[Lambda]hRangesFromnt]]]]&/@nvals,1]
+]
 ]
 
 MakentconstLists[tachyon : "Tachyonic" | "NonTachyonic", pots_List, nCurves_Integer, opts : OptionsPattern[]] := Module[{compboxes, nmax, nvals},
