@@ -359,15 +359,15 @@ PrintV[StringForm["Zeroccrossings at `1`", crossings], "Debug"];
 FindConsecutiveRegions[xmin_?NumericQ, miny_?NumericQ, maxy_?NumericQ, extrema_List] := Module[{maxs, mins, zeros, pos, firstmin, midy},
 (*First always determine the mid lambda. A valid choice is any local maximum.*)
 maxs = Select[extrema, (#[[3]] == True)&];
-midy = If[maxs === {}, Return[{xmin, Infinity, miny, miny, maxy}], First[maxs][[2]]];
+midy = If[maxs === {}, Return[{{xmin, Infinity, miny, miny, maxy}}], First[maxs][[2]]];
 
 (*Get the minimum with the smallest x*)
 pos=Ordering[Select[extrema, (#[[3]] == False) &][[All,1]]];
-If[pos === {}, Return[{xmin, maxs[[1, 1]], miny,midy, maxy}]];
+If[pos === {}, Return[{{xmin, maxs[[1, 1]], miny,midy, maxy}}]];
      firstmin = Select[extrema, (#[[3]] == False)&][[First[pos]]];
 
 (*Divide the further boxes at the local minimum.*)
-Select[{FindConsecutiveRegions[firstmin[[1]], firstmin[[2]], maxy, Select[extrema, (#[[2]] > firstmin[[2]])&]], FindConsecutiveRegions[firstmin[[1]], miny, firstmin[[2]], Select[extrema, (#[[2]] < firstmin[[2]])&]], {xmin, firstmin[[1]], miny, midy, maxy}}, (#[[3]] != #[[5]])&]
+Select[Join[FindConsecutiveRegions[firstmin[[1]], firstmin[[2]], maxy, Select[extrema, (#[[2]] > firstmin[[2]])&]], FindConsecutiveRegions[firstmin[[1]], miny, firstmin[[2]], Select[extrema, (#[[2]] < firstmin[[2]])&]], {{xmin, firstmin[[1]], miny, midy, maxy}}], (#[[3]] != #[[5]])&]
 ]
 
 
