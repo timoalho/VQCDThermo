@@ -49,6 +49,10 @@ LoadThermo::usage = ""
 LoadThermoDirectory::usage = ""
 DataFromThermo::usage = "Returns the raw data, given thermo loaded from file"
 
+MakeThermoFunctions::usage = "Given the basic thermo data, builds the parametric thermo functions and returns them in an associative array"
+MakeThermoGrid::usage = "Constructs the thermogrid used for the analysis, given a list containing the standard set of thermocurves, as computed for example by ComputeStandardThermo"
+ListThermo::usage = "A very simple helper for quickly checking which curves are present in a list of thermo results"
+
 (*Export symbol names that are to be saved to file. Without these, the saved variables would be prepended with ThermoFactory`Private`, making
 loading dependent on internal details of this package.
 Ugly solution, suggestions for a better method are welcome.*)
@@ -59,6 +63,37 @@ Results;
 \[Lambda]hFunction;
 ntFunction;
 \[Tau]hFunction;
+
+\[Lambda]h;
+nt;
+\[Tau]h;
+T;
+p0;
+\[Mu];
+fScale;
+\[CapitalLambda];
+n;
+min;
+max;
+lattice;
+proots;
+
+(*Protect the above variables, since accidentally overwriting them could prevent access
+to the associative array returned by the thermo analysis functions.*)
+(Protect[#];)&/@{\[Lambda]h,
+nt,
+\[Tau]h,
+T,
+p0,
+p,
+\[Mu],
+fScale,
+\[CapitalLambda],
+n,
+min,
+max,
+lattice,
+proots};
 
 Begin["`Private`"]
 
@@ -690,6 +725,211 @@ ntfunFromData[{ct_String, param_?NumericQ, pots_List, points : {data_, {fscaleid
 paramGridFromData[{data_, __}] := First[#]& /@ data;
 paramGridFromData[{ct_String, param_?NumericQ, pots_List, points : {data_, {fscaleidx_?NumberQ, \[CapitalLambda]idx_?NumberQ, \[Mu]idx_?NumberQ, \[Lambda]hidx_, ntidx_, \[Tau]hidx_}}, \[Lambda]hFunction_, ntFunction_, \[Tau]hFunction_}] :=
 	paramGridFromData[points];
+
+
+(*The following are the data analysis functions. They might be moved to a separate package
+in the future, but as long as it's just two functions, that doesn't seem warranted.*)
+
+
+Options[MakeThermoFunctions] = {InterpolationDensityFactor -> 8 (*The factor by which to increase the density of the interpolation grid for forming dp, which helps with the fact that dp tends to be less regular
+than any of the individual functions.*)}
+MakeThermoFunctions[in : {ct_String, param_?NumericQ, pots_List, {data_, {fscaleidx_?NumberQ, \[CapitalLambda]idx_?NumberQ, \[Mu]idx_?NumberQ, \[Lambda]hidx_, ntidx_, \[Tau]hidx_}}, \[Lambda]hFunction_, ntFunction_, \[Tau]hFunction_}, opts: OptionsPattern[]] := Module[{\[Lambda]fun, sfun, fsfun, nfun,ntfun,  \[Mu]fun, \[CapitalLambda]fun, dp, Tfun, \[Tau]fun, pfun, dplist, dpint, grid, proots, res},
+Print[StringForm["Making thermo `1` = `2`", ct, param]];
+fsfun = fScalefunFromData[in];
+\[Mu]fun = \[Mu]funFromData[in];
+\[CapitalLambda]fun = \[CapitalLambda]funFromData[in];
+\[Lambda]fun = \[Lambda]hfunFromData[in];
+\[Tau]fun = \[Tau]hfunFromData[in];
+ntfun = ntfunFromData[in];
+
+nfun = (ntfun[#]/\[CapitalLambda]fun[#]^3 / (4 Pi))&;
+
+Tfun = TemperatureFromThermoData[fsfun[#], \[CapitalLambda]fun[#], \[Lambda]fun[#], \[Tau]fun[#], ntfun[#], pots]&;
+
+
+(*Print[Plot[Tfun[u], {u, data[[1, 1]], data[[-1, 1]]}]];*)
+
+(*The best way this far to compute the integral: form the derivatives at the original grid points and interpolate, which can be integrated analytically.*)
+dp = 1/\[CapitalLambda]fun[#]^3 Tfun'[#] + nfun[#] \[Mu]fun'[#]&;
+grid = paramGridFromData[DataFromThermo[in]];
+pfun = NIntegralFunction[dp[x], {x, Last[grid], First[grid]}, IntegrationGrid -> grid, Densification -> OptionValue[InterpolationDensityFactor]];
+
+
+(*Print[Show[Plot[{pfun[u]}, {u, data[[1, 1]], data[[-1, 1]]}]]];*)
+
+(*proots = Select[FindFunctionRoots[pfun[x], {x, First[grid], Last[grid]}, NumPoints -> grid], # != Last[grid]&];
+Print[StringForm["Roots found: `1`", proots]];*)
+
+res[\[Lambda]h] = \[Lambda]fun;
+res[nt] = ntfun;
+res[\[Tau]h] = \[Tau]fun;
+res[T] = Tfun;
+res[p0] = pfun;
+res[\[Mu]] = \[Mu]fun;
+res[fScale] = fsfun;
+res[\[CapitalLambda]] = \[CapitalLambda]fun;
+res[n] = nfun;
+res[min] = First[grid];
+res[max] = Last[grid];
+res[lattice] = grid; (*Also return the set of points where the functions have actually been calculated.*)
+
+res
+
+];
+MakeThermoGrid[thermo_List, plotThermo : (True | False) : True] := Module[{symmlahfuns, brokelahfuns, symmntfuns, brokentfuns, \[Lambda]hinvert, ntinvert, pressuresFromCrossings, plot, plotnt},
+
+(*Define a helper for inserting the inverses of the parameter functions, which
+we can now do since we know we can invert lambdah*)
+\[Lambda]hinvert[in_] := Module[{out, inv},
+	inv = InverseFunction[in[\[Lambda]h]];
+	out[\[Lambda]h][x_] := x;
+	out[nt] = in[nt][Null]; (*nt is constant*)
+
+	(*insert the inverse function to the physical variables*)
+	(out[#][\[Lambda]h_] := in[#][inv[\[Lambda]h]])&/@ {\[Tau]h, T, p0, \[Mu], fScale, \[CapitalLambda], n};
+
+	out[min] = in[\[Lambda]h][in[min]];
+	out[max] = in[\[Lambda]h][in[max]];
+
+	out[lattice] = in[\[Lambda]h]/@ in[lattice];
+
+	out
+];
+
+(*Helper function for inserting the necessary inverses to the \[Lambda]h constant curves*)
+ntinvert[in_] := Module[{out, inv},
+	inv = InverseFunction[in[nt]]; (*this is probably just the identity function,
+								but it allows a bit more generality to use this
+								here explicitly*)
+	out[\[Lambda]h] = in[\[Lambda]h][Null]; (*\[Lambda]h is constant*)
+	out[nt][x_] := x; 
+
+	(*insert the inverse function to the physical variables*)
+	(out[#][nt_] := in[#][inv[nt]])&/@ {\[Tau]h, T, p0, \[Mu], fScale, \[CapitalLambda], n};
+
+	out[min] = in[nt][in[min]];
+	out[max] = in[nt][in[max]];
+
+	out[lattice] = in[nt]/@ in[lattice];
+
+	out
+];
+
+(*Helper for plotting the data*)
+If[!plotThermo, (plot[in_] := Null),
+plot[in_] := Module[{style = If[in[\[Tau]h][in[max]] =!= 0, Blue, Red],
+					 Tlimits = {Min[#], Max[#]}&@{in[T][#]& /@ in[lattice]},
+					 \[Mu]limits = {Min[#], Max[#]}&@{in[\[Mu]][#]& /@ in[lattice]},
+					 plimits = {Min[#], Max[#]}&@{in[p][#]& /@ in[lattice]}},
+	Print @ Show[
+	(*Set up the canvas*)
+	LogPlot[Undefined, Evaluate[{t, Evaluate @ Sequence @@ \[Mu]limits}], 
+		PlotRange -> Tlimits,
+		AxesLabel -> {"\[Mu]", "T"}],
+	(*Plot the interpolation*)
+	ParametricPlot[{in[\[Mu]][\[Lambda]h], Log @ in[T][\[Lambda]h]}, {\[Lambda]h, in[min], in[max]},
+		AspectRatio -> 1(*, PerformanceGoal -> "Quality"*), MaxRecursion -> 15(*, Method -> {"Refinement" -> {ControlValue -> .01\[Degree]}}*), PlotPoints -> {Automatic, 500}, PlotStyle -> style, PlotRange -> All],
+	(*Plot the points*)
+	ListPlot[{in[\[Mu]][#], Log @ in[T][#]}& /@ in[lattice], PlotStyle -> style, PlotRange -> All],
+	(*Plot the zeroes of pressure*)
+	If[in[proots] =!= {},
+		ListPlot[{in[\[Mu]][#], Log @ in[T][#]}&/@in[proots], PlotStyle -> Black, PlotMarkers -> {Automatic, Small}],
+		{}
+		]
+	];
+	 Print @ Show[
+	(*Set up the canvas*)
+	LogLinearPlot[Undefined, Evaluate[{t, Evaluate @ Sequence @@ Tlimits}], 
+		PlotRange -> plimits,
+		AxesLabel -> {"T", "p"}],
+		(*Plot the interpolation*)
+		ParametricPlot[{Log @ in[T][\[Lambda]h], in[p][\[Lambda]h]}, {\[Lambda]h, in[min], in[max]},
+		AspectRatio -> 1, PerformanceGoal -> "Quality", MaxRecursion -> 15(*, Method -> {"Refinement" -> {ControlValue -> .01\[Degree]}}*), PlotPoints -> {500, Automatic}, PlotStyle -> style, PlotRange -> All],
+		(*Plot the points*)
+		ListPlot[{Log@in[T][#], in[p][#]}& /@ in[lattice], PlotStyle -> style, PlotRange -> All],
+		(*Plot the pressure zeroes*)
+		If[in[proots] =!= {}, 
+			ListPlot[{Log @ in[T][#], in[p][#]}&/@in[proots], PlotStyle -> Black, PlotMarkers -> {Automatic, Small}, PlotRange-> All],
+			{}
+		]
+	];
+ ];
+];
+(*First, compute the basic thermo for the broken phase, nt = 0, since this fixes the zero of the pressure*)
+brokelahfuns = Module[{temp},{temp = \[Lambda]hinvert[MakeThermoFunctions[First @ Cases[thermo, {"ntconstant\[Tau]h", 0., _List, _List, _, _, _}]]];
+temp[p] = temp[p0];
+temp[proots] = Select[FindFunctionRoots[temp[p][x], {x, temp[min], temp[max]}, NumPoints -> temp[lattice]], # != Last[temp[lattice]]&];
+PrintV[StringForm["Roots found: `1`", temp[proots]], "Progress"];
+
+temp}];
+
+(*Then, compute the broken phase \[Lambda]h constant functions, since now we can fix the pressure constants*)
+brokentfuns = Module[{\[Lambda]hval = #[[2]], pconst, temp},temp = ntinvert[MakeThermoFunctions[#]];
+Print[StringForm["Constructing at `1`", #[[2]]]];
+pconst = -temp[p0][0.] + brokelahfuns[[1]][p][\[Lambda]hval];
+temp[p] = Function[x, temp[p0][x] +  pconst];
+
+temp[proots] = Select[FindFunctionRoots[temp[p][x], {x, temp[min], temp[max]}, NumPoints -> temp[lattice]], # != Last[temp[lattice]]&];
+Print[StringForm["Roots found: `1`", temp[proots]]];
+ plot[temp];
+
+temp
+]&/@ Sort[Cases[thermo, {"\[Lambda]hconstant\[Tau]h", _?NumericQ, _List, _List, _, _, _}], #1[[2]] < #2[[2]]&];
+
+(*Symmetric phase, nt = 0, can be done when we know the broken phase:*)
+symmlahfuns = Module[{temp},{(temp = \[Lambda]hinvert[MakeThermoFunctions[First@ Cases[thermo, {"ntconstant", 0., _List, _List, _, _, _}]]];
+temp[p] = Function[x, temp[p0][x] - temp[p0][brokelahfuns[[1]][min]] + brokelahfuns[[1]][p][brokelahfuns[[1]][min]]
+				];
+
+temp[proots] = Select[FindFunctionRoots[temp[p][x], {x, temp[min], temp[max]}, NumPoints -> temp[lattice]], # != Last[temp[lattice]]&];
+PrintV[StringForm["Roots found: `1`", temp[proots]], "Progress"];
+
+temp
+)}];
+
+(*symmetric phase \[Lambda]h constant functions, since now we can fix the pressure constants*)
+symmntfuns = Module[{\[Lambda]hval = #[[2]], pconst, temp},temp = ntinvert[MakeThermoFunctions[#]];
+PrintV[StringForm["Constructing at `1`", #[[2]]], "Progress"];
+pconst = -temp[p0][0.] + symmlahfuns[[1]][p][\[Lambda]hval];
+temp[p] = Function[x, temp[p0][x] +  pconst];
+
+temp[proots] = Select[FindFunctionRoots[temp[p][x], {x, temp[min], temp[max]}, NumPoints -> temp[lattice]], # != Last[temp[lattice]]&];
+PrintV[StringForm["Roots found: `1`", temp[proots]], "Progress"];
+ plot[temp];
+
+temp
+]&/@ Sort[Cases[thermo, {"\[Lambda]hconstant", _?NumericQ, _List, _List, _, _, _}],#1[[2]] < #2[[2]]&];
+
+(*Rest of the broken phase nt constant functions, since now we can find the crossings to set the constants*)
+pressuresFromCrossings[therm_, ntf_] :=
+Module[{ntval = therm[[2]], crossings, temp, pconst},
+temp = \[Lambda]hinvert[MakeThermoFunctions[therm]];
+crossings = {{ntval, #[\[Lambda]h]}, (temp[T][#[\[Lambda]h]] - #[T][ntval])/(temp[T][#[\[Lambda]h]] + #[T][ntval]), #[p][ntval], temp[p0][#[\[Lambda]h]], #[p][ntval] - temp[p0][#[\[Lambda]h]], (#[p][ntval] - temp[p0][#[\[Lambda]h]])/temp[p0][#[\[Lambda]h]]}&/@ Select[ntf,#[min] <= temp[nt] <=  #[max]&];
+PrintV[StringForm["Crossingslist, {\[Lambda]h, p, p0, \[CapitalDelta]p, \[CapitalDelta]p/p0}, `1`, mean = `2`, stddeviation = `3`", crossings, Mean[crossings[[All, 4]]], StandardDeviation[crossings[[All, 4]]]], "Checks"];
+pconst = Last[crossings][[5]];
+temp[p] = Function[x, temp[p0][x] + pconst];
+
+(*Now we can also find zeroes of pressure, which are potential points
+for the phase transitions*)
+temp[proots] = Select[FindFunctionRoots[temp[p][x], {x, temp[min], temp[max]}, NumPoints -> temp[lattice]], # != Last[temp[lattice]]&];
+PrintV[StringForm["Roots found: `1`", temp[proots]], "Progress"];
+ plot[temp];
+
+temp
+];
+
+brokelahfuns = Join[brokelahfuns,  pressuresFromCrossings[#, brokentfuns]&/@ Sort[Cases[thermo, {"ntconstant\[Tau]h", _?(# != 0. && NumericQ[#]&), _List, _List, _, _, _}], #1[[2]] < #2[[2]]&]];
+
+symmlahfuns = Join[symmlahfuns, pressuresFromCrossings[#, symmntfuns]&/@ Sort[Cases[thermo, {"ntconstant", _?(# != 0. && NumericQ[#]&), _List, _List, _, _, _}],#1[[2]] < #2[[2]]&]];
+
+
+{symmlahfuns,
+symmntfuns,
+brokelahfuns,
+brokentfuns
+}
+]
+ListThermo[list_] := Print[StringForm["`1` at `2`", #[[1]], #[[2]]]]&/@ list
 
 
 End[ ]
