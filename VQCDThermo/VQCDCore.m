@@ -395,7 +395,10 @@ f1[A_] := f[A]*fscale^2;
 \[CapitalLambda]scale = \[CapitalLambda]0/\[CapitalLambda];
 
 (*return the scaled functions and the scaling factors*)
-{q1, f1, \[Lambda]1, \[Tau]d1, \[Tau]1, Amin, Amax, \[CapitalLambda]scale, fscale}
+{q1, f1, \[Lambda]1, \[Tau]d1, \[Tau]1, Amin, Amax, \[CapitalLambda]scale,
+	fscale Sqrt[f'[Amin]] (*Multiplying by the Sqrt[f'\.1d] -term adjusts for possible
+							non-zero settings of fpInitialValue.*)
+	}
 ]
 ];
 (*A helper function to get the scaled solutions directly from ndsolve output*)
