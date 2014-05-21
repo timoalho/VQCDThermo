@@ -734,7 +734,7 @@ in the future, but as long as it's just two functions, that doesn't seem warrant
 Options[MakeThermoFunctions] = {InterpolationDensityFactor -> 8 (*The factor by which to increase the density of the interpolation grid for forming dp, which helps with the fact that dp tends to be less regular
 than any of the individual functions.*)}
 MakeThermoFunctions[in : {ct_String, param_?NumericQ, pots_List, {data_, {fscaleidx_?NumberQ, \[CapitalLambda]idx_?NumberQ, \[Mu]idx_?NumberQ, \[Lambda]hidx_, ntidx_, \[Tau]hidx_}}, \[Lambda]hFunction_, ntFunction_, \[Tau]hFunction_}, opts: OptionsPattern[]] := Module[{\[Lambda]fun, sfun, fsfun, nfun,ntfun,  \[Mu]fun, \[CapitalLambda]fun, dp, Tfun, \[Tau]fun, pfun, dplist, dpint, grid, proots, res},
-Print[StringForm["Making thermo `1` = `2`", ct, param]];
+PrintV[StringForm["Making thermo `1` = `2`", ct, param], "Progress"];
 fsfun = fScalefunFromData[in];
 \[Mu]fun = \[Mu]funFromData[in];
 \[CapitalLambda]fun = \[CapitalLambda]funFromData[in];
@@ -859,18 +859,17 @@ plot[in_] := Module[{style = If[in[\[Tau]h][in[max]] =!= 0, Blue, Red],
 brokelahfuns = Module[{temp},{temp = \[Lambda]hinvert[MakeThermoFunctions[First @ Cases[thermo, {"ntconstant\[Tau]h", 0., _List, _List, _, _, _}]]];
 temp[p] = temp[p0];
 temp[proots] = Select[FindFunctionRoots[temp[p][x], {x, temp[min], temp[max]}, NumPoints -> temp[lattice]], # != Last[temp[lattice]]&];
-PrintV[StringForm["Roots found: `1`", temp[proots]], "Progress"];
+PrintV[StringForm["Zeroes of pressure found: `1`", temp[proots]], "Progress"];
 
 temp}];
 
 (*Then, compute the broken phase \[Lambda]h constant functions, since now we can fix the pressure constants*)
 brokentfuns = Module[{\[Lambda]hval = #[[2]], pconst, temp},temp = ntinvert[MakeThermoFunctions[#]];
-Print[StringForm["Constructing at `1`", #[[2]]]];
 pconst = -temp[p0][0.] + brokelahfuns[[1]][p][\[Lambda]hval];
 temp[p] = Function[x, temp[p0][x] +  pconst];
 
 temp[proots] = Select[FindFunctionRoots[temp[p][x], {x, temp[min], temp[max]}, NumPoints -> temp[lattice]], # != Last[temp[lattice]]&];
-Print[StringForm["Roots found: `1`", temp[proots]]];
+Print[StringForm["Zeroes of pressure found: `1`", temp[proots]]];
  plot[temp];
 
 temp
@@ -882,19 +881,18 @@ temp[p] = Function[x, temp[p0][x] - temp[p0][brokelahfuns[[1]][min]] + brokelahf
 				];
 
 temp[proots] = Select[FindFunctionRoots[temp[p][x], {x, temp[min], temp[max]}, NumPoints -> temp[lattice]], # != Last[temp[lattice]]&];
-PrintV[StringForm["Roots found: `1`", temp[proots]], "Progress"];
+PrintV[StringForm["Zeroes of pressure found: `1`", temp[proots]], "Progress"];
 
 temp
 )}];
 
 (*symmetric phase \[Lambda]h constant functions, since now we can fix the pressure constants*)
 symmntfuns = Module[{\[Lambda]hval = #[[2]], pconst, temp},temp = ntinvert[MakeThermoFunctions[#]];
-PrintV[StringForm["Constructing at `1`", #[[2]]], "Progress"];
 pconst = -temp[p0][0.] + symmlahfuns[[1]][p][\[Lambda]hval];
 temp[p] = Function[x, temp[p0][x] +  pconst];
 
 temp[proots] = Select[FindFunctionRoots[temp[p][x], {x, temp[min], temp[max]}, NumPoints -> temp[lattice]], # != Last[temp[lattice]]&];
-PrintV[StringForm["Roots found: `1`", temp[proots]], "Progress"];
+PrintV[StringForm["Zeroes of pressure found: `1`", temp[proots]], "Progress"];
  plot[temp];
 
 temp
@@ -912,7 +910,7 @@ temp[p] = Function[x, temp[p0][x] + pconst];
 (*Now we can also find zeroes of pressure, which are potential points
 for the phase transitions*)
 temp[proots] = Select[FindFunctionRoots[temp[p][x], {x, temp[min], temp[max]}, NumPoints -> temp[lattice]], # != Last[temp[lattice]]&];
-PrintV[StringForm["Roots found: `1`", temp[proots]], "Progress"];
+PrintV[StringForm["Zeroes of pressure found: `1`", temp[proots]], "Progress"];
  plot[temp];
 
 temp
