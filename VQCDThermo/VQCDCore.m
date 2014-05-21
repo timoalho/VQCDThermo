@@ -525,7 +525,7 @@ Method -> {"EventLocator"(*, Method -> "Adams"*), "Event"-> ((Im[\[Lambda][A]] !
 (*SolveFiniteTTachyons: Constructs the initial value problem and numerically solves it.*)
 Options[SolveVQCDBH] = Join[{
 HorizonEpsilon -> 10^(-8), (*The distance from the horizon at which to set the initial conditions*)
-fpInitialValue -> 1, (*Initial value for f derivative at the horizon*)
+fpInitialValue -> 10^-3, (*Initial value for f derivative at the horizon*)
 \[CapitalLambda] -> 1 (*Lambda to scale to*)
 }, Options[SolverCore], Options[VQCDBHInitialConditions]]; (*Allow any options for NDSolve or TachyonInitialConditionsAtHorizon to be passed on*)
 SolveVQCDBH[\[Lambda]h_?NumericQ, \[Tau]h_?NumericQ, nt_?NumericQ, {Vg_, Vf_, \[Kappa]_, \[Omega]_}, opts : OptionsPattern[]] := Module[{initconds, initvalid, sols, Vgh, Vfh, invalidsol, \[Epsilon]},
