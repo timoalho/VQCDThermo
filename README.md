@@ -1,7 +1,7 @@
 VQCDThermo
 ==========
 
-A Mathematica package for computing thermodynamics (and more) in holographic Veneziano QCD. See [arxiv:1112.1261](http://arxiv.org/abs/1112.1261), [arxiv 1210.4516](http://arxiv.org/abs/1210.4516) and especially [arxiv 1312.5199](http://arxiv.org/abs/1312.5199) for background on VQCD and the type of computations this package does.
+A Mathematica package for computing thermodynamics (and more) in holographic Veneziano QCD. See [arXiv:1112.1261](http://arXiv.org/abs/1112.1261), [arXiv 1210.4516](http://arxiv.org/abs/1210.4516) and especially [arXiv 1312.5199](http://arxiv.org/abs/1312.5199) for background on VQCD and the type of computations this package does.
 
 Critical bugfix on 22.5.2014
 -------------------
@@ -45,14 +45,14 @@ You are then ready to move to the next step.
 Computing black hole background solutions and extracting basic thermo observables
 ---------------------------------------------------------------------------------
 
-First of all, read [arxiv 1312.5199](http://arxiv.org/abs/1312.5199), and make sure you have a basic understanding on the purpose of the code, and the various observables. Then open Examples/BasicTutorial.nb, which shows how to carry out the basic numerical computations.
+First of all, read [arXiv 1312.5199](http://arxiv.org/abs/1312.5199), and make sure you have a basic understanding on the purpose of the code, and the various observables. Then open Examples/BasicTutorial.nb, which shows how to carry out the basic numerical computations.
 
 Computing thermodynamics
 ------------------------
 
 In order to compute full thermodynamics in this model, you need to scan over the boundary parameters &lambda;<sub>h</sub> and &ntilde;. This is handled, including automatic parallelization, file saving, finding the correct region in the parameter space (for some potentials), bookkeeping and so on, by the functions in VQCDThermo.m. See ThermoComputationTutorial.nb and ThermoAnalysisTutorial.nb in the Examples directory.
 
-The computations in [arxiv 1312.5199](http://arxiv.org/abs/1312.5199) were done using a less automated (i.e. requiring manual parameter setup and manual parallelization) and more complicated predecessor to this code (the parts in VQCDCore.m are pretty much unchanged), and a somewhat laborious semi-manual analysis stage. The corrections stemming from the above mentioned mistake in the equations of motion have been computed with the currently published code.
+The computations in [arXiv 1312.5199](http://arxiv.org/abs/1312.5199) were done using a less automated (i.e. requiring manual parameter setup and manual parallelization) and more complicated predecessor to this code (the parts in VQCDCore.m are pretty much unchanged), and a somewhat laborious semi-manual analysis stage. Once we finish the automatic code, it will be released here.
 
 Getting help
 ------------
