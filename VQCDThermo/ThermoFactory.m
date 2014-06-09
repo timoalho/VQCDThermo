@@ -556,6 +556,7 @@ Options[ComputeStandardThermo] = {ntcurves -> 30,
 								ntOptions -> {},
 								\[Lambda]h\[Tau]hOptions -> {},
 								nt\[Tau]hOptions -> {},
+								AllCurvesOptions -> {},
 								\[Lambda]h\[Tau]hmargin -> 10^-3,
 								\[Lambda]h\[Tau]hlowerlimit -> Automatic
 								}
@@ -564,16 +565,16 @@ ComputeStandardThermo[pots_List, destinationDirectory_String, opts: OptionsPatte
 Block[{$vcontext = "ComputeStandardThermo"}, 
 
 (*Symmetric phase*)
-ntClist = ParamListToComputationList["ntconstant", MakentconstLists["NonTachyonic", pots, OptionValue[ntcurves], ntlist -> OptionValue[ntlist]], pots, OptionValue[\[Lambda]hOptions]];
+ntClist = ParamListToComputationList["ntconstant", MakentconstLists["NonTachyonic", pots, OptionValue[ntcurves], ntlist -> OptionValue[ntlist]], pots, OptionValue[\[Lambda]hOptions], OptionValue[AllCurvesOptions]];
 PrintV[StringForm["Symmetric nt -values to compute: `1`", ntClist[[All, 3]]], "Progress"];
-\[Lambda]hClist  = ParamListToComputationList["\[Lambda]hconstant", Make\[Lambda]hconstLists["NonTachyonic", pots, OptionValue[\[Lambda]hcurves], \[Lambda]hlist -> OptionValue[\[Lambda]hlist]], pots, OptionValue[ntOptions]];
+\[Lambda]hClist  = ParamListToComputationList["\[Lambda]hconstant", Make\[Lambda]hconstLists["NonTachyonic", pots, OptionValue[\[Lambda]hcurves], \[Lambda]hlist -> OptionValue[\[Lambda]hlist]], pots, OptionValue[ntOptions], OptionValue[AllCurvesOptions]];
 PrintV[StringForm["Symmetric \[Lambda]h -values to compute: `1`", \[Lambda]hClist[[All, 3]]], "Progress"];
 
 list = Join[ntClist, \[Lambda]hClist];
 
 If[!OptionValue[NonTachyonicOnly],
 (*Tachyonic phase*)
-nt\[Tau]hClist = ParamListToComputationList["ntconstant\[Tau]h", MakentconstLists["Tachyonic", pots, OptionValue[nt\[Tau]hcurves], \[Lambda]hrange-> OptionValue[\[Lambda]h\[Tau]hrange], ntrange -> OptionValue[nt\[Tau]hrange], ntlist -> OptionValue[nt\[Tau]hlist]], pots, OptionValue[\[Lambda]h\[Tau]hOptions]];
+nt\[Tau]hClist = ParamListToComputationList["ntconstant\[Tau]h", MakentconstLists["Tachyonic", pots, OptionValue[nt\[Tau]hcurves], \[Lambda]hrange-> OptionValue[\[Lambda]h\[Tau]hrange], ntrange -> OptionValue[nt\[Tau]hrange], ntlist -> OptionValue[nt\[Tau]hlist]], pots, OptionValue[\[Lambda]h\[Tau]hOptions], OptionValue[AllCurvesOptions]];
 PrintV[StringForm["Broken nt -values to compute: `1`", nt\[Tau]hClist[[All, 3]]], "Progress"];
 (*There's no clear way to get the lower limit where to start the \[Lambda]h const curves from. Heuristically, we just find the num limit for nt = 0, and use that*)
 If[(OptionValue[\[Lambda]h\[Tau]hlowerlimit] === Automatic) && !(OptionValue[\[Lambda]h\[Tau]hlist] === {}),
@@ -585,7 +586,7 @@ If[(OptionValue[\[Lambda]h\[Tau]hlowerlimit] === Automatic) && !(OptionValue[\[L
 ]
 	
 PrintV[StringForm["\[Lambda]end(nt = 0) = `1`", \[Lambda]endnt0], "Progress"];
-\[Lambda]h\[Tau]hClist = ParamListToComputationList["\[Lambda]hconstant\[Tau]h", Make\[Lambda]hconstLists["Tachyonic", pots, OptionValue[\[Lambda]h\[Tau]hcurves], \[Lambda]hrange-> ({Min[#], Max[#]}&@IntervalIntersection[Interval[OptionValue[\[Lambda]h\[Tau]hrange]], Interval[{(1+ OptionValue[\[Lambda]h\[Tau]hmargin])\[Lambda]endnt0, Infinity}]]), ntrange -> OptionValue[nt\[Tau]hrange], \[Lambda]hlist -> OptionValue[\[Lambda]h\[Tau]hlist]], pots, OptionValue[nt\[Tau]hOptions]];
+\[Lambda]h\[Tau]hClist = ParamListToComputationList["\[Lambda]hconstant\[Tau]h", Make\[Lambda]hconstLists["Tachyonic", pots, OptionValue[\[Lambda]h\[Tau]hcurves], \[Lambda]hrange-> ({Min[#], Max[#]}&@IntervalIntersection[Interval[OptionValue[\[Lambda]h\[Tau]hrange]], Interval[{(1+ OptionValue[\[Lambda]h\[Tau]hmargin])\[Lambda]endnt0, Infinity}]]), ntrange -> OptionValue[nt\[Tau]hrange], \[Lambda]hlist -> OptionValue[\[Lambda]h\[Tau]hlist]], pots, OptionValue[nt\[Tau]hOptions], OptionValue[AllCurvesOptions]];
 PrintV[StringForm["Broken \[Lambda]h -values to compute: `1`", \[Lambda]h\[Tau]hClist[[All, 3]]], "Progress"];
 list = Join[list, nt\[Tau]hClist, \[Lambda]h\[Tau]hClist];
 ];
