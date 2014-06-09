@@ -302,7 +302,10 @@ Options[ComputeThermoCurve] :=
  (\[Tau]hFun[\[Lambda]h_, nt_, existenceOnly_ : False] = 0;)
  ,
  (
-  \[Tau]hFun[\[Lambda]h_?NumericQ, nt_?NumericQ, existenceOnly_ : False] = \[Tau]hFromQuarkMass[0, \[Lambda]h, nt, pots, Evaluate[If[existenceOnly, Options[\[Tau]hExistenceOptions], Options[\[Tau]hOptions]]], OptionValue[SolveAndScaleOptions], AccuracyGoal -> 60, NodeCountSubdivision-> 0, ARange -> 60, MassAUV -> 60]
+  (*The third parameter is existenceOnly, if set to False find the correct Efimov vacuum, if True only determine whether a solution exists.
+	The pattern in the first case is of course superfluous, False is there only for documentation.*)
+  \[Tau]hFun[\[Lambda]h_?NumericQ, nt_?NumericQ, False | ___] = \[Tau]hFromQuarkMass[0, \[Lambda]h, nt, pots, Evaluate @ OptionValue[\[Tau]hOptions], Evaluate @ OptionValue[SolveAndScaleOptions]];
+  \[Tau]hFun[\[Lambda]h_?NumericQ, nt_?NumericQ, True] = \[Tau]hFromQuarkMass[0, \[Lambda]h, nt, pots, Evaluate @ OptionValue[\[Tau]hExistenceOptions], Evaluate @ OptionValue[SolveAndScaleOptions], AccuracyGoal -> 60, NodeCountSubdivision-> 0, ARange -> 60, MassAUV -> 60]
  )
  ];
 
