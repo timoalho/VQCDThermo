@@ -938,6 +938,8 @@ If[!(Limit[Veff[\[Tau]h], \[Tau]h -> Infinity] > 0),
  PrintV["Sign[Veff] Undetermined", "Debug"];
 ];
 
+PrintV[StringForm["\[Tau]hFromQuarkMassOptions: `1`", opts], "Debug"];
+
 (*b0, kappa and \[Gamma] are needed repeatedly, so solve them now*)
 {bcoefs, ell} = bCoefsFromPotential[pots, Evaluate[FilterRules[{opts}, Options[bCoefsFromPotential]]]];
 \[Gamma] = GammaFromKappa[pots, First[bcoefs], ell(*, Evaluate[FilterRules[{opts}, Options[GammaFromKappa]]]*)];
@@ -1121,7 +1123,7 @@ point = NestWhile[
 	]
 	)]&, 
    {True, left, Max[-mqleft, -pbmax, -steps23[[1]], -steps23[[2]]], mqleft, mqleft, OptionValue[NodeCountMinSteps]}, (*Start from below*)
-	((#[[3]]*OptionValue[NodeCountHeuristic] > #[[4]] || #[[1]] == True || (#[[5]] >= #[[4]]) || #[[6]] >= 0 ) && #[[2]] <=  right)& 
+	AnalyzeConditionalV[((#[[3]]*OptionValue[NodeCountHeuristic] > #[[4]] || #[[1]] == True || (#[[5]] >= #[[4]]) || #[[6]] >= 0 ) && #[[2]] <=  right), "Debug"]& 
 	];
 
 (*(*Look for a change of sign*)
