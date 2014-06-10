@@ -938,7 +938,7 @@ If[!(Limit[Veff[\[Tau]h], \[Tau]h -> Infinity] > 0),
  PrintV["Sign[Veff] Undetermined", "Debug"];
 ];
 
-PrintV[StringForm["\[Tau]hFromQuarkMassOptions: `1`", opts], "Debug"];
+PrintV[StringForm["\[Tau]hFromQuarkMassOptions: `1`", {opts}], "Debug"];
 
 (*b0, kappa and \[Gamma] are needed repeatedly, so solve them now*)
 {bcoefs, ell} = bCoefsFromPotential[pots, Evaluate[FilterRules[{opts}, Options[bCoefsFromPotential]]]];
