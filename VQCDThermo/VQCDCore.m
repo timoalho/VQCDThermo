@@ -916,7 +916,7 @@ NotFound -> Undefined,(*What to return if no result is found*)
 InitialGuess -> 1, (*Initial guess for \[Tau]h. The algorithm seems quite insensitive to this, so there should be no need to change it*)
 NodeCountSubdivision -> 10000, (*Once an interval where a solution exists is found, to how many parts should the interval be subdivided to approximate the number of nodes*)
 NodeNumber -> 0, (*Which node to look for. UNTESTED for > 0*)
-NodeCountHeuristic -> 20, (*A parameter for a heuristic speed up: once the value of mq exceeds the largest negative value encountered by this factor, the search is stopped.*)
+NodeCountHeuristic -> 450, (*A parameter for a heuristic speed up: once the value of mq exceeds the largest negative value encountered by this factor, the search is stopped.*)
 NodeCountMinSteps -> 20, (*The minimum number of points to evaluate*)
 NodeCountSteps -> 5,
 NodeStretch -> 1,
