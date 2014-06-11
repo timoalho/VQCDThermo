@@ -10,19 +10,17 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[     33986,        854]
-NotebookOptionsPosition[     31020,        766]
-NotebookOutlinePosition[     31380,        782]
-CellTagsIndexPosition[     31337,        779]
+NotebookDataLength[     35104,        880]
+NotebookOptionsPosition[     32061,        791]
+NotebookOutlinePosition[     32497,        808]
+CellTagsIndexPosition[     32454,        805]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
 Notebook[{
 
 Cell[CellGroupData[{
-Cell["\<\
-VQCDThermo thermodynamic computations tutorial\
-\>", "Subsubtitle",
+Cell["VQCDThermo thermodynamic computations tutorial", "Subsubtitle",
  CellChangeTimes->{{3.609146124285007*^9, 3.609146124603237*^9}, {
   3.6091462346066427`*^9, 3.6091462465845118`*^9}}],
 
@@ -61,12 +59,12 @@ Cell[BoxData[{
 Cell[BoxData[
  RowBox[{"{", 
   RowBox[{
-  "VQCDThermo`VQCDCore`Private`Vg$600", ",", 
-   "VQCDThermo`VQCDCore`Private`Vf$600", ",", 
-   "VQCDThermo`VQCDCore`Private`\[Kappa]$600", ",", 
-   "VQCDThermo`VQCDCore`Private`\[Kappa]$600"}], "}"}]], "Output",
+  "VQCDThermo`VQCDCore`Private`Vg$1013", ",", 
+   "VQCDThermo`VQCDCore`Private`Vf$1013", ",", 
+   "VQCDThermo`VQCDCore`Private`\[Kappa]$1013", ",", 
+   "VQCDThermo`VQCDCore`Private`\[Kappa]$1013"}], "}"}]], "Output",
  CellChangeTimes->{3.6091539374621067`*^9, 3.6091567532293158`*^9, 
-  3.609489851010388*^9, 3.609490103143724*^9}]
+  3.609489851010388*^9, 3.609490103143724*^9, 3.6114706585209427`*^9}]
 }, Open  ]],
 
 Cell["\<\
@@ -120,35 +118,36 @@ Cell[CellGroupData[{
 
 Cell[BoxData[
  InterpretationBox["\<\"Symmetric nt -values to compute: \\!\\({0.`, \
-0.012793697745622808`, 0.05117479098249123`, 0.11514327971060526`, \
-0.20469916392996493`, 0.3198424436405702`, 0.460573118842421`, \
-0.6268911895355176`, 0.8187966557198597`, 1.0362895173954476`, \
-1.2793697745622807`, 1.5480374272203596`, 1.842292475369684`, \
-2.162134919010254`, 2.5075647581420704`, 2.878581992765132`, \
-3.275186622879439`, 3.697378648484991`, 4.1451580695817904`, \
-4.6185248861698325`, 5.117479098249123`, 5.642020705819657`, \
-6.192149708881439`, 6.7678661074344655`, 7.369169901478736`, \
-7.996061091014255`, 8.648539676041016`, 9.326605656559027`, \
-10.030259032568281`, 10.75949980406878`, 11.514327971060528`}\\)\"\>",
+0.012793697745622813`, 0.05117479098249125`, 0.11514327971060533`, \
+0.204699163929965`, 0.31984244364057035`, 0.4605731188424213`, \
+0.6268911895355178`, 0.81879665571986`, 1.036289517395448`, \
+1.2793697745622814`, 1.5480374272203603`, 1.8422924753696852`, \
+2.1621349190102555`, 2.5075647581420712`, 2.8785819927651333`, \
+3.27518662287944`, 3.697378648484993`, 4.145158069581792`, \
+4.618524886169835`, 5.117479098249126`, 5.642020705819661`, \
+6.192149708881441`, 6.767866107434468`, 7.369169901478741`, \
+7.9960610910142575`, 8.648539676041022`, 9.326605656559032`, \
+10.030259032568285`, 10.759499804068787`, 11.514327971060533`}\\)\"\>",
   StringForm[
-  "Symmetric nt -values to compute: `1`", {0., 0.012793697745622808`, 
-   0.05117479098249123, 0.11514327971060526`, 0.20469916392996493`, 
-   0.3198424436405702, 0.460573118842421, 0.6268911895355176, 
-   0.8187966557198597, 1.0362895173954476`, 1.2793697745622807`, 
-   1.5480374272203596`, 1.842292475369684, 2.162134919010254, 
-   2.5075647581420704`, 2.878581992765132, 3.275186622879439, 
-   3.697378648484991, 4.1451580695817904`, 4.6185248861698325`, 
-   5.117479098249123, 5.642020705819657, 6.192149708881439, 
-   6.7678661074344655`, 7.369169901478736, 7.996061091014255, 
-   8.648539676041016, 9.326605656559027, 10.030259032568281`, 
-   10.75949980406878, 11.514327971060528`}],
+  "Symmetric nt -values to compute: `1`", {0., 0.012793697745622813`, 
+   0.05117479098249125, 0.11514327971060533`, 0.204699163929965, 
+   0.31984244364057035`, 0.4605731188424213, 0.6268911895355178, 
+   0.81879665571986, 1.036289517395448, 1.2793697745622814`, 
+   1.5480374272203603`, 1.8422924753696852`, 2.1621349190102555`, 
+   2.5075647581420712`, 2.8785819927651333`, 3.27518662287944, 
+   3.697378648484993, 4.145158069581792, 4.618524886169835, 5.117479098249126,
+    5.642020705819661, 6.192149708881441, 6.767866107434468, 
+   7.369169901478741, 7.9960610910142575`, 8.648539676041022, 
+   9.326605656559032, 10.030259032568285`, 10.759499804068787`, 
+   11.514327971060533`}],
   Editable->False]], "Print",
  CellChangeTimes->{3.609151518772999*^9, 3.6091517139323587`*^9, 
   3.6091518643493567`*^9, 3.609151993537039*^9, 3.609152080885594*^9, 
   3.6091521637225533`*^9, 3.609152229916388*^9, 3.60915235794347*^9, 
   3.609152559305505*^9, 3.60915261358108*^9, 3.6091527792181892`*^9, 
   3.6091531075150757`*^9, 3.60915318476752*^9, 3.609153220686129*^9, 
-  3.609153429346916*^9, 3.609153488442169*^9, 3.609153946156217*^9}],
+  3.609153429346916*^9, 3.609153488442169*^9, 3.609153946156217*^9, 
+  3.611471060253993*^9}],
 
 Cell[BoxData[
  InterpretationBox["\<\"Symmetric \[Lambda]h -values to compute: \
@@ -181,33 +180,34 @@ Cell[BoxData[
   3.6091521637225533`*^9, 3.609152229916388*^9, 3.60915235794347*^9, 
   3.609152559305505*^9, 3.60915261358108*^9, 3.6091527792181892`*^9, 
   3.6091531075150757`*^9, 3.60915318476752*^9, 3.609153220686129*^9, 
-  3.609153429346916*^9, 3.609153488442169*^9, 3.609153946158935*^9}],
+  3.609153429346916*^9, 3.609153488442169*^9, 3.609153946156217*^9, 
+  3.611471060303841*^9}],
 
 Cell[BoxData[
  InterpretationBox["\<\"Broken nt -values to compute: \\!\\({0.`, \
-0.05652555703900345`, 0.2261022281560138`, 0.5087300133510312`, \
-0.9044089126240552`, 1.4131389259750862`, 2.0349200534041247`, \
-2.7697522949111693`, 3.617635650496221`, 4.578570120159279`, \
-5.652555703900345`, 6.8395924017194165`, 8.139680213616499`, \
-9.552819139591584`, 11.079009179644677`, 12.718250333775778`, \
-14.470542601984883`, 16.335885984272`, 18.314280480637116`, \
-20.405726091080247`, 22.61022281560138`}\\)\"\>",
+0.056525557039003464`, 0.22610222815601386`, 0.5087300133510312`, \
+0.9044089126240554`, 1.4131389259750866`, 2.0349200534041247`, \
+2.76975229491117`, 3.6176356504962217`, 4.578570120159282`, \
+5.6525557039003465`, 6.839592401719419`, 8.139680213616499`, \
+9.552819139591584`, 11.07900917964468`, 12.71825033377578`, \
+14.470542601984887`, 16.335885984272`, 18.314280480637127`, \
+20.405726091080247`, 22.610222815601386`}\\)\"\>",
   StringForm[
-  "Broken nt -values to compute: `1`", {0., 0.05652555703900345, 
-   0.2261022281560138, 0.5087300133510312, 0.9044089126240552, 
-   1.4131389259750862`, 2.0349200534041247`, 2.7697522949111693`, 
-   3.617635650496221, 4.578570120159279, 5.652555703900345, 
-   6.8395924017194165`, 8.139680213616499, 9.552819139591584, 
-   11.079009179644677`, 12.718250333775778`, 14.470542601984883`, 
-   16.335885984272, 18.314280480637116`, 20.405726091080247`, 
-   22.61022281560138}],
+  "Broken nt -values to compute: `1`", {0., 0.056525557039003464`, 
+   0.22610222815601386`, 0.5087300133510312, 0.9044089126240554, 
+   1.4131389259750866`, 2.0349200534041247`, 2.76975229491117, 
+   3.6176356504962217`, 4.578570120159282, 5.6525557039003465`, 
+   6.839592401719419, 8.139680213616499, 9.552819139591584, 11.07900917964468,
+    12.71825033377578, 14.470542601984887`, 16.335885984272, 
+   18.314280480637127`, 20.405726091080247`, 22.610222815601386`}],
   Editable->False]], "Print",
  CellChangeTimes->{3.609151518772999*^9, 3.6091517139323587`*^9, 
   3.6091518643493567`*^9, 3.609151993537039*^9, 3.609152080885594*^9, 
   3.6091521637225533`*^9, 3.609152229916388*^9, 3.60915235794347*^9, 
   3.609152559305505*^9, 3.60915261358108*^9, 3.6091527792181892`*^9, 
   3.6091531075150757`*^9, 3.60915318476752*^9, 3.609153220686129*^9, 
-  3.609153429346916*^9, 3.609153488442169*^9, 3.6091539522898407`*^9}],
+  3.609153429346916*^9, 3.609153488442169*^9, 3.609153946156217*^9, 
+  3.611471075376266*^9}],
 
 Cell[BoxData["\<\"Computing \[Lambda]end(nt = 0).\"\>"], "Print",
  CellChangeTimes->{3.609151518772999*^9, 3.6091517139323587`*^9, 
@@ -215,7 +215,8 @@ Cell[BoxData["\<\"Computing \[Lambda]end(nt = 0).\"\>"], "Print",
   3.6091521637225533`*^9, 3.609152229916388*^9, 3.60915235794347*^9, 
   3.609152559305505*^9, 3.60915261358108*^9, 3.6091527792181892`*^9, 
   3.6091531075150757`*^9, 3.60915318476752*^9, 3.609153220686129*^9, 
-  3.609153429346916*^9, 3.609153488442169*^9, 3.609153952292411*^9}],
+  3.609153429346916*^9, 3.609153488442169*^9, 3.609153946156217*^9, 
+  3.611471075377686*^9}],
 
 Cell[BoxData[
  InterpretationBox["\<\"\[Lambda]end(nt = 0) = \
@@ -227,7 +228,8 @@ Cell[BoxData[
   3.6091521637225533`*^9, 3.609152229916388*^9, 3.60915235794347*^9, 
   3.609152559305505*^9, 3.60915261358108*^9, 3.6091527792181892`*^9, 
   3.6091531075150757`*^9, 3.60915318476752*^9, 3.609153220686129*^9, 
-  3.609153429346916*^9, 3.609153488442169*^9, 3.609154997346143*^9}],
+  3.609153429346916*^9, 3.609153488442169*^9, 3.609153946156217*^9, 
+  3.611471892358406*^9}],
 
 Cell[BoxData[
  InterpretationBox["\<\"Broken \[Lambda]h -values to compute: \
@@ -253,77 +255,78 @@ Cell[BoxData[
   3.6091521637225533`*^9, 3.609152229916388*^9, 3.60915235794347*^9, 
   3.609152559305505*^9, 3.60915261358108*^9, 3.6091527792181892`*^9, 
   3.6091531075150757`*^9, 3.60915318476752*^9, 3.609153220686129*^9, 
-  3.609153429346916*^9, 3.609153488442169*^9, 3.609154997378427*^9}],
+  3.609153429346916*^9, 3.609153488442169*^9, 3.609153946156217*^9, 
+  3.611471892601397*^9}],
 
 Cell[BoxData[
  InterpretationBox["\<\"Computing ntconstant thermo, param = \\!\\(0.`\\)\"\>",
   StringForm["Computing `1` thermo, param = `2`", "ntconstant", 0.],
   Editable->False]], "Print",
  ShowCellLabel->True,
- CellChangeTimes->{3.6091550406760817`*^9}],
+ CellChangeTimes->{3.611471928825012*^9}],
 
 Cell[BoxData[
  InterpretationBox["\<\"Computing ntconstant thermo, param = \
-\\!\\(0.012793697745622808`\\)\"\>",
+\\!\\(0.012793697745622813`\\)\"\>",
   StringForm[
-  "Computing `1` thermo, param = `2`", "ntconstant", 0.012793697745622808`],
+  "Computing `1` thermo, param = `2`", "ntconstant", 0.012793697745622813`],
   Editable->False]], "Print",
  ShowCellLabel->True,
- CellChangeTimes->{3.609155041527183*^9}],
+ CellChangeTimes->{3.611471928889607*^9}],
 
 Cell[BoxData[
  InterpretationBox["\<\"Computing ntconstant thermo, param = \
-\\!\\(0.05117479098249123`\\)\"\>",
+\\!\\(0.05117479098249125`\\)\"\>",
   StringForm[
-  "Computing `1` thermo, param = `2`", "ntconstant", 0.05117479098249123],
+  "Computing `1` thermo, param = `2`", "ntconstant", 0.05117479098249125],
   Editable->False]], "Print",
  ShowCellLabel->True,
- CellChangeTimes->{3.6091550415390882`*^9}],
+ CellChangeTimes->{3.6114719291167927`*^9}],
 
 Cell[BoxData[
  InterpretationBox["\<\"Computing ntconstant thermo, param = \
-\\!\\(0.11514327971060526`\\)\"\>",
+\\!\\(0.11514327971060533`\\)\"\>",
   StringForm[
-  "Computing `1` thermo, param = `2`", "ntconstant", 0.11514327971060526`],
+  "Computing `1` thermo, param = `2`", "ntconstant", 0.11514327971060533`],
   Editable->False]], "Print",
  ShowCellLabel->True,
- CellChangeTimes->{3.609155041549076*^9}],
+ CellChangeTimes->{3.6114719291675863`*^9}],
 
 Cell[BoxData[
  InterpretationBox["\<\"Computing ntconstant thermo, param = \
-\\!\\(0.20469916392996493`\\)\"\>",
+\\!\\(0.204699163929965`\\)\"\>",
   StringForm[
-  "Computing `1` thermo, param = `2`", "ntconstant", 0.20469916392996493`],
+  "Computing `1` thermo, param = `2`", "ntconstant", 0.204699163929965],
   Editable->False]], "Print",
  ShowCellLabel->True,
- CellChangeTimes->{3.609155041559263*^9}],
+ CellChangeTimes->{3.611471929214126*^9}],
 
 Cell[BoxData[
  InterpretationBox["\<\"Computing ntconstant thermo, param = \
-\\!\\(0.460573118842421`\\)\"\>",
+\\!\\(0.31984244364057035`\\)\"\>",
   StringForm[
-  "Computing `1` thermo, param = `2`", "ntconstant", 0.460573118842421],
+  "Computing `1` thermo, param = `2`", "ntconstant", 0.31984244364057035`],
   Editable->False]], "Print",
  ShowCellLabel->True,
- CellChangeTimes->{3.609155041569243*^9}],
+ CellChangeTimes->{3.611471929267496*^9}],
 
 Cell[BoxData[
  InterpretationBox["\<\"Computing ntconstant thermo, param = \
-\\!\\(0.3198424436405702`\\)\"\>",
+\\!\\(0.4605731188424213`\\)\"\>",
   StringForm[
-  "Computing `1` thermo, param = `2`", "ntconstant", 0.3198424436405702],
+  "Computing `1` thermo, param = `2`", "ntconstant", 0.4605731188424213],
   Editable->False]], "Print",
  ShowCellLabel->True,
- CellChangeTimes->{3.609155041822996*^9}],
+ CellChangeTimes->{3.611471929322404*^9}],
 
 Cell[BoxData[
  InterpretationBox["\<\"Computing ntconstant thermo, param = \
-\\!\\(0.6268911895355176`\\)\"\>",
+\\!\\(0.6268911895355178`\\)\"\>",
   StringForm[
-  "Computing `1` thermo, param = `2`", "ntconstant", 0.6268911895355176],
+  "Computing `1` thermo, param = `2`", "ntconstant", 0.6268911895355178],
   Editable->False]], "Print",
  ShowCellLabel->True,
- CellChangeTimes->{3.609155043107559*^9}],
+ CellChangeTimes->{3.611471929371976*^9}],
 
 Cell[BoxData[
  InterpretationBox["\<\"Found u lower limit \\!\\(-4.605170185988091`\\)\"\>",
@@ -331,7 +334,7 @@ Cell[BoxData[
   StringForm["Found u lower limit `1`", -4.605170185988091],
   Editable->False]], "Print",
  ShowCellLabel->True,
- CellChangeTimes->{3.6091550781049957`*^9}],
+ CellChangeTimes->{3.6114719328431673`*^9}],
 
 Cell[BoxData[
  InterpretationBox["\<\"Found u lower limit \\!\\(-4.605170185988091`\\)\"\>",
@@ -339,7 +342,7 @@ Cell[BoxData[
   StringForm["Found u lower limit `1`", -4.605170185988091],
   Editable->False]], "Print",
  ShowCellLabel->True,
- CellChangeTimes->{3.609155078596819*^9}],
+ CellChangeTimes->{3.611471932961488*^9}],
 
 Cell[BoxData[
  InterpretationBox["\<\"Found u lower limit \\!\\(-4.605170185988091`\\)\"\>",
@@ -347,7 +350,7 @@ Cell[BoxData[
   StringForm["Found u lower limit `1`", -4.605170185988091],
   Editable->False]], "Print",
  ShowCellLabel->True,
- CellChangeTimes->{3.609155080203788*^9}],
+ CellChangeTimes->{3.611471933045457*^9}],
 
 Cell[BoxData[
  InterpretationBox["\<\"Found u lower limit \\!\\(-4.605170185988091`\\)\"\>",
@@ -355,7 +358,7 @@ Cell[BoxData[
   StringForm["Found u lower limit `1`", -4.605170185988091],
   Editable->False]], "Print",
  ShowCellLabel->True,
- CellChangeTimes->{3.609155081857751*^9}],
+ CellChangeTimes->{3.611471933146617*^9}],
 
 Cell[BoxData[
  InterpretationBox["\<\"Found u lower limit \\!\\(-4.605170185988091`\\)\"\>",
@@ -363,7 +366,7 @@ Cell[BoxData[
   StringForm["Found u lower limit `1`", -4.605170185988091],
   Editable->False]], "Print",
  ShowCellLabel->True,
- CellChangeTimes->{3.6091550836771097`*^9}],
+ CellChangeTimes->{3.6114719332060757`*^9}],
 
 Cell[BoxData[
  InterpretationBox["\<\"Found u lower limit \\!\\(-4.605170185988091`\\)\"\>",
@@ -371,190 +374,7 @@ Cell[BoxData[
   StringForm["Found u lower limit `1`", -4.605170185988091],
   Editable->False]], "Print",
  ShowCellLabel->True,
- CellChangeTimes->{3.609155095432076*^9}],
-
-Cell[BoxData[
- InterpretationBox["\<\"Found u upper limit \\!\\(0.6249517903497943`\\)\"\>",
-  
-  StringForm["Found u upper limit `1`", 0.6249517903497943],
-  Editable->False]], "Print",
- ShowCellLabel->True,
- CellChangeTimes->{3.609155122935924*^9}],
-
-Cell[BoxData[
- InterpretationBox["\<\"Found u upper limit \\!\\(0.6249682287545626`\\)\"\>",
-  
-  StringForm["Found u upper limit `1`", 0.6249682287545626],
-  Editable->False]], "Print",
- ShowCellLabel->True,
- CellChangeTimes->{3.60915512815388*^9}],
-
-Cell[BoxData[
- InterpretationBox["\<\"Found limits for solution in \
-\\!\\(81.9147`8.364906838553313\\) seconds...\"\>",
-  StringForm[
-  "Found limits for solution in `1` seconds...", 81.9147`8.364906838553313],
-  Editable->False]], "Print",
- ShowCellLabel->True,
- CellChangeTimes->{3.609155129353715*^9}],
-
-Cell[BoxData[
- InterpretationBox["\<\"Found u upper limit \\!\\(0.6249682287545626`\\)\"\>",
-  
-  StringForm["Found u upper limit `1`", 0.6249682287545626],
-  Editable->False]], "Print",
- ShowCellLabel->True,
- CellChangeTimes->{3.6091551294919977`*^9}],
-
-Cell[BoxData[
- InterpretationBox["\<\"Found limits for solution in \
-\\!\\(82.669511`8.368890362227773\\) seconds...\"\>",
-  StringForm[
-  "Found limits for solution in `1` seconds...", 82.669511`8.368890362227773],
-  
-  Editable->False]], "Print",
- ShowCellLabel->True,
- CellChangeTimes->{3.6091551303155107`*^9}],
-
-Cell[BoxData[
- InterpretationBox["\<\"Starting to compute thermo interpolation. Started at \
-\\!\\(18\\):\\!\\(5\\)... \"\>",
-  StringForm[
-  "Starting to compute thermo interpolation. Started at `1`:`2`... ", 18, 5],
-  Editable->False]], "Print",
- ShowCellLabel->True,
- CellChangeTimes->{3.609155130808621*^9}],
-
-Cell[BoxData[
- InterpretationBox["\<\"Found limits for solution in \
-\\!\\(88.788529`8.399901854389455\\) seconds...\"\>",
-  StringForm[
-  "Found limits for solution in `1` seconds...", 88.788529`8.399901854389455],
-  
-  Editable->False]], "Print",
- ShowCellLabel->True,
- CellChangeTimes->{3.609155131531534*^9}],
-
-Cell[BoxData[
- InterpretationBox["\<\"Starting to compute thermo interpolation. Started at \
-\\!\\(18\\):\\!\\(5\\)... \"\>",
-  StringForm[
-  "Starting to compute thermo interpolation. Started at `1`:`2`... ", 18, 5],
-  Editable->False]], "Print",
- ShowCellLabel->True,
- CellChangeTimes->{3.609155132053812*^9}],
-
-Cell[BoxData["\<\"Constructing fscale[u]...\"\>"], "Print",
- ShowCellLabel->True,
- CellChangeTimes->{3.6091551329775763`*^9}],
-
-Cell[BoxData[
- InterpretationBox["\<\"Found u upper limit \\!\\(0.6249271327426417`\\)\"\>",
-  
-  StringForm["Found u upper limit `1`", 0.6249271327426417],
-  Editable->False]], "Print",
- ShowCellLabel->True,
- CellChangeTimes->{3.609155133131751*^9}],
-
-Cell[BoxData[
- InterpretationBox["\<\"Starting to compute thermo interpolation. Started at \
-\\!\\(18\\):\\!\\(5\\)... \"\>",
-  StringForm[
-  "Starting to compute thermo interpolation. Started at `1`:`2`... ", 18, 5],
-  Editable->False]], "Print",
- ShowCellLabel->True,
- CellChangeTimes->{3.609155133659588*^9}],
-
-Cell[BoxData["\<\"Constructing fscale[u]...\"\>"], "Print",
- ShowCellLabel->True,
- CellChangeTimes->{3.609155133871376*^9}],
-
-Cell[BoxData[
- InterpretationBox["\<\"Found limits for solution in \
-\\!\\(91.870121`8.41471928187076\\) seconds...\"\>",
-  StringForm[
-  "Found limits for solution in `1` seconds...", 91.870121`8.41471928187076],
-  Editable->False]], "Print",
- ShowCellLabel->True,
- CellChangeTimes->{3.6091551343325377`*^9}],
-
-Cell[BoxData["\<\"Constructing fscale[u]...\"\>"], "Print",
- ShowCellLabel->True,
- CellChangeTimes->{3.609155134484869*^9}],
-
-Cell[BoxData[
- InterpretationBox["\<\"Starting to compute thermo interpolation. Started at \
-\\!\\(18\\):\\!\\(5\\)... \"\>",
-  StringForm[
-  "Starting to compute thermo interpolation. Started at `1`:`2`... ", 18, 5],
-  Editable->False]], "Print",
- ShowCellLabel->True,
- CellChangeTimes->{3.609155134496126*^9}],
-
-Cell[BoxData["\<\"Constructing fscale[u]...\"\>"], "Print",
- ShowCellLabel->True,
- CellChangeTimes->{3.609155134521413*^9}],
-
-Cell[BoxData[
- InterpretationBox["\<\"Found u upper limit \\!\\(0.6249682287545626`\\)\"\>",
-  
-  StringForm["Found u upper limit `1`", 0.6249682287545626],
-  Editable->False]], "Print",
- ShowCellLabel->True,
- CellChangeTimes->{3.609155145957255*^9}],
-
-Cell[BoxData[
- InterpretationBox["\<\"Found limits for solution in \
-\\!\\(105.897579`8.47643102500138\\) seconds...\"\>",
-  StringForm[
-  "Found limits for solution in `1` seconds...", 105.897579`8.47643102500138],
-  
-  Editable->False]], "Print",
- ShowCellLabel->True,
- CellChangeTimes->{3.609155182406845*^9}],
-
-Cell[BoxData[
- InterpretationBox["\<\"Starting to compute thermo interpolation. Started at \
-\\!\\(18\\):\\!\\(5\\)... \"\>",
-  StringForm[
-  "Starting to compute thermo interpolation. Started at `1`:`2`... ", 18, 5],
-  Editable->False]], "Print",
- ShowCellLabel->True,
- CellChangeTimes->{3.609155185749943*^9}],
-
-Cell[BoxData["\<\"Constructing fscale[u]...\"\>"], "Print",
- ShowCellLabel->True,
- CellChangeTimes->{3.6091551909910107`*^9}],
-
-Cell[BoxData[
- InterpretationBox["\<\"Found u upper limit \\!\\(0.6248695983259522`\\)\"\>",
-  
-  StringForm["Found u upper limit `1`", 0.6248695983259522],
-  Editable->False]], "Print",
- ShowCellLabel->True,
- CellChangeTimes->{3.6091551932983093`*^9}],
-
-Cell[BoxData[
- InterpretationBox["\<\"Found limits for solution in \
-\\!\\(151.265102`8.631283738062463\\) seconds...\"\>",
-  StringForm[
-  "Found limits for solution in `1` seconds...", 151.265102`8.631283738062463],
-  Editable->False]], "Print",
- ShowCellLabel->True,
- CellChangeTimes->{3.609155194173235*^9}],
-
-Cell[BoxData[
- InterpretationBox["\<\"Starting to compute thermo interpolation. Started at \
-\\!\\(18\\):\\!\\(6\\)... \"\>",
-  StringForm[
-  "Starting to compute thermo interpolation. Started at `1`:`2`... ", 18, 6],
-  Editable->False]], "Print",
- ShowCellLabel->True,
- CellChangeTimes->{3.609155194442442*^9}],
-
-Cell[BoxData["\<\"Constructing fscale[u]...\"\>"], "Print",
- ShowCellLabel->True,
- CellChangeTimes->{3.609155195202422*^9}],
+ CellChangeTimes->{3.611471933272003*^9}],
 
 Cell[BoxData[
  InterpretationBox["\<\"Found u lower limit \\!\\(-4.605170185988091`\\)\"\>",
@@ -562,7 +382,7 @@ Cell[BoxData[
   StringForm["Found u lower limit `1`", -4.605170185988091],
   Editable->False]], "Print",
  ShowCellLabel->True,
- CellChangeTimes->{3.609155250104871*^9}],
+ CellChangeTimes->{3.6114719333556747`*^9}],
 
 Cell[BoxData[
  InterpretationBox["\<\"Found u lower limit \\!\\(-4.605170185988091`\\)\"\>",
@@ -570,69 +390,269 @@ Cell[BoxData[
   StringForm["Found u lower limit `1`", -4.605170185988091],
   Editable->False]], "Print",
  ShowCellLabel->True,
- CellChangeTimes->{3.60915525903975*^9}],
+ CellChangeTimes->{3.611471933422598*^9}],
 
 Cell[BoxData[
- InterpretationBox["\<\"Found u upper limit \\!\\(0.6245901454448899`\\)\"\>",
+ InterpretationBox["\<\"Found u upper limit \\!\\(0.6249682287545619`\\)\"\>",
   
-  StringForm["Found u upper limit `1`", 0.6245901454448899],
+  StringForm["Found u upper limit `1`", 0.6249682287545619],
   Editable->False]], "Print",
  ShowCellLabel->True,
- CellChangeTimes->{3.6091553177833548`*^9}],
+ CellChangeTimes->{3.6114719607088547`*^9}],
 
 Cell[BoxData[
  InterpretationBox["\<\"Found limits for solution in \
-\\!\\(273.79788`8.888975074591725\\) seconds...\"\>",
+\\!\\(39.90376400000000245427145273424685001373`7.621613776568631\\) \
+seconds...\"\>",
   StringForm[
-  "Found limits for solution in `1` seconds...", 273.79788`8.888975074591725],
-  
+  "Found limits for solution in `1` seconds...", 
+   39.90376400000000245427145273424685001373`7.621613776568631],
   Editable->False]], "Print",
  ShowCellLabel->True,
- CellChangeTimes->{3.609155319786401*^9}],
+ CellChangeTimes->{3.611471960887857*^9}],
 
 Cell[BoxData[
  InterpretationBox["\<\"Starting to compute thermo interpolation. Started at \
-\\!\\(18\\):\\!\\(8\\)... \"\>",
+\\!\\(13\\):\\!\\(39\\)... \"\>",
   StringForm[
-  "Starting to compute thermo interpolation. Started at `1`:`2`... ", 18, 8],
+  "Starting to compute thermo interpolation. Started at `1`:`2`... ", 13, 39],
+  
   Editable->False]], "Print",
  ShowCellLabel->True,
- CellChangeTimes->{3.609155320446328*^9}],
+ CellChangeTimes->{3.611471960967041*^9}],
 
 Cell[BoxData["\<\"Constructing fscale[u]...\"\>"], "Print",
  ShowCellLabel->True,
- CellChangeTimes->{3.6091553209716053`*^9}],
+ CellChangeTimes->{3.611471961038794*^9}],
 
 Cell[BoxData[
- InterpretationBox["\<\"Found u upper limit \\!\\(0.6247627486949577`\\)\"\>",
+ InterpretationBox["\<\"Found u upper limit \\!\\(0.6248695983259516`\\)\"\>",
   
-  StringForm["Found u upper limit `1`", 0.6247627486949577],
+  StringForm["Found u upper limit `1`", 0.6248695983259516],
   Editable->False]], "Print",
  ShowCellLabel->True,
- CellChangeTimes->{3.609155327329204*^9}],
+ CellChangeTimes->{3.611471961826518*^9}],
 
 Cell[BoxData[
  InterpretationBox["\<\"Found limits for solution in \
-\\!\\(285.53187`8.907199583109964\\) seconds...\"\>",
+\\!\\(41.02508799999999666852090740576386451721`7.633649434579976\\) \
+seconds...\"\>",
   StringForm[
-  "Found limits for solution in `1` seconds...", 285.53187`8.907199583109964],
-  
+  "Found limits for solution in `1` seconds...", 
+   41.02508799999999666852090740576386451721`7.633649434579976],
   Editable->False]], "Print",
  ShowCellLabel->True,
- CellChangeTimes->{3.6091553287197943`*^9}],
+ CellChangeTimes->{3.611471961901738*^9}],
 
 Cell[BoxData[
  InterpretationBox["\<\"Starting to compute thermo interpolation. Started at \
-\\!\\(18\\):\\!\\(8\\)... \"\>",
+\\!\\(13\\):\\!\\(39\\)... \"\>",
   StringForm[
-  "Starting to compute thermo interpolation. Started at `1`:`2`... ", 18, 8],
+  "Starting to compute thermo interpolation. Started at `1`:`2`... ", 13, 39],
+  
   Editable->False]], "Print",
  ShowCellLabel->True,
- CellChangeTimes->{3.609155329330193*^9}],
+ CellChangeTimes->{3.611471961966954*^9}],
 
 Cell[BoxData["\<\"Constructing fscale[u]...\"\>"], "Print",
  ShowCellLabel->True,
- CellChangeTimes->{3.6091553298679323`*^9}]
+ CellChangeTimes->{3.6114719620334272`*^9}],
+
+Cell[BoxData[
+ InterpretationBox["\<\"Found u upper limit \\!\\(0.624927132742641`\\)\"\>",
+  StringForm["Found u upper limit `1`", 0.624927132742641],
+  Editable->False]], "Print",
+ ShowCellLabel->True,
+ CellChangeTimes->{3.6114719621206408`*^9}],
+
+Cell[BoxData[
+ InterpretationBox["\<\"Found limits for solution in \
+\\!\\(41.19955399999999912097337073646485805511`7.635492427944134\\) \
+seconds...\"\>",
+  StringForm[
+  "Found limits for solution in `1` seconds...", 
+   41.19955399999999912097337073646485805511`7.635492427944134],
+  Editable->False]], "Print",
+ ShowCellLabel->True,
+ CellChangeTimes->{3.611471962203618*^9}],
+
+Cell[BoxData[
+ InterpretationBox["\<\"Found u upper limit \\!\\(0.624590145444889`\\)\"\>",
+  StringForm["Found u upper limit `1`", 0.624590145444889],
+  Editable->False]], "Print",
+ ShowCellLabel->True,
+ CellChangeTimes->{3.611471962273088*^9}],
+
+Cell[BoxData[
+ InterpretationBox["\<\"Starting to compute thermo interpolation. Started at \
+\\!\\(13\\):\\!\\(39\\)... \"\>",
+  StringForm[
+  "Starting to compute thermo interpolation. Started at `1`:`2`... ", 13, 39],
+  
+  Editable->False]], "Print",
+ ShowCellLabel->True,
+ CellChangeTimes->{3.611471962368813*^9}],
+
+Cell[BoxData[
+ InterpretationBox["\<\"Found limits for solution in \
+\\!\\(41.36357000000000283534973277710378170013`7.637217927997795\\) \
+seconds...\"\>",
+  StringForm[
+  "Found limits for solution in `1` seconds...", 
+   41.36357000000000283534973277710378170013`7.637217927997795],
+  Editable->False]], "Print",
+ ShowCellLabel->True,
+ CellChangeTimes->{3.611471962457921*^9}],
+
+Cell[BoxData[
+ InterpretationBox["\<\"Found u upper limit \\!\\(0.6249682287545619`\\)\"\>",
+  
+  StringForm["Found u upper limit `1`", 0.6249682287545619],
+  Editable->False]], "Print",
+ ShowCellLabel->True,
+ CellChangeTimes->{3.6114719625247803`*^9}],
+
+Cell[BoxData[
+ InterpretationBox["\<\"Found u upper limit \\!\\(0.6249517903497936`\\)\"\>",
+  
+  StringForm["Found u upper limit `1`", 0.6249517903497936],
+  Editable->False]], "Print",
+ ShowCellLabel->True,
+ CellChangeTimes->{3.611471962599148*^9}],
+
+Cell[BoxData["\<\"Constructing fscale[u]...\"\>"], "Print",
+ ShowCellLabel->True,
+ CellChangeTimes->{3.611471962669002*^9}],
+
+Cell[BoxData[
+ InterpretationBox["\<\"Found u upper limit \\!\\(0.6247627486949571`\\)\"\>",
+  
+  StringForm["Found u upper limit `1`", 0.6247627486949571],
+  Editable->False]], "Print",
+ ShowCellLabel->True,
+ CellChangeTimes->{3.611471962741919*^9}],
+
+Cell[BoxData[
+ InterpretationBox["\<\"Starting to compute thermo interpolation. Started at \
+\\!\\(13\\):\\!\\(39\\)... \"\>",
+  StringForm[
+  "Starting to compute thermo interpolation. Started at `1`:`2`... ", 13, 39],
+  
+  Editable->False]], "Print",
+ ShowCellLabel->True,
+ CellChangeTimes->{3.6114719628258142`*^9}],
+
+Cell[BoxData[
+ InterpretationBox["\<\"Found u upper limit \\!\\(0.6249682287545619`\\)\"\>",
+  
+  StringForm["Found u upper limit `1`", 0.6249682287545619],
+  Editable->False]], "Print",
+ ShowCellLabel->True,
+ CellChangeTimes->{3.611471962891177*^9}],
+
+Cell[BoxData[
+ InterpretationBox["\<\"Found limits for solution in \
+\\!\\(41.62906199999999756755642010830342769623`7.639996538607587\\) \
+seconds...\"\>",
+  StringForm[
+  "Found limits for solution in `1` seconds...", 
+   41.62906199999999756755642010830342769623`7.639996538607587],
+  Editable->False]], "Print",
+ ShowCellLabel->True,
+ CellChangeTimes->{3.611471962971013*^9}],
+
+Cell[BoxData[
+ InterpretationBox["\<\"Found limits for solution in \
+\\!\\(41.55566600000000221371010411530733108521`7.639230160287147\\) \
+seconds...\"\>",
+  StringForm[
+  "Found limits for solution in `1` seconds...", 
+   41.55566600000000221371010411530733108521`7.639230160287147],
+  Editable->False]], "Print",
+ ShowCellLabel->True,
+ CellChangeTimes->{3.611471963043096*^9}],
+
+Cell[BoxData[
+ InterpretationBox["\<\"Found limits for solution in \
+\\!\\(41.75763299999999844658304937183856964111`7.641335786315662\\) \
+seconds...\"\>",
+  StringForm[
+  "Found limits for solution in `1` seconds...", 
+   41.75763299999999844658304937183856964111`7.641335786315662],
+  Editable->False]], "Print",
+ ShowCellLabel->True,
+ CellChangeTimes->{3.611471963120893*^9}],
+
+Cell[BoxData["\<\"Constructing fscale[u]...\"\>"], "Print",
+ ShowCellLabel->True,
+ CellChangeTimes->{3.611471963192865*^9}],
+
+Cell[BoxData[
+ InterpretationBox["\<\"Found limits for solution in \
+\\!\\(41.72854800000000352611095877364277839661`7.6410331864035355\\) \
+seconds...\"\>",
+  StringForm[
+  "Found limits for solution in `1` seconds...", 
+   41.72854800000000352611095877364277839661`7.6410331864035355],
+  Editable->False]], "Print",
+ ShowCellLabel->True,
+ CellChangeTimes->{3.611471963271125*^9}],
+
+Cell[BoxData[
+ InterpretationBox["\<\"Starting to compute thermo interpolation. Started at \
+\\!\\(13\\):\\!\\(39\\)... \"\>",
+  StringForm[
+  "Starting to compute thermo interpolation. Started at `1`:`2`... ", 13, 39],
+  
+  Editable->False]], "Print",
+ ShowCellLabel->True,
+ CellChangeTimes->{3.611471963343079*^9}],
+
+Cell[BoxData[
+ InterpretationBox["\<\"Starting to compute thermo interpolation. Started at \
+\\!\\(13\\):\\!\\(39\\)... \"\>",
+  StringForm[
+  "Starting to compute thermo interpolation. Started at `1`:`2`... ", 13, 39],
+  
+  Editable->False]], "Print",
+ ShowCellLabel->True,
+ CellChangeTimes->{3.611471963409009*^9}],
+
+Cell[BoxData[
+ InterpretationBox["\<\"Starting to compute thermo interpolation. Started at \
+\\!\\(13\\):\\!\\(39\\)... \"\>",
+  StringForm[
+  "Starting to compute thermo interpolation. Started at `1`:`2`... ", 13, 39],
+  
+  Editable->False]], "Print",
+ ShowCellLabel->True,
+ CellChangeTimes->{3.611471963421153*^9}],
+
+Cell[BoxData[
+ InterpretationBox["\<\"Starting to compute thermo interpolation. Started at \
+\\!\\(13\\):\\!\\(39\\)... \"\>",
+  StringForm[
+  "Starting to compute thermo interpolation. Started at `1`:`2`... ", 13, 39],
+  
+  Editable->False]], "Print",
+ ShowCellLabel->True,
+ CellChangeTimes->{3.611471963493958*^9}],
+
+Cell[BoxData["\<\"Constructing fscale[u]...\"\>"], "Print",
+ ShowCellLabel->True,
+ CellChangeTimes->{3.61147196357097*^9}],
+
+Cell[BoxData["\<\"Constructing fscale[u]...\"\>"], "Print",
+ ShowCellLabel->True,
+ CellChangeTimes->{3.611471963644086*^9}],
+
+Cell[BoxData["\<\"Constructing fscale[u]...\"\>"], "Print",
+ ShowCellLabel->True,
+ CellChangeTimes->{3.611471963721546*^9}],
+
+Cell[BoxData["\<\"Constructing fscale[u]...\"\>"], "Print",
+ ShowCellLabel->True,
+ CellChangeTimes->{3.611471963786859*^9}]
 }, Open  ]],
 
 Cell[BoxData["$Aborted"], "Output",
@@ -641,7 +661,8 @@ Cell[BoxData["$Aborted"], "Output",
   3.609152172252667*^9, 3.609152240766996*^9, 3.6091523709981327`*^9, 
   3.609152564802167*^9, 3.609152618692733*^9, 3.609152803211864*^9, 
   3.609153115043706*^9, 3.609153193072406*^9, 3.60915323764507*^9, 
-  3.609153433918453*^9, 3.609153498610154*^9, 3.609156160175502*^9}]
+  3.609153433918453*^9, 3.609153498610154*^9, 3.609156160175502*^9, 
+  3.611473413306798*^9}]
 }, Open  ]],
 
 Cell["\<\
@@ -737,37 +758,42 @@ values as above (note that the lists override the automatic curves, though)
 
 \[Lambda]hOptions, ntOptions, \[Lambda]h\[Tau]hOptions and nt\[Tau]hOptions \
 allow passing options further down. For example
-\[Lambda]hOptions -> {SolveAndScaleOptions -> {ARange -> 120}} would set the \
-ARange in the main solver, when computing the chirally symmetric \
+\[Lambda]h\[Tau]hOptions -> {SolveAndScaleOptions -> {ARange -> 120}} would \
+set the ARange in the main solver, when computing the chirally symmetric \
 \[Lambda]h-curves, to 120. The other subcategories are:
-\[Lambda]hOptions -> {InterpolationOptions -> {...}} sets options for \
+\[Lambda]h\[Tau]hOptions -> {InterpolationOptions -> {...}} sets options for \
 FunctionInterpolation used to control the density of points generated
-\[Lambda]hOptions -> {\[Tau]hOptions -> {...}} sets options for \
+\[Lambda]h\[Tau]hOptions -> {\[Tau]hOptions -> {...}} sets options for \
 \[Tau]hFromQuarkMass
-\[Lambda]hOptions -> {\[Tau]hOptions -> {...}} sets options for \
-\[Tau]hFromQuarkMass, when only finding out whether a solution exists at all
-\[Lambda]hOptions -> {NumLimitOptions -> {...}} sets options for \
+\[Lambda]h\[Tau]hOptions -> {\[Tau]hExistenceOptions -> {...}} sets options \
+for \[Tau]hFromQuarkMass, when only finding out whether a solution exists at \
+all
+\[Lambda]h\[Tau]hOptions -> {NumLimitOptions -> {...}} sets options for \
 FindNumLimit, which is used to find the parameter range where the solution \
 exists.
 
-The list is same for the other three curvetype options.
+The list is same for the other three curvetype options. In addition, \
+AllCurvesOptions allows passing options down to all the curves at once.
 
-Parallel -> False makes the code not run in parallel. Mostly useful for \
+Parallel -> False makes the code not run in parallel. This is useful for \
 testing, since running the code fully parallel tends to slow down a laptop to \
 a near unusable state.\
 \>", "Text",
  CellChangeTimes->{{3.609156950135708*^9, 3.6091569578547783`*^9}, {
   3.60915714357412*^9, 3.609157222011739*^9}, {3.609157253360877*^9, 
-  3.609157260613752*^9}, {3.609157411526682*^9, 3.609157800744082*^9}}],
+  3.609157260613752*^9}, {3.609157411526682*^9, 3.609157800744082*^9}, {
+  3.611471151433243*^9, 3.611471195839077*^9}, {3.611473632896533*^9, 
+  3.611473642052443*^9}, {3.611473709617497*^9, 3.6114737111637287`*^9}}],
 
 Cell[BoxData[""], "Input",
  CellChangeTimes->{{3.609157553325924*^9, 3.609157553947165*^9}}]
 }, Open  ]]
 },
 WindowSize->{740, 752},
-WindowMargins->{{-998, Automatic}, {Automatic, -35}},
-FrontEndVersion->"8.0 for Mac OS X x86 (32-bit, 64-bit Kernel) (February 23, \
-2011)",
+WindowMargins->{{-1069, Automatic}, {2, Automatic}},
+PrivateNotebookOptions->{"VersionedStylesheet"->{"Default.nb"[8.] -> False}},
+FrontEndVersion->"9.0 for Mac OS X x86 (32-bit, 64-bit Kernel) (January 25, \
+2013)",
 StyleDefinitions->"Default.nb"
 ]
 (* End of Notebook Content *)
@@ -782,79 +808,79 @@ CellTagsIndex->{}
 (*NotebookFileOutline
 Notebook[{
 Cell[CellGroupData[{
-Cell[579, 22, 196, 4, 26, "Subsubtitle"],
-Cell[778, 28, 561, 11, 86, "Text"],
-Cell[1342, 41, 142, 2, 27, "Input"],
-Cell[1487, 45, 212, 4, 26, "Text"],
+Cell[579, 22, 188, 2, 29, "Subsubtitle"],
+Cell[770, 26, 561, 11, 125, "Text"],
+Cell[1334, 39, 142, 2, 28, "Input"],
+Cell[1479, 43, 212, 4, 49, "Text"],
 Cell[CellGroupData[{
-Cell[1724, 53, 260, 5, 43, "Input"],
-Cell[1987, 60, 367, 8, 43, "Output"]
+Cell[1716, 51, 260, 5, 46, "Input"],
+Cell[1979, 58, 395, 8, 46, "Output"]
 }, Open  ]],
-Cell[2369, 71, 2114, 36, 296, "Text"],
+Cell[2389, 69, 2114, 36, 467, "Text"],
 Cell[CellGroupData[{
-Cell[4508, 111, 294, 5, 27, "Input"],
+Cell[4528, 109, 294, 5, 28, "Input"],
 Cell[CellGroupData[{
-Cell[4827, 120, 1884, 30, 81, "Print"],
-Cell[6714, 152, 2002, 31, 81, "Print"],
-Cell[8719, 185, 1451, 24, 66, "Print"],
-Cell[10173, 211, 481, 6, 20, "Print"],
-Cell[10657, 219, 605, 10, 20, "Print"],
-Cell[11265, 231, 1484, 24, 66, "Print"],
-Cell[12752, 257, 258, 5, 20, "Print"],
-Cell[13013, 264, 298, 7, 20, "Print"],
-Cell[13314, 273, 297, 7, 20, "Print"],
-Cell[13614, 282, 296, 7, 20, "Print"],
-Cell[13913, 291, 296, 7, 20, "Print"],
-Cell[14212, 300, 291, 7, 20, "Print"],
-Cell[14506, 309, 293, 7, 20, "Print"],
-Cell[14802, 318, 293, 7, 20, "Print"],
-Cell[15098, 327, 252, 6, 20, "Print"],
-Cell[15353, 335, 250, 6, 20, "Print"],
-Cell[15606, 343, 250, 6, 20, "Print"],
-Cell[15859, 351, 250, 6, 20, "Print"],
-Cell[16112, 359, 252, 6, 20, "Print"],
-Cell[16367, 367, 250, 6, 20, "Print"],
-Cell[16620, 375, 250, 6, 20, "Print"],
-Cell[16873, 383, 249, 6, 20, "Print"],
-Cell[17125, 391, 305, 7, 20, "Print"],
-Cell[17433, 400, 252, 6, 20, "Print"],
-Cell[17688, 408, 314, 8, 20, "Print"],
-Cell[18005, 418, 311, 7, 20, "Print"],
-Cell[18319, 427, 312, 8, 20, "Print"],
-Cell[18634, 437, 311, 7, 20, "Print"],
-Cell[18948, 446, 125, 2, 20, "Print"],
-Cell[19076, 450, 250, 6, 20, "Print"],
-Cell[19329, 458, 311, 7, 20, "Print"],
-Cell[19643, 467, 123, 2, 20, "Print"],
-Cell[19769, 471, 309, 7, 20, "Print"],
-Cell[20081, 480, 123, 2, 20, "Print"],
-Cell[20207, 484, 311, 7, 20, "Print"],
-Cell[20521, 493, 123, 2, 20, "Print"],
-Cell[20647, 497, 250, 6, 20, "Print"],
-Cell[20900, 505, 312, 8, 20, "Print"],
-Cell[21215, 515, 311, 7, 20, "Print"],
-Cell[21529, 524, 125, 2, 20, "Print"],
-Cell[21657, 528, 252, 6, 20, "Print"],
-Cell[21912, 536, 311, 7, 20, "Print"],
-Cell[22226, 545, 311, 7, 20, "Print"],
-Cell[22540, 554, 123, 2, 20, "Print"],
-Cell[22666, 558, 250, 6, 20, "Print"],
-Cell[22919, 566, 249, 6, 20, "Print"],
-Cell[23171, 574, 252, 6, 20, "Print"],
-Cell[23426, 582, 312, 8, 20, "Print"],
-Cell[23741, 592, 311, 7, 20, "Print"],
-Cell[24055, 601, 125, 2, 20, "Print"],
-Cell[24183, 605, 250, 6, 20, "Print"],
-Cell[24436, 613, 314, 8, 20, "Print"],
-Cell[24753, 623, 311, 7, 20, "Print"],
-Cell[25067, 632, 125, 2, 20, "Print"]
+Cell[4847, 118, 1906, 31, 83, "Print"],
+Cell[6756, 151, 2027, 32, 83, "Print"],
+Cell[8786, 185, 1471, 24, 68, "Print"],
+Cell[10260, 211, 506, 7, 22, "Print"],
+Cell[10769, 220, 630, 11, 21, "Print"],
+Cell[11402, 233, 1509, 25, 68, "Print"],
+Cell[12914, 260, 256, 5, 22, "Print"],
+Cell[13173, 267, 298, 7, 22, "Print"],
+Cell[13474, 276, 297, 7, 22, "Print"],
+Cell[13774, 285, 298, 7, 22, "Print"],
+Cell[14075, 294, 291, 7, 22, "Print"],
+Cell[14369, 303, 296, 7, 22, "Print"],
+Cell[14668, 312, 293, 7, 22, "Print"],
+Cell[14964, 321, 293, 7, 22, "Print"],
+Cell[15260, 330, 252, 6, 21, "Print"],
+Cell[15515, 338, 250, 6, 21, "Print"],
+Cell[15768, 346, 250, 6, 21, "Print"],
+Cell[16021, 354, 250, 6, 21, "Print"],
+Cell[16274, 362, 252, 6, 21, "Print"],
+Cell[16529, 370, 250, 6, 21, "Print"],
+Cell[16782, 378, 252, 6, 21, "Print"],
+Cell[17037, 386, 250, 6, 21, "Print"],
+Cell[17290, 394, 252, 6, 22, "Print"],
+Cell[17545, 402, 379, 9, 37, "Print"],
+Cell[17927, 413, 316, 8, 22, "Print"],
+Cell[18246, 423, 123, 2, 22, "Print"],
+Cell[18372, 427, 250, 6, 22, "Print"],
+Cell[18625, 435, 379, 9, 37, "Print"],
+Cell[19007, 446, 316, 8, 22, "Print"],
+Cell[19326, 456, 125, 2, 22, "Print"],
+Cell[19454, 460, 247, 5, 22, "Print"],
+Cell[19704, 467, 379, 9, 37, "Print"],
+Cell[20086, 478, 245, 5, 22, "Print"],
+Cell[20334, 485, 316, 8, 22, "Print"],
+Cell[20653, 495, 379, 9, 37, "Print"],
+Cell[21035, 506, 252, 6, 22, "Print"],
+Cell[21290, 514, 250, 6, 22, "Print"],
+Cell[21543, 522, 123, 2, 22, "Print"],
+Cell[21669, 526, 250, 6, 22, "Print"],
+Cell[21922, 534, 318, 8, 22, "Print"],
+Cell[22243, 544, 250, 6, 22, "Print"],
+Cell[22496, 552, 379, 9, 37, "Print"],
+Cell[22878, 563, 379, 9, 37, "Print"],
+Cell[23260, 574, 379, 9, 37, "Print"],
+Cell[23642, 585, 123, 2, 22, "Print"],
+Cell[23768, 589, 381, 9, 37, "Print"],
+Cell[24152, 600, 316, 8, 22, "Print"],
+Cell[24471, 610, 316, 8, 22, "Print"],
+Cell[24790, 620, 316, 8, 22, "Print"],
+Cell[25109, 630, 316, 8, 22, "Print"],
+Cell[25428, 640, 122, 2, 22, "Print"],
+Cell[25553, 644, 123, 2, 22, "Print"],
+Cell[25679, 648, 123, 2, 22, "Print"],
+Cell[25805, 652, 123, 2, 22, "Print"]
 }, Open  ]],
-Cell[25207, 637, 449, 6, 27, "Output"]
+Cell[25943, 657, 474, 7, 28, "Output"]
 }, Open  ]],
-Cell[25671, 646, 342, 6, 41, "Text"],
-Cell[26016, 654, 3310, 75, 238, "Input"],
-Cell[29329, 731, 1580, 29, 266, "Text"],
-Cell[30912, 762, 92, 1, 27, "Input"]
+Cell[26432, 667, 342, 6, 68, "Text"],
+Cell[26777, 675, 3310, 75, 267, "Input"],
+Cell[30090, 752, 1860, 33, 391, "Text"],
+Cell[31953, 787, 92, 1, 28, "Input"]
 }, Open  ]]
 }
 ]
