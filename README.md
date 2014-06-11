@@ -3,10 +3,10 @@ VQCDThermo
 
 A Mathematica package for computing thermodynamics (and more) in holographic Veneziano QCD. See [arXiv:1112.1261](http://arXiv.org/abs/1112.1261), [arXiv 1210.4516](http://arxiv.org/abs/1210.4516) and especially [arXiv 1312.5199](http://arxiv.org/abs/1312.5199) for background on VQCD and the type of computations this package does.
 
-Critical bugfix on 22.5.2014
+Critical bugfix on May 22nd 2014
 -------------------
 
-On the version that was public before 22.5.2014, there was a mistake in the equations of motion, which lead to incorrect results when both &tau; and &ntilde; are non-zero. The errors are proportional to &ntilde;<sup>2</sup>&tau;<sup>2</sup>. Therefore any computations made at finite &mu; in the chirally broken phase with this code are wrong, and should be redone with the new release.
+On the version that was public before May 22nd 2014, there was a mistake in the equations of motion, which lead to incorrect results when both &tau; and &ntilde; are non-zero. The errors are proportional to &ntilde;<sup>2</sup>&tau;<sup>2</sup>. Therefore any computations made at finite &mu; in the chirally broken phase with this code are wrong, and should be redone with the new release.
 
 We apologize for the inconvenience.
 
@@ -15,7 +15,12 @@ The phase diagram in [arxiv 1312.5199](http://arxiv.org/abs/1312.5199) is also c
 What's new
 ----------------
 
-22.5.2014:
+June 11th 2014
+- A bug caused the code that finds the correct Efimov vacuum to be disabled when using functions from the ThermoFactory package. This was the cause for the large number of fluctuations, since for most points the correct vacuum is found without the actual search phase, but in a number of individual points the root finder would pick the wrong vacuum. The tutorials have been updated to reflect this.
+- The project is now entirely developed and tested only in Mathematica 9
+- See the commit log for other fixes and improvements
+
+May 22nd 2014:
 - Fix a critical error in the equations of motion
 - w &ne; &kappa; is now handled correctly
 - The automatic thermo computation is now in a usable state. The release includes tutorials for getting started with this part of the package.
